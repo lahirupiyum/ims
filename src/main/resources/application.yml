@@ -1,0 +1,14 @@
+server:
+    port: 8081
+    servlet:
+        context-path: /api
+
+spring:
+    application:
+        name: ims
+    profiles:
+        active: dev
+
+application:
+    resource:
+        student: student
