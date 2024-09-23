@@ -11,4 +11,4 @@ spring:
 
 application:
     resource:
-        student: student
+        vendor: vendor
