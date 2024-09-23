@@ -2,8 +2,6 @@ package com.lahiru.ims.vendor.impl;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,10 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class VendorServieImpl implements VendorService {
-
-    private final Logger logger = LoggerFactory.getLogger(VendorServieImpl.class);
-    
+public class VendorServieImpl implements VendorService {  
     private final VendorRepo vendorRepo;
     @Value("${application.resource.vendor}")
     private String resource;

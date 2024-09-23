@@ -52,7 +52,7 @@ public class VendorController implements GlobalController<VendorRequestDto, Vend
     }
 
     @Override
-    public ResponseEntity<StandardReponse<VendorResponseDto>> createOne(@Valid VendorRequestDto requestDto)
+    public ResponseEntity<StandardReponse<VendorResponseDto>> createOne(VendorRequestDto requestDto)
             throws Exception {
         try {
 
