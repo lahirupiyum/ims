@@ -18,7 +18,7 @@ import jakarta.validation.Valid;
 
 public interface GlobalController<RequestDto, ResponseDto> {
     @GetMapping
-    ResponseEntity<StandardReponse<PaginationResponse<ResponseDto>>> getAllByPageWise(
+    ResponseEntity<PaginationResponse<ResponseDto>> getAllByPageWise(
             @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int pageSize)
             throws Exception;
 

@@ -27,12 +27,11 @@ public class VendorController implements GlobalController<VendorRequestDto, Vend
     private final Logger logger = LoggerFactory.getLogger(VendorController.class);
 
     @Override
-    public ResponseEntity<StandardReponse<PaginationResponse<VendorResponseDto>>> getAllByPageWise(int page,
+    public ResponseEntity<PaginationResponse<VendorResponseDto>> getAllByPageWise(int page,
             int pageSize) throws Exception {
         try {
            PaginationResponse<VendorResponseDto> vendorPage = vendorService.findByPageWise(page, pageSize);
-           StandardReponse<PaginationResponse<VendorResponseDto>> standardReponse = new StandardReponse<>(200, "", vendorPage);
-           return ResponseEntity.ok().body(standardReponse);
+           return ResponseEntity.ok().body(vendorPage);
         } catch (Exception e) {
             logger.error(e.getMessage());
             throw e;
@@ -55,9 +54,6 @@ public class VendorController implements GlobalController<VendorRequestDto, Vend
     public ResponseEntity<StandardReponse<VendorResponseDto>> createOne(VendorRequestDto requestDto)
             throws Exception {
         try {
-
-            logger.info("Vendor request: {}", requestDto);
-
             VendorResponseDto vendor = vendorService.createOne(requestDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(new StandardReponse<>(HttpStatus.CREATED.value(), "Vendor has been created successfully!", vendor));
         } catch (Exception e) {
