@@ -16,7 +16,7 @@ import com.lahiru.ims.common.dto.StandardReponse;
 
 import jakarta.validation.Valid;
 
-public interface GlobalController<RequestDto, ResponseDto> {
+public interface GenericController<RequestDto, ResponseDto> {
     @GetMapping
     ResponseEntity<PaginationResponse<ResponseDto>> getAllByPageWise(
             @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int pageSize)

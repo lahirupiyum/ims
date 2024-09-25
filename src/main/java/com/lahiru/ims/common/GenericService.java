@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.lahiru.ims.common.dto.PaginationResponse;
 
-public interface GlobalService<RequestDto, ResponseDto> {
+public interface GenericService<RequestDto, ResponseDto> {
     PaginationResponse<ResponseDto> findByPageWise(int page, int pageSize) throws Exception;
     List<ResponseDto> findAll() throws Exception;
     ResponseDto createOne(RequestDto requestDto) throws Exception;
