@@ -13,3 +13,9 @@ application:
     resource:
         vendor: vendor
         branch: branch
+        network:
+            device: network-device
+            model: network-model
+            manufacturer: network-manufacturer
+            status: network-status
+            type: network-type

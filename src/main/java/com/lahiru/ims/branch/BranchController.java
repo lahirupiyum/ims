@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lahiru.ims.branch.dto.BranchRequestDto;
 import com.lahiru.ims.branch.dto.BranchResponseDto;
-import com.lahiru.ims.common.GlobalController;
+import com.lahiru.ims.common.GenericController;
 import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.dto.StandardReponse;
 
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/${application.resource.branch}")
 @RequiredArgsConstructor
-public class BranchController implements GlobalController<BranchRequestDto, BranchResponseDto> {
+public class BranchController implements GenericController<BranchRequestDto, BranchResponseDto> {
 
     private final BranchSerivce branchSerivce;
     private final Logger logger = LoggerFactory.getLogger(BranchController.class);

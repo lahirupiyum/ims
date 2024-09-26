@@ -13,7 +13,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +20,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class NetworkDevice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,4 +45,22 @@ public class NetworkDevice {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Vendor vendor;
+
+    public NetworkDevice(String serialNumber, 
+                        Integer quantity, 
+                        NetworkDeviceType type, 
+                        NetworkDeviceManufacturer manufacturer, 
+                        NetworkDeviceModel model,
+                        NetworkDeviceStatus status,
+                        Branch branch,
+                        Vendor vendor) {
+        this.serialNumber = serialNumber;
+        this.quantity = quantity;
+        this.type = type;
+        this.manufacturer = manufacturer;
+        this.model = model;
+        this.status = status;
+        this.branch = branch;
+        this.vendor = vendor;
+    }
 }

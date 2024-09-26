@@ -2,14 +2,12 @@ package com.lahiru.ims.vendor;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lahiru.ims.common.GlobalController;
+import com.lahiru.ims.common.GenericController;
+import com.lahiru.ims.common.ResponseEntityManager;
 import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.dto.StandardReponse;
 import com.lahiru.ims.vendor.dto.VendorRequestDto;
@@ -21,68 +19,41 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/${application.resource.vendor}")
 @RequiredArgsConstructor
-public class VendorController implements GlobalController<VendorRequestDto, VendorResponseDto> {
+public class VendorController implements GenericController<VendorRequestDto, VendorResponseDto> {
 
     private final VendorService vendorService;
-    private final Logger logger = LoggerFactory.getLogger(VendorController.class);
 
     @Override
     public ResponseEntity<PaginationResponse<VendorResponseDto>> getAllByPageWise(int page,
             int pageSize) throws Exception {
-        try {
-           PaginationResponse<VendorResponseDto> vendorPage = vendorService.findByPageWise(page, pageSize);
-           return ResponseEntity.ok().body(vendorPage);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            throw e;
-        }
+        PaginationResponse<VendorResponseDto> vendorPage = vendorService.findByPageWise(page, pageSize);
+        return ResponseEntityManager.getPaginationResponse(vendorPage);
     }
 
     @Override
     public ResponseEntity<StandardReponse<List<VendorResponseDto>>> getAll() throws Exception {
-        try{
-            List<VendorResponseDto> vendors = vendorService.findAll();
-            return ResponseEntity.ok().body(new StandardReponse<>(HttpStatus.OK.value(), "", vendors));
-        }
-        catch (Exception e) {
-            logger.error(e.getMessage());
-            throw e;
-        }
+        List<VendorResponseDto> vendors = vendorService.findAll();
+        return ResponseEntityManager.getOkResponse(vendors);
     }
 
     @Override
     public ResponseEntity<StandardReponse<VendorResponseDto>> createOne(VendorRequestDto requestDto)
             throws Exception {
-        try {
-            VendorResponseDto vendor = vendorService.createOne(requestDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new StandardReponse<>(HttpStatus.CREATED.value(), "Vendor has been created successfully!", vendor));
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            throw e;
-        }
+        VendorResponseDto vendor = vendorService.createOne(requestDto);
+        return ResponseEntityManager.getCreateResponse(vendor, "Vendor");
     }
 
     @Override
     public ResponseEntity<StandardReponse<VendorResponseDto>> updateOne(int id, @Valid VendorRequestDto requestDto)
             throws Exception {
-        try {
-            VendorResponseDto vendor = vendorService.updateOne(id, requestDto);
-            return ResponseEntity.ok().body(new StandardReponse<>(HttpStatus.OK.value(), "Vendor has been updated successfully!", vendor));
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            throw e;
-        }
+        VendorResponseDto vendor = vendorService.updateOne(id, requestDto);
+        return ResponseEntityManager.getOkResponse(vendor);
     }
 
     @Override
     public ResponseEntity<StandardReponse<VendorResponseDto>> deleteOne(int id) throws Exception {
-        try {
-            VendorResponseDto deletedVendor = vendorService.deleteOne(id);
-            return ResponseEntity.ok().body(new StandardReponse<>(HttpStatus.OK.value(), "Vendor has been deleted successfully!", deletedVendor));
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            throw e;
-        }
+        VendorResponseDto deletedVendor = vendorService.deleteOne(id);
+        return ResponseEntityManager.getOkResponse(deletedVendor);
     }
 
 }
