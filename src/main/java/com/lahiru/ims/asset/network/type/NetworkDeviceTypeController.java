@@ -24,8 +24,7 @@ public class NetworkDeviceTypeController implements GenericController<NetworkDev
     private final NetworkDeviceTypeService networkDeviceTypeService;
 
     @Override
-    public ResponseEntity<PaginationResponse<NetworkDeviceTypeResponseDto>> getAllByPageWise(int page, int pageSize)
-            throws Exception {
+    public ResponseEntity<PaginationResponse<NetworkDeviceTypeResponseDto>> getAllByPageWise(int page, int pageSize) {
             return null;
     }
 

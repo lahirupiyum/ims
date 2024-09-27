@@ -1,21 +1,19 @@
 package com.lahiru.ims.asset.network.type.impl;
 
-import java.util.List;
-
-import com.lahiru.ims.exception.DataConflictException;
-import com.lahiru.ims.exception.NotFoundException;
-import org.springframework.stereotype.Service;
-
 import com.lahiru.ims.asset.network.type.NetworkDeviceType;
 import com.lahiru.ims.asset.network.type.NetworkDeviceTypeMapper;
 import com.lahiru.ims.asset.network.type.NetworkDeviceTypeRepo;
 import com.lahiru.ims.asset.network.type.NetworkDeviceTypeService;
 import com.lahiru.ims.asset.network.type.dto.NetworkDeviceTypeRequestDto;
 import com.lahiru.ims.asset.network.type.dto.NetworkDeviceTypeResponseDto;
-import com.lahiru.ims.common.GenericDao;
 import com.lahiru.ims.common.dto.PaginationResponse;
+import com.lahiru.ims.exception.DataConflictException;
+import com.lahiru.ims.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Transactional

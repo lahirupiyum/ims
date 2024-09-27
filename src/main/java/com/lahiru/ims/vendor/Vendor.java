@@ -21,7 +21,7 @@ public class Vendor {
     private String name;
     @Column(name = "email", nullable = false)
     private String email;
-    @Column(name = "contactNo", nullable = false)
+    @Column(name = "contact_no", nullable = false)
     private String contactNo;
     @Column(name = "status", nullable = false)
     private Boolean isActive;

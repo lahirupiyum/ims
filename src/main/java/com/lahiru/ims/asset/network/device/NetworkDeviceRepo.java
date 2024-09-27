@@ -13,6 +13,5 @@ public interface NetworkDeviceRepo extends JpaRepository<NetworkDevice, Integer>
     Page<NetworkDevice> findAllByIsActiveIsTrue(Pageable pageable);
     List<NetworkDevice> findAllByIsActiveIsTrue();
     Optional<NetworkDevice> findByIdAndIsActiveIsTrue(Integer id);
-    Boolean existsByIdAndIsActiveIsTrue(Integer id);
     Boolean existsBySerialNumberAndIsActiveIsTrue(String serialNumber);
 }

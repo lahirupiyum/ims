@@ -9,7 +9,6 @@ import com.lahiru.ims.vendor.dto.VendorResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
