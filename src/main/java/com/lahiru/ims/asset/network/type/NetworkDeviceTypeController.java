@@ -32,27 +32,27 @@ public class NetworkDeviceTypeController implements GenericController<NetworkDev
     @Override
     public ResponseEntity<StandardReponse<List<NetworkDeviceTypeResponseDto>>> getAll() throws Exception {
         List<NetworkDeviceTypeResponseDto> all = networkDeviceTypeService.findAll();
-        return ResponseEntityManager.getOkResponse(all);
+        return ResponseEntityManager.ok(all);
     }
 
     @Override
     public ResponseEntity<StandardReponse<NetworkDeviceTypeResponseDto>> createOne(
             @Valid NetworkDeviceTypeRequestDto requestDto) throws Exception {
         NetworkDeviceTypeResponseDto typeResponseDto = networkDeviceTypeService.createOne(requestDto);
-        return ResponseEntityManager.getCreateResponse(typeResponseDto, "Network Device Type");
+        return ResponseEntityManager.created(typeResponseDto, "Network Device Type");
     }
 
     @Override
     public ResponseEntity<StandardReponse<NetworkDeviceTypeResponseDto>> updateOne(int id,
             @Valid NetworkDeviceTypeRequestDto requestDto) throws Exception {
         NetworkDeviceTypeResponseDto updatedNetworkDeviceType = networkDeviceTypeService.updateOne(id, requestDto);
-        return ResponseEntityManager.getOkResponse(updatedNetworkDeviceType);
+        return ResponseEntityManager.ok(updatedNetworkDeviceType);
     }
 
     @Override
     public ResponseEntity<StandardReponse<NetworkDeviceTypeResponseDto>> deleteOne(int id) throws Exception {
         NetworkDeviceTypeResponseDto deletedNetworkDeviceType = networkDeviceTypeService.deleteOne(id);
-        return ResponseEntityManager.getOkResponse(deletedNetworkDeviceType);
+        return ResponseEntityManager.ok(deletedNetworkDeviceType);
     }
 
 

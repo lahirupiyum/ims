@@ -27,33 +27,33 @@ public class VendorController implements GenericController<VendorRequestDto, Ven
     public ResponseEntity<PaginationResponse<VendorResponseDto>> getAllByPageWise(int page,
             int pageSize) throws Exception {
         PaginationResponse<VendorResponseDto> vendorPage = vendorService.findByPageWise(page, pageSize);
-        return ResponseEntityManager.getPaginationResponse(vendorPage);
+        return ResponseEntityManager.page(vendorPage);
     }
 
     @Override
     public ResponseEntity<StandardReponse<List<VendorResponseDto>>> getAll() throws Exception {
         List<VendorResponseDto> vendors = vendorService.findAll();
-        return ResponseEntityManager.getOkResponse(vendors);
+        return ResponseEntityManager.ok(vendors);
     }
 
     @Override
     public ResponseEntity<StandardReponse<VendorResponseDto>> createOne(VendorRequestDto requestDto)
             throws Exception {
         VendorResponseDto vendor = vendorService.createOne(requestDto);
-        return ResponseEntityManager.getCreateResponse(vendor, "Vendor");
+        return ResponseEntityManager.created(vendor, "Vendor");
     }
 
     @Override
     public ResponseEntity<StandardReponse<VendorResponseDto>> updateOne(int id, @Valid VendorRequestDto requestDto)
             throws Exception {
         VendorResponseDto vendor = vendorService.updateOne(id, requestDto);
-        return ResponseEntityManager.getOkResponse(vendor);
+        return ResponseEntityManager.ok(vendor);
     }
 
     @Override
     public ResponseEntity<StandardReponse<VendorResponseDto>> deleteOne(int id) throws Exception {
         VendorResponseDto deletedVendor = vendorService.deleteOne(id);
-        return ResponseEntityManager.getOkResponse(deletedVendor);
+        return ResponseEntityManager.ok(deletedVendor);
     }
 
 }

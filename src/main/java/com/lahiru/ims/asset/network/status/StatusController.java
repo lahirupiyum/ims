@@ -17,9 +17,9 @@ public class StatusController {
 
     private final StatusService service;
 
-    @GetMapping
+    @GetMapping("all")
     public ResponseEntity<StandardReponse<List<StatusResponseDto>>> getAll() throws Exception {
         List<StatusResponseDto> all = service.findAll();
-        return ResponseEntityManager.getOkResponse(all);
+        return ResponseEntityManager.ok(all);
     }
 }
