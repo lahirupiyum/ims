@@ -27,6 +27,7 @@ public class NetworkDevice {
     private Integer id;
     private String serialNumber;
     private Integer quantity;
+    private Boolean isActive;
     
     @ManyToOne(fetch = FetchType.LAZY)
     private NetworkDeviceType type;
@@ -62,5 +63,6 @@ public class NetworkDevice {
         this.status = status;
         this.branch = branch;
         this.vendor = vendor;
+        this.isActive = true;
     }
 }
