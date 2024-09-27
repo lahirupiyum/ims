@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lahiru.ims.asset.network.type.dto.NetworkDeviceTypeRequestDto;
 import com.lahiru.ims.asset.network.type.dto.NetworkDeviceTypeResponseDto;
 import com.lahiru.ims.common.GenericController;
-import com.lahiru.ims.common.ResponseEntityManager;
+import com.lahiru.ims.utils.ResponseEntityManager;
 import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.dto.StandardReponse;
 

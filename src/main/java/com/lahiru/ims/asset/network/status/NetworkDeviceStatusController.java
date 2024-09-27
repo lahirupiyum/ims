@@ -1,6 +1,6 @@
 package com.lahiru.ims.asset.network.status;
 
-import com.lahiru.ims.common.ResponseEntityManager;
+import com.lahiru.ims.utils.ResponseEntityManager;
 import com.lahiru.ims.common.dto.StandardReponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

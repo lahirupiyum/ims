@@ -3,7 +3,7 @@ package com.lahiru.ims.asset.network.manufacturer;
 import com.lahiru.ims.asset.network.manufacturer.dto.NetworkDeviceManufacturerRequestDto;
 import com.lahiru.ims.asset.network.manufacturer.dto.NetworkDeviceManufacturerResponseDto;
 import com.lahiru.ims.common.GenericController;
-import com.lahiru.ims.common.ResponseEntityManager;
+import com.lahiru.ims.utils.ResponseEntityManager;
 import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.dto.StandardReponse;
 import lombok.RequiredArgsConstructor;

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lahiru.ims.common.GenericController;
-import com.lahiru.ims.common.ResponseEntityManager;
+import com.lahiru.ims.utils.ResponseEntityManager;
 import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.dto.StandardReponse;
 import com.lahiru.ims.vendor.dto.VendorRequestDto;

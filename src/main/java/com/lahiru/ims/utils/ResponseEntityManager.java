@@ -1,4 +1,4 @@
-package com.lahiru.ims.common;
+package com.lahiru.ims.utils;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
