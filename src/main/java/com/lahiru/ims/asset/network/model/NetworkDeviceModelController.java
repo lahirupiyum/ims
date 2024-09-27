@@ -1,7 +1,7 @@
 package com.lahiru.ims.asset.network.model;
 
-import com.lahiru.ims.asset.network.model.dto.DeviceModelRequestDto;
-import com.lahiru.ims.asset.network.model.dto.DeviceModelResponseDto;
+import com.lahiru.ims.asset.network.model.dto.NetworkDeviceModelRequestDto;
+import com.lahiru.ims.asset.network.model.dto.NetworkDeviceModelResponseDto;
 import com.lahiru.ims.common.GenericController;
 import com.lahiru.ims.common.ResponseEntityManager;
 import com.lahiru.ims.common.dto.PaginationResponse;
@@ -16,35 +16,35 @@ import java.util.List;
 @RestController
 @RequestMapping("${endpoints.asset-network-device-model}")
 @RequiredArgsConstructor
-public class NetworkDeviceModelController implements GenericController<DeviceModelRequestDto, DeviceModelResponseDto> {
+public class NetworkDeviceModelController implements GenericController<NetworkDeviceModelRequestDto, NetworkDeviceModelResponseDto> {
     private final NetworkDeviceModelService service;
     @Override
-    public ResponseEntity<PaginationResponse<DeviceModelResponseDto>> getAllByPageWise(int page, int pageSize) throws Exception {
-        PaginationResponse<DeviceModelResponseDto> deviceModelPage = service.findByPageWise(page, pageSize);
+    public ResponseEntity<PaginationResponse<NetworkDeviceModelResponseDto>> getAllByPageWise(int page, int pageSize) throws Exception {
+        PaginationResponse<NetworkDeviceModelResponseDto> deviceModelPage = service.findByPageWise(page, pageSize);
         return ResponseEntityManager.page(deviceModelPage);
     }
 
     @Override
-    public ResponseEntity<StandardReponse<List<DeviceModelResponseDto>>> getAll() throws Exception {
-        List<DeviceModelResponseDto> deviceModelList = service.findAll();
+    public ResponseEntity<StandardReponse<List<NetworkDeviceModelResponseDto>>> getAll() throws Exception {
+        List<NetworkDeviceModelResponseDto> deviceModelList = service.findAll();
         return ResponseEntityManager.ok(deviceModelList);
     }
 
     @Override
-    public ResponseEntity<StandardReponse<DeviceModelResponseDto>> createOne(DeviceModelRequestDto requestDto) throws Exception {
-        DeviceModelResponseDto deviceModel = service.createOne(requestDto);
+    public ResponseEntity<StandardReponse<NetworkDeviceModelResponseDto>> createOne(NetworkDeviceModelRequestDto requestDto) throws Exception {
+        NetworkDeviceModelResponseDto deviceModel = service.createOne(requestDto);
         return ResponseEntityManager.created(deviceModel, "Network device model");
     }
 
     @Override
-    public ResponseEntity<StandardReponse<DeviceModelResponseDto>> updateOne(int id, DeviceModelRequestDto requestDto) throws Exception {
-        DeviceModelResponseDto deviceModel = service.updateOne(id, requestDto);
+    public ResponseEntity<StandardReponse<NetworkDeviceModelResponseDto>> updateOne(int id, NetworkDeviceModelRequestDto requestDto) throws Exception {
+        NetworkDeviceModelResponseDto deviceModel = service.updateOne(id, requestDto);
         return ResponseEntityManager.ok(deviceModel);
     }
 
     @Override
-    public ResponseEntity<StandardReponse<DeviceModelResponseDto>> deleteOne(int id) throws Exception {
-        DeviceModelResponseDto deviceModel = service.deleteOne(id);
+    public ResponseEntity<StandardReponse<NetworkDeviceModelResponseDto>> deleteOne(int id) throws Exception {
+        NetworkDeviceModelResponseDto deviceModel = service.deleteOne(id);
         return ResponseEntityManager.ok(deviceModel);
     }
 }

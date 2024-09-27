@@ -5,6 +5,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class DeviceModelRequestDto {
+public class NetworkDeviceModelRequestDto {
     private String name;
 }

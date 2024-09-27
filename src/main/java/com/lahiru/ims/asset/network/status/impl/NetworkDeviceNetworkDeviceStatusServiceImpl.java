@@ -8,13 +8,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class StatusServiceImpl implements StatusService {
+public class NetworkDeviceNetworkDeviceStatusServiceImpl implements NetworkDeviceStatusService {
 
-    private final StatusRepo statusRepo;
+    private final NetworkDeviceStatusRepo statusRepo;
 
     @Override
-    public List<StatusResponseDto> findAll() throws Exception {
+    public List<NetworkDeviceStatusResponseDto> findAll() throws Exception {
         List<NetworkDeviceStatus> all = statusRepo.findAll();
-        return all.stream().map(StatusMapper::toDto).toList();
+        return all.stream().map(NetworkDeviceStatusMapper::toDto).toList();
     }
 }

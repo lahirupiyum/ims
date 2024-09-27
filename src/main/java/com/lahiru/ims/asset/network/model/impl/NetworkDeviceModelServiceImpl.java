@@ -4,12 +4,11 @@ import com.lahiru.ims.asset.network.model.NetworkDeviceModel;
 import com.lahiru.ims.asset.network.model.NetworkDeviceModelMapper;
 import com.lahiru.ims.asset.network.model.NetworkDeviceModelRepo;
 import com.lahiru.ims.asset.network.model.NetworkDeviceModelService;
-import com.lahiru.ims.asset.network.model.dto.DeviceModelRequestDto;
-import com.lahiru.ims.asset.network.model.dto.DeviceModelResponseDto;
+import com.lahiru.ims.asset.network.model.dto.NetworkDeviceModelRequestDto;
+import com.lahiru.ims.asset.network.model.dto.NetworkDeviceModelResponseDto;
 import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.exception.DataConflictException;
 import com.lahiru.ims.exception.NotFoundException;
-import jakarta.persistence.OneToMany;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,14 +27,14 @@ public class NetworkDeviceModelServiceImpl implements NetworkDeviceModelService 
     private final NetworkDeviceModelRepo networkDeviceModelRepo;
 
     @Override
-    public PaginationResponse<DeviceModelResponseDto> findByPageWise(int page, int pageSize) throws Exception {
+    public PaginationResponse<NetworkDeviceModelResponseDto> findByPageWise(int page, int pageSize) throws Exception {
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<NetworkDeviceModel> allActive = networkDeviceModelRepo.findAllByIsActive(true, pageable);
         return new PaginationResponse<>(allActive.map(NetworkDeviceModelMapper::toDto).stream().toList(), (int) allActive.getTotalElements());
     }
 
     @Override
-    public List<DeviceModelResponseDto> findAll() throws Exception {
+    public List<NetworkDeviceModelResponseDto> findAll() throws Exception {
         List<NetworkDeviceModel> allActive = networkDeviceModelRepo.findAllByIsActive(true);
         return allActive
                 .stream()
@@ -44,18 +43,18 @@ public class NetworkDeviceModelServiceImpl implements NetworkDeviceModelService 
     }
 
     @Override
-    public DeviceModelResponseDto createOne(DeviceModelRequestDto deviceModelRequestDto) throws Exception {
-        if (isExistsByName(deviceModelRequestDto.getName()))
+    public NetworkDeviceModelResponseDto createOne(NetworkDeviceModelRequestDto networkDeviceModelRequestDto) throws Exception {
+        if (isExistsByName(networkDeviceModelRequestDto.getName()))
             throw new DataConflictException(DEVICE_MODEL);
 
-        NetworkDeviceModel deviceModel = NetworkDeviceModelMapper.toModel(deviceModelRequestDto);
+        NetworkDeviceModel deviceModel = NetworkDeviceModelMapper.toModel(networkDeviceModelRequestDto);
         NetworkDeviceModel savedModel = networkDeviceModelRepo.save(deviceModel);
         return NetworkDeviceModelMapper.toDto(savedModel);
     }
 
     @Override
-    public DeviceModelResponseDto updateOne(int id, DeviceModelRequestDto deviceModelRequestDto) throws Exception {
-        String name = deviceModelRequestDto.getName();
+    public NetworkDeviceModelResponseDto updateOne(int id, NetworkDeviceModelRequestDto networkDeviceModelRequestDto) throws Exception {
+        String name = networkDeviceModelRequestDto.getName();
         NetworkDeviceModel deviceModel = findDeviceModel(id);
         if(isExistsByName(name) && !deviceModel.getName().equals(name))
             throw new DataConflictException(DEVICE_MODEL);
@@ -66,7 +65,7 @@ public class NetworkDeviceModelServiceImpl implements NetworkDeviceModelService 
     }
 
     @Override
-    public DeviceModelResponseDto deleteOne(int id) throws Exception {
+    public NetworkDeviceModelResponseDto deleteOne(int id) throws Exception {
         NetworkDeviceModel deviceModel = findDeviceModel(id);
         deviceModel.setIsActive(false);
         NetworkDeviceModel deletedDeviceModel = networkDeviceModelRepo.save(deviceModel);

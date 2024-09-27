@@ -1,11 +1,11 @@
 package com.lahiru.ims.asset.network.manufacturer.impl;
 
-import com.lahiru.ims.asset.network.manufacturer.ManufacturerMapper;
+import com.lahiru.ims.asset.network.manufacturer.NetworkDeviceManufacturerMapper;
 import com.lahiru.ims.asset.network.manufacturer.NetworkDeviceManufacturer;
 import com.lahiru.ims.asset.network.manufacturer.NetworkDeviceManufacturerRepo;
 import com.lahiru.ims.asset.network.manufacturer.NetworkDeviceManufacturerService;
-import com.lahiru.ims.asset.network.manufacturer.dto.ManufacturerRequestDto;
-import com.lahiru.ims.asset.network.manufacturer.dto.ManufacturerResponseDto;
+import com.lahiru.ims.asset.network.manufacturer.dto.NetworkDeviceManufacturerRequestDto;
+import com.lahiru.ims.asset.network.manufacturer.dto.NetworkDeviceManufacturerResponseDto;
 import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.exception.DataConflictException;
 import com.lahiru.ims.exception.NotFoundException;
@@ -24,31 +24,31 @@ public class ManufacturerServiceImpl implements NetworkDeviceManufacturerService
     private final NetworkDeviceManufacturerRepo manufacturerRepo;
 
     @Override
-    public PaginationResponse<ManufacturerResponseDto> findByPageWise(int page, int pageSize) throws Exception {
+    public PaginationResponse<NetworkDeviceManufacturerResponseDto> findByPageWise(int page, int pageSize) throws Exception {
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<NetworkDeviceManufacturer> allActive = manufacturerRepo.findAllActive(pageable);
-        return new PaginationResponse<>(allActive.map(ManufacturerMapper::toDto).stream().toList(), (int) allActive.getTotalElements());
+        return new PaginationResponse<>(allActive.map(NetworkDeviceManufacturerMapper::toDto).stream().toList(), (int) allActive.getTotalElements());
     }
 
     @Override
-    public List<ManufacturerResponseDto> findAll() throws Exception {
+    public List<NetworkDeviceManufacturerResponseDto> findAll() throws Exception {
         List<NetworkDeviceManufacturer> allActive = manufacturerRepo.findAllActive();
-        return allActive.stream().map(ManufacturerMapper::toDto).toList();
+        return allActive.stream().map(NetworkDeviceManufacturerMapper::toDto).toList();
     }
 
     @Override
-    public ManufacturerResponseDto createOne(ManufacturerRequestDto manufacturerRequestDto) throws Exception {
-        if(manufacturerRepo.existsByNameAndIsActive(manufacturerRequestDto.getName(), true))
+    public NetworkDeviceManufacturerResponseDto createOne(NetworkDeviceManufacturerRequestDto networkDeviceManufacturerRequestDto) throws Exception {
+        if(manufacturerRepo.existsByNameAndIsActive(networkDeviceManufacturerRequestDto.getName(), true))
             throw new DataConflictException(DEVICE_MANUFACTURER);
 
-        NetworkDeviceManufacturer manufacturer = ManufacturerMapper.toModel(manufacturerRequestDto);
+        NetworkDeviceManufacturer manufacturer = NetworkDeviceManufacturerMapper.toModel(networkDeviceManufacturerRequestDto);
         NetworkDeviceManufacturer savedManufacturer = manufacturerRepo.save(manufacturer);
-        return ManufacturerMapper.toDto(savedManufacturer);
+        return NetworkDeviceManufacturerMapper.toDto(savedManufacturer);
     }
 
     @Override
-    public ManufacturerResponseDto updateOne(int id, ManufacturerRequestDto manufacturerRequestDto) throws Exception {
-        String updatedName = manufacturerRequestDto.getName();
+    public NetworkDeviceManufacturerResponseDto updateOne(int id, NetworkDeviceManufacturerRequestDto networkDeviceManufacturerRequestDto) throws Exception {
+        String updatedName = networkDeviceManufacturerRequestDto.getName();
         NetworkDeviceManufacturer manufacturer = manufacturerRepo.findActiveById(id)
                 .orElseThrow(() -> new NotFoundException(DEVICE_MANUFACTURER));
 
@@ -62,15 +62,15 @@ public class ManufacturerServiceImpl implements NetworkDeviceManufacturerService
 
         NetworkDeviceManufacturer updatedManufacturer = manufacturerRepo.save(manufacturer);
 
-        return ManufacturerMapper.toDto(updatedManufacturer);
+        return NetworkDeviceManufacturerMapper.toDto(updatedManufacturer);
     }
 
     @Override
-    public ManufacturerResponseDto deleteOne(int id) throws Exception {
+    public NetworkDeviceManufacturerResponseDto deleteOne(int id) throws Exception {
         NetworkDeviceManufacturer manufacturer = manufacturerRepo.findActiveById(id)
                 .orElseThrow(() -> new NotFoundException(DEVICE_MANUFACTURER));
         manufacturer.setIsActive(false);
         NetworkDeviceManufacturer deletedManufacturer = manufacturerRepo.save(manufacturer);
-        return ManufacturerMapper.toDto(deletedManufacturer);
+        return NetworkDeviceManufacturerMapper.toDto(deletedManufacturer);
     }
 }
