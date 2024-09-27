@@ -6,7 +6,7 @@ import com.lahiru.ims.asset.network.type.dto.NetworkDeviceTypeResponseDto;
 public class NetworkDeviceTypeMapper {
     public static NetworkDeviceType toModel(NetworkDeviceTypeRequestDto requestDto) {
         NetworkDeviceType networkDeviceType = new NetworkDeviceType();
-        networkDeviceType.setName(requestDto.getName());
+        networkDeviceType.setName(requestDto.getName().toLowerCase());
         return networkDeviceType;
     }
 

@@ -2,6 +2,8 @@ package com.lahiru.ims.asset.network.type.impl;
 
 import java.util.List;
 
+import com.lahiru.ims.exception.DataConflictException;
+import com.lahiru.ims.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.lahiru.ims.asset.network.type.NetworkDeviceType;
@@ -20,8 +22,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NetworkDeviceTypeServiceImpl implements NetworkDeviceTypeService {
 
+    public static final String NETWORK_DEVICE = "Network Device";
     private final NetworkDeviceTypeRepo networkDeviceTypeRepo;
-    private final GenericDao genericDao;
 
     @Override
     public PaginationResponse<NetworkDeviceTypeResponseDto> findByPageWise(int page, int pageSize) throws Exception {
@@ -30,12 +32,14 @@ public class NetworkDeviceTypeServiceImpl implements NetworkDeviceTypeService {
 
     @Override
     public List<NetworkDeviceTypeResponseDto> findAll() throws Exception {
-        List<NetworkDeviceType> networkDeviceTypeList = networkDeviceTypeRepo.findAll();
+        List<NetworkDeviceType> networkDeviceTypeList = networkDeviceTypeRepo.findAllByIsActive(true);
         return networkDeviceTypeList.stream().map(NetworkDeviceTypeMapper::toDto).toList();
     }
 
     @Override
     public NetworkDeviceTypeResponseDto createOne(NetworkDeviceTypeRequestDto requestDto) throws Exception {
+        if (networkDeviceTypeRepo.existsByNameAndIsActive(requestDto.getName(), true))
+            throw new DataConflictException("Network device type already exists");
        NetworkDeviceType networkDeviceType = NetworkDeviceTypeMapper.toModel(requestDto);
        NetworkDeviceType savedNetworkDeviceType = networkDeviceTypeRepo.save(networkDeviceType);
         return NetworkDeviceTypeMapper.toDto(savedNetworkDeviceType);
@@ -43,16 +47,22 @@ public class NetworkDeviceTypeServiceImpl implements NetworkDeviceTypeService {
 
     @Override
     public NetworkDeviceTypeResponseDto updateOne(int id, NetworkDeviceTypeRequestDto requestDto) throws Exception {
-        NetworkDeviceType type = genericDao.getOne(id, networkDeviceTypeRepo, "Network Device");
-        type.setName(requestDto.getName());
+        String updatedName = requestDto.getName();
+        NetworkDeviceType type = networkDeviceTypeRepo.findByIdAndIsActive(id, true)
+                        .orElseThrow(() -> new NotFoundException(NETWORK_DEVICE));
+        if (networkDeviceTypeRepo.existsByNameAndIsActive(updatedName, true) && type.getName().equals(updatedName))
+            throw new DataConflictException("Network device type already exists!");
+        type.setName(updatedName);
         NetworkDeviceType updaNetworkDeviceType = networkDeviceTypeRepo.save(type);
         return NetworkDeviceTypeMapper.toDto(updaNetworkDeviceType);
     }
 
     @Override
     public NetworkDeviceTypeResponseDto deleteOne(int id) throws Exception {
-        NetworkDeviceType type = genericDao.getOne(id, networkDeviceTypeRepo, "Network Device");
-        networkDeviceTypeRepo.delete(type);
-        return NetworkDeviceTypeMapper.toDto(type);
+        NetworkDeviceType type = networkDeviceTypeRepo.findByIdAndIsActive(id, true)
+                        .orElseThrow(() -> new NotFoundException(NETWORK_DEVICE));
+        type.setIsActive(false);
+        NetworkDeviceType deletedType = networkDeviceTypeRepo.save(type);
+        return NetworkDeviceTypeMapper.toDto(deletedType);
     }        
 }
