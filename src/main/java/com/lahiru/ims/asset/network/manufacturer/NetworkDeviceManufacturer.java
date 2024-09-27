@@ -13,10 +13,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class NetworkDeviceManufacturer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+    private Boolean isActive;
+
+    public NetworkDeviceManufacturer(String name) {
+        this.name = name;
+        this.isActive = true;
+    }
 }
