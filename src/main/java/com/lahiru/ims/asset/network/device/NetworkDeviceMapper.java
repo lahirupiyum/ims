@@ -7,7 +7,7 @@ import com.lahiru.ims.asset.network.manufacturer.NetworkDeviceManufacturerRepo;
 import com.lahiru.ims.asset.network.model.NetworkDeviceModel;
 import com.lahiru.ims.asset.network.model.NetworkDeviceModelRepo;
 import com.lahiru.ims.asset.network.status.NetworkDeviceStatus;
-import com.lahiru.ims.asset.network.status.NetworkDeviceStatusRepo;
+import com.lahiru.ims.asset.network.status.StatusRepo;
 import com.lahiru.ims.asset.network.type.NetworkDeviceType;
 import com.lahiru.ims.asset.network.type.NetworkDeviceTypeRepo;
 import com.lahiru.ims.branch.Branch;
@@ -24,7 +24,7 @@ public class NetworkDeviceMapper {
     private final BranchRepo branchRepo;
     private final VendorRepo vendorRepo;
     private final NetworkDeviceManufacturerRepo manufacturerRepo;
-    private final NetworkDeviceStatusRepo statusRepo;
+    private final StatusRepo statusRepo;
     private final NetworkDeviceModelRepo modelRepo;
     private final NetworkDeviceTypeRepo typeRepo;
 
@@ -32,7 +32,7 @@ public class NetworkDeviceMapper {
     public NetworkDevice toModel(NetworkDeviceRequestDto requestDto) {
         Branch branch = branchRepo.findActiveById(requestDto.getBranchId())
                     .orElseThrow(() -> new NotFoundException("Branch"));
-        Vendor vendor = vendorRepo.findByIdAndStatus(requestDto.getVendorId(), true)
+        Vendor vendor = vendorRepo.findByIdAndIsActive(requestDto.getVendorId(), true)
                     .orElseThrow(() -> new NotFoundException("Vendor"));
         NetworkDeviceManufacturer manufacturer = manufacturerRepo.findById(requestDto.getManufacturerId())
                     .orElseThrow(() -> new NotFoundException("Device Manufacturer"));

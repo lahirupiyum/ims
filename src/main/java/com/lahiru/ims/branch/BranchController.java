@@ -19,7 +19,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/${application.resource.branch}")
+@RequestMapping("${endpoints.branch}")
 @RequiredArgsConstructor
 public class BranchController implements GenericController<BranchRequestDto, BranchResponseDto> {
 

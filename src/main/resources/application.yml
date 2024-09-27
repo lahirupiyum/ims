@@ -1,21 +1,26 @@
 server:
     port: 8081
     servlet:
-        context-path: /api
+        context-path: /api/v1
 
 spring:
     application:
         name: ims
     profiles:
         active: dev
+    sql:
+      init:
+          mode: always
 
-application:
-    resource:
-        vendor: vendor
-        branch: branch
-        network:
-            device: network-device
-            model: network-model
-            manufacturer: network-manufacturer
-            status: network-status
-            type: network-type
+endpoints:
+    vendor: /vendor
+    branch: /branch
+    asset: /asset
+    asset-network: ${endpoints.asset}/network
+    asset-network-device: ${endpoints.asset-network}/device
+    asset-network-device-model: ${endpoints.asset-network-device}/model
+    asset-network-device-manufacturer: ${endpoints.asset-network-device}/manufacturer
+    asset-network-device-status: ${endpoints.asset-network-device}/status
+    asset-network-device-type: ${endpoints.asset-network-device}/type
+
+

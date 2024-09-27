@@ -17,7 +17,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/asset/network/device/type")
+@RequestMapping("${endpoints.asset-network-device-type}")
 @RequiredArgsConstructor
 public class NetworkDeviceTypeController implements GenericController<NetworkDeviceTypeRequestDto, NetworkDeviceTypeResponseDto> {
 

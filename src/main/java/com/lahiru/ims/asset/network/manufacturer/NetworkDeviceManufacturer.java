@@ -12,7 +12,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class NetworkDeviceManufacturer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

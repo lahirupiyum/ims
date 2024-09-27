@@ -25,16 +25,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BranchServiceImpl implements BranchSerivce {
 
+    public static final String BRANCH = "Branch";
     private final BranchRepo branchRepo;
-    @Value("${application.resource.branch}")
-    private String branchResource;
 
     @Override
     public PaginationResponse<BranchResponseDto> findByPageWise(int page, int pageSize) throws Exception {
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<Branch> allActive = branchRepo.findAllActive(pageable);
 
-        List<BranchResponseDto> branchList = allActive.map(branch -> BranchMapper.toDto(branch)).toList();
+        List<BranchResponseDto> branchList = allActive.map(BranchMapper::toDto).toList();
         int totalElements = (int) allActive.getTotalElements();
     
         return new PaginationResponse<>(branchList, totalElements);
@@ -43,7 +42,7 @@ public class BranchServiceImpl implements BranchSerivce {
     @Override
     public List<BranchResponseDto> findAll() throws Exception {
         List<Branch> allActive = branchRepo.findAllActive();
-        return allActive.stream().map(branch -> BranchMapper.toDto(branch)).toList();
+        return allActive.stream().map(BranchMapper::toDto).toList();
     }
 
     @Override
@@ -56,7 +55,7 @@ public class BranchServiceImpl implements BranchSerivce {
     @Override
     public BranchResponseDto updateOne(int id, BranchRequestDto requestDto) throws Exception {
         if(!branchRepo.existsByIdAndStatus(id, true))
-            throw new NotFoundException(branchResource);
+            throw new NotFoundException(BRANCH);
         Branch branch = BranchMapper.toModel(requestDto);
         branch.setId(id);
         Branch savedBranch = branchRepo.save(branch);
@@ -66,7 +65,7 @@ public class BranchServiceImpl implements BranchSerivce {
     @Override
     public BranchResponseDto deleteOne(int id) throws Exception {
         Branch branch = branchRepo.findActiveById(id)
-                            .orElseThrow(() -> new NotFoundException(branchResource));
+                            .orElseThrow(() -> new NotFoundException(BRANCH));
         branch.setStatus(false);
         branchRepo.save(branch);
         return BranchMapper.toDto(branch);

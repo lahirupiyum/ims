@@ -8,9 +8,9 @@ import java.util.Optional;
 
 
 public interface VendorRepo extends JpaRepository<Vendor, Integer> {
-    Page<Vendor> findByStatus(Pageable pageable, Boolean status);
-    List<Vendor> findByStatus(Boolean status);
+    Page<Vendor> findAllByIsActive(Pageable pageable, Boolean status);
+    List<Vendor> findAllByIsActive(Boolean status);
 
-    Optional<Vendor> findByIdAndStatus(Integer id, Boolean status);
-    Boolean existsByIdAndStatus(Integer id, Boolean status);
+    Optional<Vendor> findByIdAndIsActive(Integer id, Boolean status);
+    Boolean existsByEmailAndIsActive(String email, Boolean isActive);
 }

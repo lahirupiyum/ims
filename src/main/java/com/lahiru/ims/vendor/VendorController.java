@@ -17,7 +17,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/${application.resource.vendor}")
+@RequestMapping("${endpoints.vendor}")
 @RequiredArgsConstructor
 public class VendorController implements GenericController<VendorRequestDto, VendorResponseDto> {
 

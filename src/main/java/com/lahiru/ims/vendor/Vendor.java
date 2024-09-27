@@ -24,12 +24,12 @@ public class Vendor {
     @Column(name = "contactNo", nullable = false)
     private String contactNo;
     @Column(name = "status", nullable = false)
-    private Boolean status;
+    private Boolean isActive;
 
     public Vendor (String name, String email, String contactNo) {
         this.name = name;
         this.email = email;
         this.contactNo = contactNo;
-        this.status = true;
+        this.isActive = true;
     }
 }

@@ -16,12 +16,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ManufacturerServiceImpl implements NetworkDeviceManufacturerService {
-    public static final String NETWORK_MANUFACTURER = "Network Manufacturer";
+    public static final String DEVICE_MANUFACTURER = "Network device manufacturer";
     private final NetworkDeviceManufacturerRepo manufacturerRepo;
 
     @Override
@@ -40,7 +39,7 @@ public class ManufacturerServiceImpl implements NetworkDeviceManufacturerService
     @Override
     public ManufacturerResponseDto createOne(ManufacturerRequestDto manufacturerRequestDto) throws Exception {
         if(manufacturerRepo.existsByNameAndIsActive(manufacturerRequestDto.getName(), true))
-            throw new DataConflictException("Manufacturer already exists");
+            throw new DataConflictException(DEVICE_MANUFACTURER);
 
         NetworkDeviceManufacturer manufacturer = ManufacturerMapper.toModel(manufacturerRequestDto);
         NetworkDeviceManufacturer savedManufacturer = manufacturerRepo.save(manufacturer);
@@ -51,13 +50,13 @@ public class ManufacturerServiceImpl implements NetworkDeviceManufacturerService
     public ManufacturerResponseDto updateOne(int id, ManufacturerRequestDto manufacturerRequestDto) throws Exception {
         String updatedName = manufacturerRequestDto.getName();
         NetworkDeviceManufacturer manufacturer = manufacturerRepo.findActiveById(id)
-                .orElseThrow(() -> new NotFoundException(NETWORK_MANUFACTURER));
+                .orElseThrow(() -> new NotFoundException(DEVICE_MANUFACTURER));
 
         boolean isManufacturerEqualsCurrent = manufacturer.getName().equals(updatedName);
         boolean isManufacturerExists = manufacturerRepo.existsByNameAndIsActive(updatedName, true) && !isManufacturerEqualsCurrent;
 
         if (isManufacturerExists)
-            throw new DataConflictException("Manufacturer already exists!");
+            throw new DataConflictException(DEVICE_MANUFACTURER);
 
         manufacturer.setName(updatedName);
 
@@ -69,7 +68,7 @@ public class ManufacturerServiceImpl implements NetworkDeviceManufacturerService
     @Override
     public ManufacturerResponseDto deleteOne(int id) throws Exception {
         NetworkDeviceManufacturer manufacturer = manufacturerRepo.findActiveById(id)
-                .orElseThrow(() -> new NotFoundException(NETWORK_MANUFACTURER));
+                .orElseThrow(() -> new NotFoundException(DEVICE_MANUFACTURER));
         manufacturer.setIsActive(false);
         NetworkDeviceManufacturer deletedManufacturer = manufacturerRepo.save(manufacturer);
         return ManufacturerMapper.toDto(deletedManufacturer);
