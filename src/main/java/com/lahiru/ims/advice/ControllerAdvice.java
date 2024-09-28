@@ -21,7 +21,7 @@ public class ControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<StandardReponse<Object>> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, WebRequest request) {
         logError(exception, request);
-        return ResponseEntityManager.badRequest(exception.getMessage());
+        return ResponseEntityManager.badRequest(exception.getFieldError() == null ? "Bad request" : exception.getFieldError().getDefaultMessage());
     }
 
     @ExceptionHandler(NotFoundException.class)
