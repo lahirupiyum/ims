@@ -7,7 +7,7 @@ spring:
     application:
         name: ims
     profiles:
-        active: dev
+        active: prod
     sql:
       init:
           mode: always
