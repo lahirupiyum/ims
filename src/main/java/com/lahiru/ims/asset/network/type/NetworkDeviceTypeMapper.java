@@ -7,6 +7,7 @@ public class NetworkDeviceTypeMapper {
     public static NetworkDeviceType toModel(NetworkDeviceTypeRequestDto requestDto) {
         NetworkDeviceType networkDeviceType = new NetworkDeviceType();
         networkDeviceType.setName(requestDto.getName().toLowerCase());
+        networkDeviceType.setIsActive(true);
         return networkDeviceType;
     }
 

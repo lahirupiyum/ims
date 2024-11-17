@@ -11,6 +11,9 @@ import com.lahiru.ims.exception.DataConflictException;
 import com.lahiru.ims.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +28,10 @@ public class NetworkDeviceTypeServiceImpl implements NetworkDeviceTypeService {
 
     @Override
     public PaginationResponse<NetworkDeviceTypeResponseDto> findByPageWise(int page, int pageSize) throws Exception {
-        throw new UnsupportedOperationException("Unimplemented method 'findByPageWise'");
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<NetworkDeviceType> allActive = networkDeviceTypeRepo.findAllByIsActive(true, pageable);
+        List<NetworkDeviceTypeResponseDto> list = allActive.map(NetworkDeviceTypeMapper::toDto).stream().toList();
+        return new PaginationResponse<>(list, (int) allActive.getTotalElements());
     }
 
     @Override
