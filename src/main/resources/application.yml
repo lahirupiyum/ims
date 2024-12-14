@@ -7,10 +7,10 @@ spring:
     application:
         name: ims
     profiles:
-        active: prod
+        active: dev
     sql:
       init:
-          mode: always
+          mode: never
 
 endpoints:
     vendor: /vendor

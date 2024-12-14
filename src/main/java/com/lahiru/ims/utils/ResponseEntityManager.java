@@ -41,4 +41,8 @@ public class ResponseEntityManager {
     public static ResponseEntity<StandardReponse<Object>> badRequest(String message) {
         return error(HttpStatus.BAD_REQUEST.value(), message);
     }
+
+    public static ResponseEntity<StandardReponse<Object>> internalServerError(String message) {
+        return error(HttpStatus.INTERNAL_SERVER_ERROR.value(), message);
+    }
 }

@@ -37,6 +37,12 @@ public class ControllerAdvice {
         return ResponseEntityManager.conflict(dataConflictException.getMessage());
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<StandardReponse<Object>> handleInternalServerError(Exception exception, WebRequest webRequest) {
+        logError(exception, webRequest);
+        return ResponseEntityManager.internalServerError("Sorry! There must be an error in the server");
+    }
+
     private void logError(Exception e, WebRequest request) {
         log.error("Error occurred in {}", request.getContextPath());
         log.error(e.getMessage());
