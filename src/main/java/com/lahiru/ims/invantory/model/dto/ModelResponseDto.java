@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class NetworkDeviceModelResponseDto {
-    private Integer id;
-    private String name;
+public class ModelResponseDto {
+
 }

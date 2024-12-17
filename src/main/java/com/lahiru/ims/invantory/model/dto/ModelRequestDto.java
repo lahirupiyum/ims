@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NetworkDeviceModelRequestDto {
-    @NotBlank(message = "Model name is required!")
-    private String name;
+public class ModelRequestDto {
+
 }
