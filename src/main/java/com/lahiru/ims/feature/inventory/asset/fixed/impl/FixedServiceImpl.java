@@ -2,8 +2,8 @@ package com.lahiru.ims.feature.inventory.asset.fixed.impl;
 
 
 import com.lahiru.ims.common.dto.PaginationResponse;
-import com.lahiru.ims.feature.inventory.asset.dto.AssetRequestDto;
-import com.lahiru.ims.feature.inventory.asset.dto.AssetResponseDto;
+import com.lahiru.ims.common.dto.feature.AssetRequestDto;
+import com.lahiru.ims.common.dto.feature.AssetResponseDto;
 
 import com.lahiru.ims.feature.inventory.asset.fixed.FixedService;
 import org.springframework.stereotype.Service;

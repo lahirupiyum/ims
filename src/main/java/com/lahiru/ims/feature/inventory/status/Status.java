@@ -1,6 +1,6 @@
 package com.lahiru.ims.feature.inventory.status;
 
-import com.lahiru.ims.common.model.BasicAudit;
+import com.lahiru.ims.common.model.BasicInfoAudit;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,6 +10,6 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Status extends BasicAudit {
+public class Status extends BasicInfoAudit {
 
 }
