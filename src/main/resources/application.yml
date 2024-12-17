@@ -13,6 +13,7 @@ spring:
           mode: never
 
 endpoints:
+    auth: /auth
     vendor: /vendor
     branch: /branch
     asset: /asset
@@ -22,5 +23,9 @@ endpoints:
     asset-network-device-manufacturer: ${endpoints.asset-network-device}/manufacturer
     asset-network-device-status: ${endpoints.asset-network-device}/status
     asset-network-device-type: ${endpoints.asset-network-device}/type
+
+application:
+    security:
+        secret-key: 4bb6d1dfbafb64a681139d1586b6f1160d18159afd57c8c79136d7490630407c
 
 
