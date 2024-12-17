@@ -12,7 +12,5 @@ import lombok.*;
 @Getter
 @Setter
 public class Model extends BasicAudit {
-    public Model(String name, AssetType assetType, boolean active) {
-        super(name, assetType, active);
-    }
+
 }

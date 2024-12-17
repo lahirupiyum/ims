@@ -21,11 +21,9 @@ public class BasicAudit {
     private String name;
     @Enumerated(EnumType.STRING)
     private AssetType assetType;
-    private boolean active;
 
-    public BasicAudit(String name, AssetType assetType, boolean active) {
+    public BasicAudit(String name, AssetType assetType) {
         this.name = name;
         this.assetType = assetType;
-        this.active = active;
     }
 }
