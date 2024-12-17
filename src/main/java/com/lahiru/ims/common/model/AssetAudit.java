@@ -1,11 +1,12 @@
 package com.lahiru.ims.common.model;
 
-import com.lahiru.ims.invantory.location.Location;
-import com.lahiru.ims.invantory.manufacturer.Manufacturer;
-import com.lahiru.ims.invantory.model.Model;
-import com.lahiru.ims.invantory.status.Status;
-import com.lahiru.ims.invantory.type.Type;
-import com.lahiru.ims.invantory.vendor.Vendor;
+
+import com.lahiru.ims.feature.inventory.location.Location;
+import com.lahiru.ims.feature.inventory.manufacturer.Manufacturer;
+import com.lahiru.ims.feature.inventory.model.Model;
+import com.lahiru.ims.feature.inventory.status.Status;
+import com.lahiru.ims.feature.inventory.type.Type;
+import com.lahiru.ims.feature.inventory.vendor.Vendor;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
