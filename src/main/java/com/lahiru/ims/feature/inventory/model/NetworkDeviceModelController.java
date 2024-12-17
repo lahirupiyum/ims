@@ -1,6 +1,6 @@
 //package com.lahiru.ims.invantory.model;
 //
-//import com.lahiru.ims.common.GenericController;
+//import com.lahiru.ims.common.controller.GenericController;
 //import com.lahiru.ims.common.dto.PaginationResponse;
 //import com.lahiru.ims.common.dto.StandardReponse;
 //import com.lahiru.ims.invantory.model.dto.NetworkDeviceModelRequestDto;
