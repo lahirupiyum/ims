@@ -1,6 +1,6 @@
 package com.lahiru.ims.feature.inventory.type;
 
-import com.lahiru.ims.common.model.BasicAudit;
+import com.lahiru.ims.common.model.BasicInfoAudit;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -14,5 +14,5 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Type extends BasicAudit {
+public class Type extends BasicInfoAudit {
 }

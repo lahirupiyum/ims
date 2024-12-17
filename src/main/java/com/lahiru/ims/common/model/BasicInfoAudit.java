@@ -1,6 +1,5 @@
 package com.lahiru.ims.common.model;
 
-
 import com.lahiru.ims.common.enums.AssetType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @MappedSuperclass
 @EnableJpaAuditing
 // For Extend To Model Type Status
-public class BasicAudit {
+public class BasicInfoAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -22,7 +21,7 @@ public class BasicAudit {
     @Enumerated(EnumType.STRING)
     private AssetType assetType;
 
-    public BasicAudit(String name, AssetType assetType) {
+    public BasicInfoAudit(String name, AssetType assetType) {
         this.name = name;
         this.assetType = assetType;
     }

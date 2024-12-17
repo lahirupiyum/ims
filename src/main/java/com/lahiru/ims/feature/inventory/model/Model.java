@@ -1,7 +1,7 @@
 package com.lahiru.ims.feature.inventory.model;
 
 
-import com.lahiru.ims.common.model.BasicAudit;
+import com.lahiru.ims.common.model.BasicInfoAudit;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,6 +11,6 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Model extends BasicAudit {
+public class Model extends BasicInfoAudit {
 
 }
