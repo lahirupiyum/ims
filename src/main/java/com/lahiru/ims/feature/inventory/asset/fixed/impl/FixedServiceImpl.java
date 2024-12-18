@@ -6,6 +6,7 @@ import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.dto.feature.AssetRequestDto;
 import com.lahiru.ims.common.dto.feature.AssetResponseDto;
 import com.lahiru.ims.common.enums.AssetType;
+import com.lahiru.ims.exception.NotFoundException;
 import com.lahiru.ims.feature.inventory.asset.fixed.Fixed;
 import com.lahiru.ims.feature.inventory.asset.fixed.FixedRepo;
 import com.lahiru.ims.feature.inventory.asset.fixed.FixedService;
@@ -27,12 +28,14 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class FixedServiceImpl implements FixedService {
+
+    private final String FIXED="Fixed";
     private final ManufacturerService manufacturerService;
     private final TypeService typeService;
     private final ModelService modelService;
     private final StatusService statusService;
-    private final VendorService vendorService;
-    private final LocationService locationService;
+//    private final VendorService vendorService;
+//    private final LocationService locationService;
     private final GenericDao genericDao;
     private final FixedRepo repository;
     private final ModelMapper modelMapper;
@@ -51,24 +54,25 @@ public class FixedServiceImpl implements FixedService {
         TypeDto typeDto = genericDao.checkAndCreate(AssetType.FIXED, assetRequestDto.getType(), typeService);
         ModelDto modelDto = genericDao.checkAndCreate(AssetType.FIXED, assetRequestDto.getModel(), modelService);
         StatusDto statusDto = genericDao.checkAndCreate(AssetType.FIXED, assetRequestDto.getStatus(), statusService);
-//
-//        Vendor vendor, Location location,
-//
-
         Fixed fixed =modelMapper.map(assetRequestDto,Fixed.class);
         fixed.setManufacturer(manufacturerService.findById(manufacturerDto.getId()));
         fixed.setModel(modelService.findById(modelDto.getId()));
         fixed.setStatus(statusService.findById(statusDto.getId()));
         fixed.setType(typeService.findById(typeDto.getId()));
-
         Fixed saveFixed = repository.save(fixed);
-
         return modelMapper.map(saveFixed,AssetResponseDto.class);
     }
 
     @Override
     public AssetResponseDto updateOne(int id, AssetRequestDto assetRequestDto) throws Exception {
-        return null;
+//        TODO ############## update Karana Access Eka Model Type Ekatama Yanakan Denawada
+        Fixed foundFixed = repository.findById(id).orElseThrow(() -> new NotFoundException(FIXED));
+        foundFixed.setManufacturer(manufacturerService.findById(assetRequestDto.getManufacturer().getId()));
+        foundFixed.setModel(modelService.findById(assetRequestDto.getModel().getId()));
+        foundFixed.setStatus(statusService.findById(assetRequestDto.getStatus().getId()));
+        foundFixed.setType(typeService.findById(assetRequestDto.getType().getId()));
+        Fixed save = repository.save(foundFixed);
+        return modelMapper.map(save,AssetResponseDto.class);
     }
 
     @Override

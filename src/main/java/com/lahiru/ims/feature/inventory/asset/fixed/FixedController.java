@@ -39,7 +39,8 @@ public class FixedController implements GenericAssetController<AssetRequestDto, 
 
     @Override
     public ResponseEntity<StandardReponse<AssetResponseDto>> updateOne(int id, AssetRequestDto assetRequestDto) throws Exception {
-        return null;
+        AssetResponseDto assetResponseDto = service.updateOne(id, assetRequestDto);
+        return ResponseEntityManager.created(assetResponseDto, "Fixed");
     }
 
     @Override
