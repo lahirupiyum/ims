@@ -18,11 +18,10 @@ public class Location {
     private Integer id;
     private String name;
     private String address;
-    private Boolean status;
+
 
     public Location(String name, String address) {
         this.name = name;
         this.address = address;
-        this.status = true;
     }
 }

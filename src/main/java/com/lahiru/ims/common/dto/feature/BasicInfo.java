@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BasicInfo {
-    private int id;
+    private Integer id;
     private String name;
 }

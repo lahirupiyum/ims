@@ -12,5 +12,4 @@ import lombok.*;
 @Getter
 @Setter
 public class Model extends BasicInfoAudit {
-
 }

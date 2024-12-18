@@ -1,5 +1,6 @@
 package com.lahiru.ims.feature.inventory.status;
 
+import com.lahiru.ims.common.enums.AssetType;
 import com.lahiru.ims.common.model.BasicInfoAudit;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,5 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Status extends BasicInfoAudit {
-
+    public Status(String name, AssetType assetType) {
+        super(name, assetType);
+    }
 }

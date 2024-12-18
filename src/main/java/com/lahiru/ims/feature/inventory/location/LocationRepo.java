@@ -10,12 +10,12 @@ import java.util.Optional;
 
 @Repository
 public interface LocationRepo extends JpaRepository<Location, Integer>{
-    @Query("SELECT b FROM Location b WHERE b.status = true")
-    Page<Location> findAllActive(org.springframework.data.domain.Pageable pageable);
-    @Query("SELECT b FROM Location b WHERE b.status = true")
-    List<Location> findAllActive();
-    
-    @Query("SELECT b FROM Location b WHERE b.id = :id AND b.status = true")
-    Optional<Location> findActiveById(Integer id);
-    Boolean existsByIdAndStatus(Integer id, Boolean status);
+//    @Query("SELECT b FROM Location b WHERE b.status = true")
+//    Page<Location> findAllActive(org.springframework.data.domain.Pageable pageable);
+//    @Query("SELECT b FROM Location b WHERE b.status = true")
+//    List<Location> findAllActive();
+//
+//    @Query("SELECT b FROM Location b WHERE b.id = :id AND b.status = true")
+//    Optional<Location> findActiveById(Integer id);
+//    Boolean existsByIdAndStatus(Integer id, Boolean status);
 }

@@ -5,9 +5,9 @@ import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.dto.StandardReponse;
 import com.lahiru.ims.common.dto.feature.AssetRequestDto;
 import com.lahiru.ims.common.dto.feature.AssetResponseDto;
-import com.lahiru.ims.feature.inventory.model.dto.ModelResponseDto;
-import com.lahiru.ims.feature.inventory.status.dto.StatusResponseDto;
-import com.lahiru.ims.feature.inventory.type.dto.TypeResponseDto;
+import com.lahiru.ims.feature.inventory.model.dto.ModelDto;
+import com.lahiru.ims.feature.inventory.status.dto.StatusDto;
+import com.lahiru.ims.feature.inventory.type.dto.TypeDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -39,17 +39,17 @@ public class FixedController implements GenericAssetController<AssetRequestDto, 
     }
 
     @Override
-    public ResponseEntity<StandardReponse<List<ModelResponseDto>>> getAllModels() throws Exception {
+    public ResponseEntity<StandardReponse<List<ModelDto>>> getAllModels() throws Exception {
         return null;
     }
 
     @Override
-    public ResponseEntity<StandardReponse<List<TypeResponseDto>>> getAllTypes() throws Exception {
+    public ResponseEntity<StandardReponse<List<TypeDto>>> getAllTypes() throws Exception {
         return null;
     }
 
     @Override
-    public ResponseEntity<StandardReponse<List<StatusResponseDto>>> getAllStatus() throws Exception {
+    public ResponseEntity<StandardReponse<List<StatusDto>>> getAllStatus() throws Exception {
         return null;
     }
 }

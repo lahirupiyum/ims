@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class ModelResponseDto extends BasicInfo {
-    public ModelResponseDto(int id, String name) {
+public class ModelDto extends BasicInfo {
+    public ModelDto(int id, String name) {
         super(id, name);
     }
 }

@@ -2,16 +2,16 @@ package com.lahiru.ims.common.service;
 
 import com.lahiru.ims.common.dto.feature.AssetRequestDto;
 import com.lahiru.ims.common.dto.feature.AssetResponseDto;
-import com.lahiru.ims.feature.inventory.model.dto.ModelResponseDto;
-import com.lahiru.ims.feature.inventory.status.dto.StatusResponseDto;
-import com.lahiru.ims.feature.inventory.type.dto.TypeResponseDto;
+import com.lahiru.ims.feature.inventory.model.dto.ModelDto;
+import com.lahiru.ims.feature.inventory.status.dto.StatusDto;
+import com.lahiru.ims.feature.inventory.type.dto.TypeDto;
 
 import java.util.List;
 
 public interface GenericAssetService<RequestDto extends AssetRequestDto, ResponseDto extends AssetResponseDto> extends GenericService<RequestDto, ResponseDto> {
-    List<ModelResponseDto> getAllModels() throws Exception;
+    List<ModelDto> getAllModels() throws Exception;
 
-    List<TypeResponseDto> getAllTypes() throws Exception;
+    List<TypeDto> getAllTypes() throws Exception;
 
-    List<StatusResponseDto> getAllStatus() throws Exception;
+    List<StatusDto> getAllStatus() throws Exception;
 }

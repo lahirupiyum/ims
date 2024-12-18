@@ -22,51 +22,75 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class LocationServiceImpl implements LocationService {
-
-    public static final String BRANCH = "Branch";
-    private final LocationRepo locationRepo;
-
     @Override
     public PaginationResponse<LocationResponseDto> findByPageWise(int page, int pageSize) throws Exception {
-        Pageable pageable = PageRequest.of(page, pageSize);
-        Page<Location> allActive = locationRepo.findAllActive(pageable);
-
-        List<LocationResponseDto> branchList = allActive.map(LocationMapper::toDto).toList();
-        int totalElements = (int) allActive.getTotalElements();
-    
-        return new PaginationResponse<>(branchList, totalElements);
+        return null;
     }
 
     @Override
     public List<LocationResponseDto> findAll() throws Exception {
-        List<Location> allActive = locationRepo.findAllActive();
-        return allActive.stream().map(LocationMapper::toDto).toList();
+        return List.of();
     }
 
     @Override
-    public LocationResponseDto createOne(LocationRequestDto requestDto) throws Exception {
-        Location location = LocationMapper.toModel(requestDto);
-        Location savedLocation = locationRepo.save(location);
-        return LocationMapper.toDto(savedLocation);
+    public LocationResponseDto createOne(LocationRequestDto locationRequestDto) throws Exception {
+        return null;
     }
 
     @Override
-    public LocationResponseDto updateOne(int id, LocationRequestDto requestDto) throws Exception {
-        if(!locationRepo.existsByIdAndStatus(id, true))
-            throw new NotFoundException(BRANCH);
-        Location location = LocationMapper.toModel(requestDto);
-        location.setId(id);
-        Location savedLocation = locationRepo.save(location);
-        return LocationMapper.toDto(savedLocation);
+    public LocationResponseDto updateOne(int id, LocationRequestDto locationRequestDto) throws Exception {
+        return null;
     }
 
     @Override
     public LocationResponseDto deleteOne(int id) throws Exception {
-        Location location = locationRepo.findActiveById(id)
-                            .orElseThrow(() -> new NotFoundException(BRANCH));
-        location.setStatus(false);
-        locationRepo.save(location);
-        return LocationMapper.toDto(location);
+        return null;
     }
-    
+//
+//    public static final String BRANCH = "Branch";
+//    private final LocationRepo locationRepo;
+//
+//    @Override
+//    public PaginationResponse<LocationResponseDto> findByPageWise(int page, int pageSize) throws Exception {
+//        Pageable pageable = PageRequest.of(page, pageSize);
+//        Page<Location> allActive = locationRepo.findAllActive(pageable);
+//
+//        List<LocationResponseDto> branchList = allActive.map(LocationMapper::toDto).toList();
+//        int totalElements = (int) allActive.getTotalElements();
+//
+//        return new PaginationResponse<>(branchList, totalElements);
+//    }
+//
+//    @Override
+//    public List<LocationResponseDto> findAll() throws Exception {
+//        List<Location> allActive = locationRepo.findAllActive();
+//        return allActive.stream().map(LocationMapper::toDto).toList();
+//    }
+//
+//    @Override
+//    public LocationResponseDto createOne(LocationRequestDto requestDto) throws Exception {
+//        Location location = LocationMapper.toModel(requestDto);
+//        Location savedLocation = locationRepo.save(location);
+//        return LocationMapper.toDto(savedLocation);
+//    }
+//
+//    @Override
+//    public LocationResponseDto updateOne(int id, LocationRequestDto requestDto) throws Exception {
+//        if(!locationRepo.existsByIdAndStatus(id, true))
+//            throw new NotFoundException(BRANCH);
+//        Location location = LocationMapper.toModel(requestDto);
+//        location.setId(id);
+//        Location savedLocation = locationRepo.save(location);
+//        return LocationMapper.toDto(savedLocation);
+//    }
+//
+//    @Override
+//    public LocationResponseDto deleteOne(int id) throws Exception {
+//        Location location = locationRepo.findActiveById(id)
+//                            .orElseThrow(() -> new NotFoundException(BRANCH));
+//
+//        locationRepo.save(location);
+//        return LocationMapper.toDto(location);
+//    }
+//
 }
