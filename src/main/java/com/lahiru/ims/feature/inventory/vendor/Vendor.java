@@ -18,7 +18,7 @@ public class Vendor {
     @Column(nullable = false)
     private String contactNo;
     @Column(columnDefinition = "TINYINT(1) DEFAULT 1")
-    private Boolean isActive;
+    private boolean isActive =true;
 
     public Vendor(String name, String email, String contactNo) {
         this.name = name;
