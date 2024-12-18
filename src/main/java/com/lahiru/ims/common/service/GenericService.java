@@ -1,4 +1,4 @@
-package com.lahiru.ims.common;
+package com.lahiru.ims.common.service;
 
 import java.util.List;
 
