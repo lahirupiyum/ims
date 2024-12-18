@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface GenericBasicInfoService <ResponseDto extends BasicInfo> {
+public interface GenericBasicInfoService <ResponseDto extends BasicInfo,T> {
     ResponseDto createOne(String name,AssetType assetType) throws Exception;
     ResponseDto findOne(Integer id) throws  Exception;
     List<ResponseDto> getAll(AssetType assetType) throws Exception;
+    T findById(Integer id) throws   Exception;
 }
