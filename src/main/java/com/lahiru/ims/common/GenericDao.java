@@ -17,7 +17,7 @@ public class GenericDao {
         return repo.existsById(id);
     }
 
-    public <Dto extends BasicInfo,T,ID, Service extends GenericBasicInfoService<Dto>> Dto checkAndCreate(AssetType assetType, Dto dto, Service service) throws Exception {
+    public <Dto extends BasicInfo, Service extends GenericBasicInfoService<Dto>> Dto checkAndCreate(AssetType assetType, Dto dto, Service service) throws Exception {
         if (dto.getId() == null) {
             return service.createOne(dto.getName(), assetType);
         }

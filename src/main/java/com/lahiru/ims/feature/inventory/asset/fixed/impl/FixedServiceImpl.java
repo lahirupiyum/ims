@@ -10,6 +10,9 @@ import com.lahiru.ims.common.enums.AssetType;
 import com.lahiru.ims.feature.inventory.asset.fixed.FixedService;
 import com.lahiru.ims.feature.inventory.manufacturer.ManufacturerService;
 import com.lahiru.ims.feature.inventory.manufacturer.dto.ManufacturerRequestDto;
+import com.lahiru.ims.feature.inventory.model.ModelService;
+import com.lahiru.ims.feature.inventory.status.StatusService;
+import com.lahiru.ims.feature.inventory.type.TypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +21,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FixedServiceImpl implements FixedService {
     private final ManufacturerService manufacturerService;
+    private final TypeService typeService;
+    private final ModelService modelService;
+    private final StatusService statusService;
     private final GenericDao genericDao;
     @Override
     public PaginationResponse<AssetResponseDto> findByPageWise(int page, int pageSize) throws Exception {
         return null;
     }
-
     @Override
     public List<AssetResponseDto> findAll() throws Exception {
         return List.of();
@@ -32,7 +37,9 @@ public class FixedServiceImpl implements FixedService {
     @Override
     public AssetResponseDto createOne(AssetRequestDto assetRequestDto) throws Exception {
 
-        ManufacturerRequestDto dto = genericDao.checkAndCreate(AssetType.FIXED, assetRequestDto.getManufacturer(), manufacturerService);
+
+//        ManufacturerRequestDto dto = genericDao.checkAndCreate(AssetType.FIXED,assetRequestDto.getManufacturer(), manufacturerService);
+
         return null;
     }
 
