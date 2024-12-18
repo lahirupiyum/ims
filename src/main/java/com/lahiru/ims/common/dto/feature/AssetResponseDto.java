@@ -1,6 +1,6 @@
 package com.lahiru.ims.common.dto.feature;
 
-import com.lahiru.ims.feature.inventory.manufacturer.dto.ManufacturerRequestDto;
+import com.lahiru.ims.feature.inventory.manufacturer.dto.ManufacturerDto;
 import com.lahiru.ims.feature.inventory.model.dto.ModelDto;
 import com.lahiru.ims.feature.inventory.status.dto.StatusDto;
 import com.lahiru.ims.feature.inventory.type.dto.TypeDto;
@@ -21,5 +21,5 @@ public class AssetResponseDto {
     private ModelDto model;
     private TypeDto type;
     private StatusDto status;
-    private ManufacturerRequestDto manufacturer;
+    private ManufacturerDto manufacturer;
 }

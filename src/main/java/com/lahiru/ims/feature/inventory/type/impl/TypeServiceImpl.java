@@ -1,7 +1,6 @@
 package com.lahiru.ims.feature.inventory.type.impl;
 
 import com.lahiru.ims.common.enums.AssetType;
-import com.lahiru.ims.feature.inventory.manufacturer.dto.ManufacturerRequestDto;
 import com.lahiru.ims.feature.inventory.type.Type;
 import com.lahiru.ims.feature.inventory.type.TypeRepo;
 import com.lahiru.ims.feature.inventory.type.TypeService;
@@ -44,5 +43,10 @@ public class TypeServiceImpl implements TypeService {
                 .map(types, new TypeToken<List<TypeDto>>() {
                 }
                         .getType()) : Collections.emptyList();
+    }
+
+    @Override
+    public Type findById(Integer id) throws Exception {
+        return repository.findById(id).get();
     }
 }

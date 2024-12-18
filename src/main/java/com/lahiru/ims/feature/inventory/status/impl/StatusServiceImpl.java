@@ -44,4 +44,9 @@ public class StatusServiceImpl implements StatusService {
                 }
                         .getType()) : Collections.emptyList();
     }
+
+    @Override
+    public Status findById(Integer id) throws Exception {
+        return repository.findById(id).get();
+    }
 }

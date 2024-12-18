@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ManufacturerRequestDto extends BasicInfo {
-    public ManufacturerRequestDto(int id, String name) {
+public class ManufacturerDto extends BasicInfo {
+    public ManufacturerDto(int id, String name) {
         super(id, name);
     }
 }

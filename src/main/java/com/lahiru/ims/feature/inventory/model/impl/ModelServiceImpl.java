@@ -44,4 +44,9 @@ public class ModelServiceImpl implements ModelService {
                 }
                         .getType()) : Collections.emptyList();
     }
+
+    @Override
+    public Model findById(Integer id) throws Exception {
+        return repository.findById(id).get();
+    }
 }
