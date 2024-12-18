@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AssetRequestDto {
     private ManufacturerDto manufacturer;
+    private String deprecationInfo;
     private String assetNumber;
     private String serialNumber;
     private Vendor vendor;

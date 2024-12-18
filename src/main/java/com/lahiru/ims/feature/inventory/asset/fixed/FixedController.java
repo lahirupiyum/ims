@@ -9,6 +9,7 @@ import com.lahiru.ims.feature.inventory.model.dto.ModelDto;
 import com.lahiru.ims.feature.inventory.status.dto.StatusDto;
 import com.lahiru.ims.feature.inventory.type.dto.TypeDto;
 import com.lahiru.ims.feature.inventory.vendor.dto.VendorResponseDto;
+import com.lahiru.ims.utils.ResponseEntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequestMapping("${endpoints.asset-fixed}")
 @RequiredArgsConstructor
 public class FixedController implements GenericAssetController<AssetRequestDto, AssetResponseDto> {
+   private final FixedService service;
     @Override
     public ResponseEntity<PaginationResponse<AssetResponseDto>> getAllByPageWise(int page, int pageSize) throws Exception {
         return null;
@@ -31,8 +33,8 @@ public class FixedController implements GenericAssetController<AssetRequestDto, 
 
     @Override
     public ResponseEntity<StandardReponse<AssetResponseDto>> createOne(AssetRequestDto assetRequestDto) throws Exception {
-//        VendorResponseDto vendor = vendorService.createOne(requestDto);
-        return null;
+        AssetResponseDto fixedAsset = service.createOne(assetRequestDto);
+        return ResponseEntityManager.created(fixedAsset, "Fixed");
     }
 
     @Override
