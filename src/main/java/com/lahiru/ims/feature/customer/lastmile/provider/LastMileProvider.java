@@ -1,4 +1,4 @@
-package com.lahiru.ims.feature.customer.lastmileprovider.media;
+package com.lahiru.ims.feature.customer.lastmile.provider;
 
 import com.lahiru.ims.common.model.BasicCustomerAudit;
 import jakarta.persistence.Entity;
@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class LastMileMedia extends BasicCustomerAudit {
-    public LastMileMedia(Integer id, String name) {
+public class LastMileProvider extends BasicCustomerAudit {
+    public LastMileProvider(Integer id, String name) {
         super(id, name);
     }
 }

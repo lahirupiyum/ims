@@ -1,7 +1,7 @@
-package com.lahiru.ims.feature.customer.lastmileprovider.connection;
+package com.lahiru.ims.feature.customer.lastmile.connection;
 
-import com.lahiru.ims.feature.customer.lastmileprovider.media.LastMileMedia;
-import com.lahiru.ims.feature.customer.lastmileprovider.provider.LastMileProvider;
+import com.lahiru.ims.feature.customer.lastmile.media.LastMileMedia;
+import com.lahiru.ims.feature.customer.lastmile.provider.LastMileProvider;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
