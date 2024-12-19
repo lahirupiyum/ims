@@ -2,13 +2,12 @@ package com.lahiru.ims.common.service;
 
 import com.lahiru.ims.common.dto.feature.BasicInfo;
 import com.lahiru.ims.common.enums.AssetType;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.lahiru.ims.common.model.BasicInfoAudit;
 
 import java.util.List;
 
-public interface GenericBasicInfoService <ResponseDto extends BasicInfo,T> {
-    ResponseDto createOne(String name,AssetType assetType) throws Exception;
-    ResponseDto findOne(Integer id) throws  Exception;
-    List<ResponseDto> getAll(AssetType assetType) throws Exception;
-    T findById(Integer id) throws   Exception;
+public interface GenericBasicInfoService <Model extends BasicInfoAudit> {
+    Model createOne(String name, AssetType assetType) throws Exception;
+    Model findOne(Integer id) throws  Exception;
+    List<Model> getAll(AssetType assetType) throws Exception;
 }

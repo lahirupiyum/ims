@@ -2,6 +2,7 @@ package com.lahiru.ims.common;
 
 import com.lahiru.ims.common.dto.feature.BasicInfo;
 import com.lahiru.ims.common.enums.AssetType;
+import com.lahiru.ims.common.model.BasicInfoAudit;
 import com.lahiru.ims.common.service.GenericBasicInfoService;
 import com.lahiru.ims.exception.NotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,7 +18,7 @@ public class GenericDao {
         return repo.existsById(id);
     }
 
-    public <Dto extends BasicInfo,T, Service extends GenericBasicInfoService<Dto,T>> Dto checkAndCreate(AssetType assetType, Dto dto, Service service) throws Exception {
+    public <Model extends BasicInfoAudit, Dto extends BasicInfo, Service extends GenericBasicInfoService<Model>> Model checkAndCreate(AssetType assetType, Dto dto, Service service) throws Exception {
         if (dto.getId() == null) {
             return service.createOne(dto.getName(), assetType);
         }
