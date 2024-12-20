@@ -48,12 +48,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public LocationResponseDto deleteOne(int id) throws Exception {
-        Location location = repository.findById(id)
-                .orElseThrow(() -> new NotFoundException(LOCATION));
-        if (location != null) {
-            repository.deleteById(id);
-        }
-        return modelMapper.map(location, LocationResponseDto.class);
+        return null;
     }
 
     @Override

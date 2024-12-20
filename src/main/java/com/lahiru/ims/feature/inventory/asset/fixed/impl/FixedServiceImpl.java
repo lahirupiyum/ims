@@ -12,6 +12,7 @@ import com.lahiru.ims.feature.inventory.asset.fixed.dto.FixedAssetRequestDto;
 import com.lahiru.ims.feature.inventory.asset.fixed.dto.FixedAssetResponseDto;
 import com.lahiru.ims.feature.inventory.location.Location;
 import com.lahiru.ims.feature.inventory.location.LocationService;
+import com.lahiru.ims.feature.inventory.location.dto.LocationResponseDto;
 import com.lahiru.ims.feature.inventory.manufacturer.Manufacturer;
 import com.lahiru.ims.feature.inventory.manufacturer.ManufacturerService;
 import com.lahiru.ims.feature.inventory.model.Model;
@@ -104,15 +105,6 @@ public class FixedServiceImpl implements FixedService {
         Fixed fixed = repository.saveAndFlush(fixedUpdated);
         return modelMapper.map(fixed, FixedAssetResponseDto.class);
     }
-
-    @Override
-    public FixedAssetResponseDto deleteOne(int id) throws Exception {
-        Fixed foundDeleteFixed = repository.findById(id).orElseThrow(() -> new NotFoundException(FIXED));
-        repository.deleteById(foundDeleteFixed.getId());
-        log.info("Delete Fixed Asset ID: {}", id);
-        return modelMapper.map(foundDeleteFixed, FixedAssetResponseDto.class);
-    }
-
     public Fixed convertDtoToEntity(FixedAssetRequestDto dto) {
         Fixed fixed = new Fixed();
         try {
@@ -139,42 +131,40 @@ public class FixedServiceImpl implements FixedService {
         fixed.setQuantity(dto.getQuantity());
         return fixed;
     }
+    @Override
+    public FixedAssetResponseDto deleteOne(int id) throws Exception {
+        Fixed foundDeleteFixed = repository.findById(id).orElseThrow(() -> new NotFoundException(FIXED));
+        repository.deleteById(foundDeleteFixed.getId());
+        log.info("Delete Fixed Asset ID: {}", id);
+        return modelMapper.map(foundDeleteFixed, FixedAssetResponseDto.class);
+    }
+
+
 
     // Get Model , Type ,Status
     @Override
-    public List<ModelDto> getAllModel() {
-        try {
+    public List<ModelDto> getAllModel() throws Exception {
+
             List<Model> modelList = modelService.getAll(AssetType.FIXED);
             List<ModelDto> modelDtoList = modelMapper.map(modelList, new TypeToken<List<ModelDto>>() {
             }.getType());
             return (!modelDtoList.isEmpty()) ? modelDtoList : Collections.emptyList();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
     @Override
-    public List<TypeDto> getAllType() {
-        try {
+    public List<TypeDto> getAllType() throws Exception {
             List<Type> typeList = typeService.getAll(AssetType.FIXED);
             List<TypeDto> typeDtoList = modelMapper.map(typeList, new TypeToken<List<TypeDto>>() {
             }.getType());
             return (!typeDtoList.isEmpty()) ? typeDtoList : Collections.emptyList();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
-    public List<StatusDto> getAllStatus() {
-        try {
+    public List<StatusDto> getAllStatus() throws Exception {
             List<Type> statusList = typeService.getAll(AssetType.FIXED);
             List<StatusDto> statusDtoList = modelMapper.map(statusList, new TypeToken<List<StatusDto>>() {
             }.getType());
             return (!statusDtoList.isEmpty()) ? statusDtoList : Collections.emptyList();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
+
 }

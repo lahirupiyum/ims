@@ -3,6 +3,8 @@ package com.lahiru.ims.common.controller;
 import com.lahiru.ims.common.dto.StandardReponse;
 import com.lahiru.ims.common.dto.feature.AssetRequestDto;
 import com.lahiru.ims.common.dto.feature.AssetResponseDto;
+import com.lahiru.ims.feature.inventory.location.Location;
+import com.lahiru.ims.feature.inventory.location.dto.LocationResponseDto;
 import com.lahiru.ims.feature.inventory.model.dto.ModelDto;
 import com.lahiru.ims.feature.inventory.status.dto.StatusDto;
 import com.lahiru.ims.feature.inventory.type.dto.TypeDto;

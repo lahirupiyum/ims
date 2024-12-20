@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class NetworkAssetRequest extends AssetRequestDto {
-    public NetworkAssetRequest(String assetNumber, String serialNumber, int quantity, int statusId, Integer vendorId, Integer locationId, ManufacturerDto manufacturer, TypeDto type, ModelDto model) {
+@Data
+public class NetworkAssetRequestDto extends AssetRequestDto {
+    public NetworkAssetRequestDto(String assetNumber, String serialNumber, int quantity, int statusId, Integer vendorId, Integer locationId, ManufacturerDto manufacturer, TypeDto type, ModelDto model) {
         super(assetNumber, serialNumber, quantity, statusId, vendorId, locationId, manufacturer, type, model);
     }
 }
