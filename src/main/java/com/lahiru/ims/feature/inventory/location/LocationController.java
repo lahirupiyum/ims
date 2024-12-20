@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("${endpoints.branch}")
+@RequestMapping("${endpoints.location}")
 @RequiredArgsConstructor
 public class LocationController implements GenericController<LocationRequestDto, LocationResponseDto> {
 
