@@ -10,9 +10,10 @@ import com.lahiru.ims.feature.inventory.asset.fixed.FixedRepo;
 import com.lahiru.ims.feature.inventory.asset.fixed.FixedService;
 import com.lahiru.ims.feature.inventory.asset.fixed.dto.FixedAssetRequestDto;
 import com.lahiru.ims.feature.inventory.asset.fixed.dto.FixedAssetResponseDto;
+import com.lahiru.ims.feature.inventory.asset.network.Network;
+import com.lahiru.ims.feature.inventory.asset.network.dto.NetworkAssetRequestDto;
 import com.lahiru.ims.feature.inventory.location.Location;
 import com.lahiru.ims.feature.inventory.location.LocationService;
-import com.lahiru.ims.feature.inventory.location.dto.LocationResponseDto;
 import com.lahiru.ims.feature.inventory.manufacturer.Manufacturer;
 import com.lahiru.ims.feature.inventory.manufacturer.ManufacturerService;
 import com.lahiru.ims.feature.inventory.model.Model;
@@ -30,6 +31,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +58,7 @@ public class FixedServiceImpl implements FixedService {
     private final FixedRepo repository;
     private final ModelMapper modelMapper;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final FixedRepo fixedRepo;
 
     @Override
     public PaginationResponse<FixedAssetResponseDto> findByPageWise(int page, int pageSize) throws Exception {
