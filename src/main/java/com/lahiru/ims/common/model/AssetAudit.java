@@ -23,10 +23,9 @@ public class AssetAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int assetNumber;
-    private int serialNumber;
+    private String assetNumber;
+    private String serialNumber;
     private int quantity;
-    private String deprecationInfo;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
@@ -46,11 +45,10 @@ public class AssetAudit {
     @JoinColumn(name = "manufaturer_id")
     private Manufacturer manufacturer;
 
-    public AssetAudit(int assetNumber, int serialNumber, int quantity, String deprecationInfo, Vendor vendor, Location location, Model model, Type type, Status status, Manufacturer manufacturer) {
+    public AssetAudit(String assetNumber, String serialNumber, int quantity, Vendor vendor, Location location, Model model, Type type, Status status, Manufacturer manufacturer) {
         this.assetNumber = assetNumber;
         this.serialNumber = serialNumber;
         this.quantity = quantity;
-        this.deprecationInfo = deprecationInfo;
         this.vendor = vendor;
         this.location = location;
         this.model = model;

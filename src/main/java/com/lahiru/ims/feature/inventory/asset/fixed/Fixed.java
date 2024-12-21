@@ -12,12 +12,24 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 @Entity
 @Table(name = "fixed")
-@AllArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class Fixed extends AssetAudit {
+    private String invoiceNumber;
+    private String deprecationInfo;
+    private Date purchaseDate;
 
+    public Fixed(String assetNumber, String serialNumber, int quantity, Vendor vendor, Location location, Model model, Type type, Status status, Manufacturer manufacturer, String invoiceNumber, String deprecationInfo, Date purchaseDate) {
+        super(assetNumber, serialNumber, quantity, vendor, location, model, type, status, manufacturer);
+        this.invoiceNumber = invoiceNumber;
+        this.deprecationInfo = deprecationInfo;
+        this.purchaseDate = purchaseDate;
+    }
 }

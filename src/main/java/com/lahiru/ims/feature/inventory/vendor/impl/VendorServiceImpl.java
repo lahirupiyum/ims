@@ -100,4 +100,8 @@ public class VendorServiceImpl implements VendorService {
         return vendorRepo.existsByEmailAndIsActive(email, activeStatus);
     }
 
+    @Override
+    public Vendor findOne(Integer id) throws Exception {
+        return vendorRepo.findById(id).orElseThrow(()->new NotFoundException(VENDOR));
+    }
 }

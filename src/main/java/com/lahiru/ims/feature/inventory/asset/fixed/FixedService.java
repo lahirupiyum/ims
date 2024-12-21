@@ -2,8 +2,21 @@ package com.lahiru.ims.feature.inventory.asset.fixed;
 
 
 import com.lahiru.ims.common.service.GenericService;
-import com.lahiru.ims.common.dto.feature.AssetRequestDto;
-import com.lahiru.ims.common.dto.feature.AssetResponseDto;
+import com.lahiru.ims.feature.inventory.asset.fixed.dto.FixedAssetRequestDto;
+import com.lahiru.ims.feature.inventory.asset.fixed.dto.FixedAssetResponseDto;
+import com.lahiru.ims.feature.inventory.location.Location;
+import com.lahiru.ims.feature.inventory.location.dto.LocationResponseDto;
+import com.lahiru.ims.feature.inventory.model.dto.ModelDto;
+import com.lahiru.ims.feature.inventory.status.dto.StatusDto;
+import com.lahiru.ims.feature.inventory.type.dto.TypeDto;
 
-public interface FixedService extends GenericService<AssetRequestDto, AssetResponseDto> {
+import java.util.List;
+
+public interface FixedService extends GenericService<FixedAssetRequestDto, FixedAssetResponseDto> {
+    List<ModelDto> getAllModel() throws Exception;
+
+    List<TypeDto> getAllType() throws Exception;
+
+    List<StatusDto> getAllStatus() throws Exception;
+
 }
