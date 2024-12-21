@@ -1,29 +1,25 @@
 package com.lahiru.ims.feature.customer.customer;
 
+import com.lahiru.ims.common.model.StatusAwareAudit;
+import com.lahiru.ims.feature.inventory.employee.Employee;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@Data
 @NoArgsConstructor
-public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Customer extends StatusAwareAudit {
     private String name;
     private String address;
     private String contactNo;
     private String email;
     private String vsnlId;
     private String asNumber;
+    @Enumerated(EnumType.STRING)
     private CustomerPriority priority;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "account_manager")
-//    private Employee accountManager;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_manager")
+    private Employee accountManager;
 }

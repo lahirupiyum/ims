@@ -1,7 +1,7 @@
 package com.lahiru.ims.feature.customer.service.connection;
 
 import com.lahiru.ims.feature.customer.customer.Customer;
-import com.lahiru.ims.feature.customer.lastmileprovider.connection.LastMileConnection;
+import com.lahiru.ims.feature.customer.lastmile.connection.LastMileConnection;
 import com.lahiru.ims.feature.customer.router.customer.CustomerRouter;
 import com.lahiru.ims.feature.customer.router.firewallcredentials.RouterFirewallCredentials;
 import com.lahiru.ims.feature.customer.router.provideredge.PERouter;
@@ -18,7 +18,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ConnectionService {
+public class Connection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -40,7 +40,7 @@ public class ConnectionService {
     @OneToOne(fetch = FetchType.LAZY)
     private RouterFirewallCredentials routerFirewallCredentials;
 
-    private ConnectionService(Date dsp, Customer customer, PERouter peRouter, CustomerRouter customerRouter, LastMileConnection lastMileConnection) {
+    private Connection(Date dsp, Customer customer, PERouter peRouter, CustomerRouter customerRouter, LastMileConnection lastMileConnection) {
         this.dsp = dsp;
         this.customer = customer;
         this.peRouter = peRouter;
@@ -50,7 +50,7 @@ public class ConnectionService {
     }
 
     // for ill create usage
-    public ConnectionService(Date dsp, Customer customer, PERouter peRouter, CustomerRouter customerRouter, LastMileConnection lastMileConnection, RouterFirewallCredentials routerFirewallCredentials) {
+    public Connection(Date dsp, Customer customer, PERouter peRouter, CustomerRouter customerRouter, LastMileConnection lastMileConnection, RouterFirewallCredentials routerFirewallCredentials) {
         this(dsp, customer, peRouter, customerRouter, lastMileConnection);
         this.routerFirewallCredentials = routerFirewallCredentials;
         this.manageStatus = ManageStatus.MANAGEABLE;
@@ -58,7 +58,7 @@ public class ConnectionService {
     }
 
     // for mpls create usage
-    public ConnectionService(Date dsp, Customer customer, PERouter peRouter, CustomerRouter customerRouter, LastMileConnection lastMileConnection, ManageStatus manageStatus) {
+    public Connection(Date dsp, Customer customer, PERouter peRouter, CustomerRouter customerRouter, LastMileConnection lastMileConnection, ManageStatus manageStatus) {
         this(dsp, customer, peRouter, customerRouter, lastMileConnection);
         this.manageStatus = manageStatus;
         this.routerFirewallCredentials = null;

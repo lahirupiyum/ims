@@ -10,7 +10,7 @@ spring:
     datasource:
        url : jdbc:mysql://localhost:3306/ims?createDatabaseIfNotExist=true
        username: root
-       password: password
+       password: 1234
        hikari:
             maximum-pool-size: 10
             minimum-idle: 5

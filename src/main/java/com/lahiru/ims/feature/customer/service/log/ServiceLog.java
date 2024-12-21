@@ -1,6 +1,6 @@
 package com.lahiru.ims.feature.customer.service.log;
 
-import com.lahiru.ims.feature.customer.service.connection.ConnectionService;
+import com.lahiru.ims.feature.customer.service.connection.Connection;
 import com.lahiru.ims.feature.customer.service.enums.ServiceType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,6 +26,6 @@ public class ServiceLog {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id")
-    private ConnectionService service;
+    private Connection service;
 
 }

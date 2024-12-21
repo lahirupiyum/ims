@@ -16,6 +16,7 @@ endpoints:
     vendor: /vendor
     branch: /branch
     asset: /asset
+    customer: /customer
     asset-network: ${endpoints.asset}/network
     asset-network-device: ${endpoints.asset-network}/device
     asset-network-device-model: ${endpoints.asset-network-device}/model
