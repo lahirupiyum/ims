@@ -1,8 +1,11 @@
 package com.lahiru.ims.feature.inventory.vendor;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.beans.ConstructorProperties;
 
 @Entity
 @Data
@@ -17,8 +20,9 @@ public class Vendor {
     private String email;
     @Column(nullable = false)
     private String contactNo;
-    @Column(columnDefinition = "TINYINT(1) DEFAULT 1")
+    @Column(name ="active_status ",columnDefinition = "TINYINT DEFAULT 1",nullable = false)
     private boolean isActive =true;
+
 
     public Vendor(String name, String email, String contactNo) {
         this.name = name;
