@@ -14,14 +14,10 @@ spring:
 
 endpoints:
     vendor: /vendor
-    branch: /branch
+    location: /location
     asset: /asset
     customer: /customer
+    employee: /employee
     asset-network: ${endpoints.asset}/network
-    asset-network-device: ${endpoints.asset-network}/device
-    asset-network-device-model: ${endpoints.asset-network-device}/model
-    asset-network-device-manufacturer: ${endpoints.asset-network-device}/manufacturer
-    asset-network-device-status: ${endpoints.asset-network-device}/status
-    asset-network-device-type: ${endpoints.asset-network-device}/type
-
+    asset-fixed: ${endpoints.asset}/fixed
 
