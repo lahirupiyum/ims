@@ -4,6 +4,7 @@ import com.lahiru.ims.common.model.StatusAwareAudit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 
@@ -23,4 +24,7 @@ public interface StatusAwareRepo<Model extends StatusAwareAudit> extends JpaRepo
 
     @Query("SELECT m FROM #{#entityName} m WHERE m.isActive = true")
     List<Model> findAllActive();
+    @Modifying
+    @Query("UPDATE #{#entityName} m SET m.isActive = false WHERE m.id = :id")
+    void softDeleteById(Integer id);
 }
