@@ -9,4 +9,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class LastMileProviderDto extends BasicInfo {
+    public LastMileProviderDto(Integer id, String name) {
+        super(id, name);
+    }
 }

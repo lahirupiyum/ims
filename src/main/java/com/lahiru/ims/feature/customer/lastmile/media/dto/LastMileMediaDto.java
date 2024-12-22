@@ -9,4 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class LastMileMediaDto extends BasicInfo {
+    public LastMileMediaDto(Integer id, String name) {
+        super(id, name);
+    }
 }

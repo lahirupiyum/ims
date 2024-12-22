@@ -1,5 +1,6 @@
 package com.lahiru.ims.feature.inventory.employee;
 
+import com.lahiru.ims.common.controller.GenericBasicInfoController;
 import com.lahiru.ims.common.dto.StandardReponse;
 import com.lahiru.ims.feature.inventory.employee.dto.EmployeeDto;
 import com.lahiru.ims.utils.ResponseEntityManager;
@@ -14,11 +15,11 @@ import java.util.List;
 @RestController
 @RequestMapping("${endpoints.employee}")
 @RequiredArgsConstructor
-public class EmployeeController {
+public class EmployeeController implements GenericBasicInfoController<EmployeeDto> {
     private final EmployeeService employeeService;
 
-    @GetMapping
-    ResponseEntity<StandardReponse<List<EmployeeDto>>> getAll() throws Exception {
+    @Override
+    public ResponseEntity<StandardReponse<List<EmployeeDto>>> getAll() throws Exception {
         List<EmployeeDto> all = employeeService.getAll();
         return ResponseEntityManager.ok(all);
     }
