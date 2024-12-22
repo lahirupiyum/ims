@@ -42,7 +42,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class NetworkServiceImpl implements NetworkService {
-    private final String NETWORK = "Network";
+    private final String NETWORK = "Network Asset";
     private final ModelMapper modelMapper;
     private final ManufacturerService manufacturerService;
     private final TypeService typeService;
@@ -56,7 +56,7 @@ public class NetworkServiceImpl implements NetworkService {
     @Override
     public PaginationResponse<NetworkAssetResponseDto> findByPageWise(int page, int pageSize) throws Exception {
         Pageable pageable = PageRequest.of(page, pageSize);
-        Page<Network> networkPage = networkRepo.findAll(pageable);
+        Page<Network> networkPage = networkRepo.findAllByPageWise(pageable);
         try {
             List<NetworkAssetResponseDto> responseDtoList = modelMapper
                     .map(networkPage.stream().toList(),
@@ -74,7 +74,7 @@ public class NetworkServiceImpl implements NetworkService {
 
     @Override
     public List<NetworkAssetResponseDto> findAll() throws Exception {
-        List<Network> networkList = networkRepo.findAll();
+        List<Network> networkList = networkRepo.findAllActive();
         try {
             List<NetworkAssetResponseDto> responseNetworks = modelMapper.map(networkList, new TypeToken<List<NetworkAssetResponseDto>>() {
             }.getType());
@@ -87,32 +87,34 @@ public class NetworkServiceImpl implements NetworkService {
 
     @Override
     public NetworkAssetResponseDto createOne(NetworkAssetRequestDto networkAssetRequestDto) throws Exception {
-        Network toSave = convertDtoToEntity(networkAssetRequestDto);
+        Network toSave = convertToModel(networkAssetRequestDto);
         Network savedNetwork = networkRepo.save(toSave);
         log.info("Saved NETWORK Asset !");
-        return convertEntityToDto(savedNetwork, "createOne()");
+        return convertToDto(savedNetwork);
 
     }
 
     @Override
     public NetworkAssetResponseDto updateOne(int id, NetworkAssetRequestDto networkAssetRequestDto) throws Exception {
-        Network foundNetwork = networkRepo.findById(id).orElseThrow(() -> new NotFoundException(NETWORK));
-        Network updatedNetwork = convertDtoToEntity(networkAssetRequestDto);
+        Network foundNetwork = networkRepo.findActiveOne(id).orElseThrow(() -> new NotFoundException(NETWORK));
+        Network updatedNetwork = convertToModel(networkAssetRequestDto);
         updatedNetwork.setId(foundNetwork.getId());
         Network saveUpdated = networkRepo.saveAndFlush(updatedNetwork);
-        return convertEntityToDto(saveUpdated, "updateOne()");
+        return convertToDto(saveUpdated);
 
     }
 
     @Override
     public NetworkAssetResponseDto deleteOne(int id) throws Exception {
-        Network network = networkRepo.findById(id).orElseThrow(() -> new NotFoundException(NETWORK));
-        networkRepo.deleteById(network.getId());
+        Network network = networkRepo.findActiveOne(id).orElseThrow(() -> new NotFoundException(NETWORK));
+        network.setIsActive(false);
+        networkRepo.save(network);
         log.info("Deleted Successful id:{}", network.getId());
-        return convertEntityToDto(network, "deleteOne()");
+        return convertToDto(network);
     }
 
-    public Network convertDtoToEntity(NetworkAssetRequestDto networkAssetRequestDto) throws Exception {
+    @Override
+    public Network convertToModel(NetworkAssetRequestDto networkAssetRequestDto) throws Exception {
         Manufacturer manufacturer = genericDao.checkAndCreate(AssetType.NETWORK, networkAssetRequestDto.getManufacturer(), manufacturerService);
         Type type = genericDao.checkAndCreate(AssetType.NETWORK, networkAssetRequestDto.getType(), typeService);
         Model model = genericDao.checkAndCreate(AssetType.NETWORK, networkAssetRequestDto.getModel(), modelService);
@@ -141,18 +143,18 @@ public class NetworkServiceImpl implements NetworkService {
         }
     }
 
-    public NetworkAssetResponseDto convertEntityToDto(Network network, String methodName) {
+    @Override
+    public NetworkAssetResponseDto convertToDto(Network network) {
         try {
             return modelMapper.map(network, NetworkAssetResponseDto.class);
         } catch (Exception e) {
-            log.info("Model Mapper Error Generate By Convert Entity To Response From : {}", methodName);
             throw new RuntimeException(e);
         }
     }
 
     // Get Model , Type ,Status
     @Override
-    public List<ModelDto> getAllModel() throws Exception {
+    public List<ModelDto> getAllModels() throws Exception {
         List<Model> modelList = modelService.getAll(AssetType.FIXED);
         List<ModelDto> modelDtoList = modelMapper.map(modelList, new TypeToken<List<ModelDto>>() {
         }.getType());
@@ -160,7 +162,7 @@ public class NetworkServiceImpl implements NetworkService {
     }
 
     @Override
-    public List<TypeDto> getAllType() throws Exception {
+    public List<TypeDto> getAllTypes() throws Exception {
         List<Type> typeList = typeService.getAll(AssetType.FIXED);
         List<TypeDto> typeDtoList = modelMapper.map(typeList, new TypeToken<List<TypeDto>>() {
         }.getType());
@@ -173,5 +175,10 @@ public class NetworkServiceImpl implements NetworkService {
         List<StatusDto> statusDtoList = modelMapper.map(statusList, new TypeToken<List<StatusDto>>() {
         }.getType());
         return (!statusDtoList.isEmpty()) ? statusDtoList : Collections.emptyList();
+    }
+
+    @Override
+    public Network findOne(Integer id) throws Exception {
+        return networkRepo.findById(id).orElseThrow(() -> new NotFoundException(NETWORK));
     }
 }

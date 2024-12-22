@@ -10,19 +10,18 @@ import com.lahiru.ims.feature.inventory.vendor.Vendor;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @MappedSuperclass
 @EnableJpaAuditing
 // to extend All asset To Needed Common Value
-public class AssetAudit {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class AssetAudit extends StatusAwareAudit {
     private String assetNumber;
     private String serialNumber;
     private int quantity;
@@ -45,15 +44,4 @@ public class AssetAudit {
     @JoinColumn(name = "manufaturer_id")
     private Manufacturer manufacturer;
 
-    public AssetAudit(String assetNumber, String serialNumber, int quantity, Vendor vendor, Location location, Model model, Type type, Status status, Manufacturer manufacturer) {
-        this.assetNumber = assetNumber;
-        this.serialNumber = serialNumber;
-        this.quantity = quantity;
-        this.vendor = vendor;
-        this.location = location;
-        this.model = model;
-        this.type = type;
-        this.status = status;
-        this.manufacturer = manufacturer;
-    }
 }

@@ -30,8 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeDto> getAll() throws Exception {
         List<Employee> allEmployees = employeeRepo.findAll();
-        return modelMapper.map(allEmployees, new TypeToken<EmployeeDto>() {
-        }.getType());
+        return allEmployees.stream().map(employee -> modelMapper.map(employee, EmployeeDto.class)).toList();
     }
 
     @Override

@@ -1,21 +1,16 @@
 package com.lahiru.ims.feature.customer.router.provideredge;
 
+import com.lahiru.ims.common.model.StatusAwareAudit;
 import com.lahiru.ims.feature.inventory.asset.network.Network;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class PERouter {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class PERouter extends StatusAwareAudit {
     private String name;
     private String port;
     private String ip;

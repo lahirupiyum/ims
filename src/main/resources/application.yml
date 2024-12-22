@@ -21,3 +21,6 @@ endpoints:
     asset-network: ${endpoints.asset}/network
     asset-fixed: ${endpoints.asset}/fixed
 
+    router: /router
+    router-provider-edge: ${endpoints.router}/provider-edge
+

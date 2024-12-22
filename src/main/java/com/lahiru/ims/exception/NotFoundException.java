@@ -8,4 +8,7 @@ public class NotFoundException extends RuntimeException {
     public NotFoundException(String resource) {
         super(String.format("%s not found!", resource));
     }
+    public NotFoundException(String message, boolean isFullMessage) {
+        super((isFullMessage ? message : String.format("%s not found!", message)));
+    }
 }

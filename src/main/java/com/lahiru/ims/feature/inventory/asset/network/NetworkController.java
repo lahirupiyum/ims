@@ -54,13 +54,13 @@ public class NetworkController implements GenericAssetController<NetworkAssetReq
 
     @Override
     public ResponseEntity<StandardReponse<List<ModelDto>>> getAllModels() throws Exception {
-        List<ModelDto> modelList = service.getAllModel();
+        List<ModelDto> modelList = service.getAllModels();
         return ResponseEntityManager.ok(modelList);
     }
 
     @Override
     public ResponseEntity<StandardReponse<List<TypeDto>>> getAllTypes() throws Exception {
-        List<TypeDto> typeList = service.getAllType();
+        List<TypeDto> typeList = service.getAllTypes();
         return ResponseEntityManager.ok(typeList);
     }
 
