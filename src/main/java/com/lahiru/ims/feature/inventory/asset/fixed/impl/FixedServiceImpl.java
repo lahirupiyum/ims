@@ -63,7 +63,7 @@ public class FixedServiceImpl implements FixedService {
     @Override
     public PaginationResponse<FixedAssetResponseDto> findByPageWise(int page, int pageSize) throws Exception {
         Pageable pageable = PageRequest.of(page, pageSize);
-        Page<Fixed> fixedPage = repository.findAll(pageable);
+        Page<Fixed> fixedPage = repository.findAllByPageWise(pageable);
         log.info("Fixed : {}", fixedPage);
         fixedPage.forEach(fixed -> {
             Hibernate.initialize(fixed.getVendor());
@@ -84,7 +84,7 @@ public class FixedServiceImpl implements FixedService {
 
     @Override
     public List<FixedAssetResponseDto> findAll() throws Exception {
-        List<Fixed> fixedList = repository.findAll();
+        List<Fixed> fixedList = repository.findAllActive();
         List<FixedAssetResponseDto> fixedResponse = modelMapper.map(fixedList, new TypeToken<List<FixedAssetResponseDto>>() {
         }.getType());
         return (!fixedResponse.isEmpty()) ? fixedResponse : Collections.emptyList();
@@ -102,7 +102,7 @@ public class FixedServiceImpl implements FixedService {
 
     @Override
     public FixedAssetResponseDto updateOne(int id, FixedAssetRequestDto fixedAssetRequestDto) throws Exception {
-        Fixed fixedUpdate = repository.findById(id).orElseThrow(() -> new NotFoundException(FIXED));
+        Fixed fixedUpdate = repository.findActiveOne(id).orElseThrow(() -> new NotFoundException(FIXED));
         Fixed fixedUpdated = convertDtoToEntity(fixedAssetRequestDto);
         fixedUpdated.setId(fixedUpdate.getId());
         Fixed fixed = repository.saveAndFlush(fixedUpdated);
@@ -136,7 +136,7 @@ public class FixedServiceImpl implements FixedService {
     }
     @Override
     public FixedAssetResponseDto deleteOne(int id) throws Exception {
-        Fixed foundDeleteFixed = repository.findById(id).orElseThrow(() -> new NotFoundException(FIXED));
+        Fixed foundDeleteFixed = repository.findActiveOne(id).orElseThrow(() -> new NotFoundException(FIXED));
         repository.deleteById(foundDeleteFixed.getId());
         log.info("Delete Fixed Asset ID: {}", id);
         return modelMapper.map(foundDeleteFixed, FixedAssetResponseDto.class);
