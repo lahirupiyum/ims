@@ -29,3 +29,6 @@ endpoints:
     last-mile-provider: ${endpoints.last-mile}/provider
     last-mile-media: ${endpoints.last-mile}/media
 
+    service: /service
+    service-connection: ${endpoints.service}/connection
+

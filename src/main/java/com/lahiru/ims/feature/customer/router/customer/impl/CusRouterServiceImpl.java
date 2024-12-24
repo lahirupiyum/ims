@@ -100,4 +100,9 @@ public class CusRouterServiceImpl implements CusRouterService {
 
         return modelMapper.map(cusRouter, CusRouterResponseDto.class);
     }
+
+    @Override
+    public CusRouter findOne(Integer id) throws Exception {
+        return cusRouterRepo.findActiveOne(id).orElseThrow(() -> new NotFoundException(CUSTOMER_ROUTER));
+    }
 }

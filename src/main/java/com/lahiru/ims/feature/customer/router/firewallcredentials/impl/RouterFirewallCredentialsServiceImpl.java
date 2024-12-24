@@ -22,15 +22,14 @@ public class RouterFirewallCredentialsServiceImpl implements RouterFirewallCrede
     private final ModelMapper modelMapper;
 
     @Override
-    public RouterFirewallCredentialsDto createOne(RouterFirewallCredentialsDto firewallCredentialsDto) throws Exception {
+    public RouterFirewallCredentials createOne(RouterFirewallCredentialsDto firewallCredentialsDto) throws Exception {
         RouterFirewallCredentials routerFirewallCredentials =
                 new RouterFirewallCredentials(firewallCredentialsDto.getUsername(), firewallCredentialsDto.getPassword());
-        RouterFirewallCredentials saved = firewallCredentialsRepo.save(routerFirewallCredentials);
-        return modelMapper.map(saved, RouterFirewallCredentialsDto.class);
+        return firewallCredentialsRepo.save(routerFirewallCredentials);
     }
 
     @Override
-    public RouterFirewallCredentialsDto updateOne(Integer id, RouterFirewallCredentialsDto firewallCredentialsDto) throws Exception {
+    public RouterFirewallCredentials updateOne(Integer id, RouterFirewallCredentialsDto firewallCredentialsDto) throws Exception {
         try {
             RouterFirewallCredentials credentials = firewallCredentialsRepo.findActiveOne(id)
                     .orElseThrow(() -> new NotFoundException(FIREWALL_CREDENTIALS));
@@ -40,14 +39,16 @@ public class RouterFirewallCredentialsServiceImpl implements RouterFirewallCrede
         }
 
         RouterFirewallCredentials routerFirewallCredentials = new RouterFirewallCredentials(firewallCredentialsDto.getUsername(), firewallCredentialsDto.getPassword());
-        RouterFirewallCredentials updated = firewallCredentialsRepo.save(routerFirewallCredentials);
-        return modelMapper.map(updated, RouterFirewallCredentialsDto.class);
+        return firewallCredentialsRepo.save(routerFirewallCredentials);
     }
 
     @Override
-    public RouterFirewallCredentialsDto getOne(Integer id) throws Exception {
-        RouterFirewallCredentials routerFirewallCredentials = firewallCredentialsRepo.findActiveOne(id)
-                .orElseThrow(() -> new NotFoundException(FIREWALL_CREDENTIALS));
+    public RouterFirewallCredentials convertToModel(RouterFirewallCredentialsDto firewallCredentialsDto) throws Exception {
+        return modelMapper.map(firewallCredentialsDto, RouterFirewallCredentials.class);
+    }
+
+    @Override
+    public RouterFirewallCredentialsDto convertToDto(RouterFirewallCredentials routerFirewallCredentials) throws Exception {
         return modelMapper.map(routerFirewallCredentials, RouterFirewallCredentialsDto.class);
     }
 }
