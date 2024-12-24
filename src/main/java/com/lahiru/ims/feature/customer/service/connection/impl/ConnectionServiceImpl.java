@@ -56,7 +56,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     @Override
     public List<ConnectionResponseDto> findAll() throws Exception {
-        return connectionRepo.findAll().stream()
+        return connectionRepo.findAll().stream().map(this::convertToDto).toList();
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         LastMileConnection createdLastMileConnection = lastMileConnectionService.createOne(lastMileConnectionDto);
         RouterFirewallCredentials routerFirewallCredentials = (firewallCredentials == null) ? null : firewallCredentialsService.createOne(firewallCredentials);
-        
+
         Connection connection = convertToModel(connectionRequestDto);
         connection.setLastMileConnection(createdLastMileConnection);
         connection.setRouterFirewallCredentials(routerFirewallCredentials);
@@ -84,7 +84,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         LastMileConnection lastMileConnection = lastMileConnectionService.updateOne(lastMileConnectionId, connectionRequestDto.getLastMileConnection());
 
         RouterFirewallCredentialsDto firewallCredentials = connectionRequestDto.getFirewallCredentials();
-        RouterFirewallCredentials routerFirewallCredentials =  (firewallCredentials == null) ? null : firewallCredentialsService.updateOne(firewallCredentialsID, firewallCredentials);
+        RouterFirewallCredentials routerFirewallCredentials = (firewallCredentials == null) ? null : firewallCredentialsService.updateOne(firewallCredentialsID, firewallCredentials);
 
         Connection connection = convertToModel(connectionRequestDto);
         connection.setLastMileConnection(lastMileConnection);
@@ -108,15 +108,13 @@ public class ConnectionServiceImpl implements ConnectionService {
                 .addMappings(mapper -> {
                     mapper.skip(Connection::setRouterFirewallCredentials);
                     mapper.skip(Connection::setLastMileConnection);
-                    mapper.<Integer>map(ConnectionRequestDto::getCustomerId, (dest, value) -> {
-                        dest.setCustomer(getModel(value, customerService));
-                    });
-                    mapper.<Integer>map(ConnectionRequestDto::getCusRouterId, (dest, value) -> {
-                        dest.setCusRouter(getModel(value, cusRouterService));
-                    });
-                    mapper.<Integer>map(ConnectionRequestDto::getPeRouterId, (dest, value) -> {
-                        dest.setPeRouter(getModel(value, peRouterService));
-                    });
+                    mapper.<Integer>map(ConnectionRequestDto::getCustomerId, (dest, value) -> dest.setCustomer(getModel(value, customerService)));
+                    mapper.<Integer>map(ConnectionRequestDto::getCusRouterId, (dest, value) ->
+                            dest.setCusRouter(getModel(value, cusRouterService))
+                    );
+                    mapper.<Integer>map(ConnectionRequestDto::getPeRouterId, (dest, value) ->
+                            dest.setPeRouter(getModel(value, peRouterService))
+                    );
                 });
 
         Connection connection = modelMapper.map(connectionRequestDto, Connection.class);
@@ -128,21 +126,21 @@ public class ConnectionServiceImpl implements ConnectionService {
     public ConnectionResponseDto convertToDto(Connection connection) {
         modelMapper.typeMap(Connection.class, ConnectionResponseDto.class)
                 .addMappings(mapper -> {
-                   mapper.<LastMileConnection>map(Connection::getLastMileConnection, (dest, value) -> {
-                       dest.setLastMileConnection(getResponseDto(value, lastMileConnectionService));
+                    mapper.<LastMileConnection>map(Connection::getLastMileConnection, (dest, value) -> {
+                        dest.setLastMileConnection(getResponseDto(value, lastMileConnectionService));
                     });
-                   mapper.<RouterFirewallCredentials>map(Connection::getRouterFirewallCredentials, (dest, value) -> {
-                       dest.setFirewallCredentials(getResponseDto(value, firewallCredentialsService));
-                   });
-                   mapper.<Customer>map(Connection::getCustomer, (dest, value) -> {
-                           dest.setCustomer(getResponseDto(value, customerService));
-                   });
-                   mapper.<CusRouter>map(Connection::getCusRouter, (dest, value) -> {
-                       dest.setCusRouter(getResponseDto(value, cusRouterService));
-                   });
-                   mapper.<PERouter>map(Connection::getPeRouter, (dest, value) -> {
-                       dest.setPeRouter(getResponseDto(value, peRouterService));
-                   });
+                    mapper.<RouterFirewallCredentials>map(Connection::getRouterFirewallCredentials, (dest, value) -> {
+                        dest.setFirewallCredentials(getResponseDto(value, firewallCredentialsService));
+                    });
+                    mapper.<Customer>map(Connection::getCustomer, (dest, value) -> {
+                        dest.setCustomer(getResponseDto(value, customerService));
+                    });
+                    mapper.<CusRouter>map(Connection::getCusRouter, (dest, value) -> {
+                        dest.setCusRouter(getResponseDto(value, cusRouterService));
+                    });
+                    mapper.<PERouter>map(Connection::getPeRouter, (dest, value) -> {
+                        dest.setPeRouter(getResponseDto(value, peRouterService));
+                    });
                 });
 
 
@@ -159,7 +157,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     private <Model, RequestDto, ResponseDto, ModelService extends ModelMapperService<Model, RequestDto, ResponseDto>> ResponseDto getResponseDto(Model model, ModelService modelService) {
         try {
-            modelService.convertToDto(model);
+            return modelService.convertToDto(model);
         } catch (Exception e) {
             throw new MapperException(e);
         }
