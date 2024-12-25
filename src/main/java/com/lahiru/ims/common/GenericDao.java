@@ -6,6 +6,7 @@ import com.lahiru.ims.common.model.BasicCustomerAudit;
 import com.lahiru.ims.common.model.BasicInfoAudit;
 import com.lahiru.ims.common.service.GenericBasicCustomerService;
 import com.lahiru.ims.common.service.GenericBasicInfoService;
+import com.lahiru.ims.exception.MapperException;
 import com.lahiru.ims.exception.NotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
@@ -20,16 +21,26 @@ public class GenericDao {
         return repo.existsById(id);
     }
 
-    public <Model extends BasicInfoAudit, Dto extends BasicInfo, Service extends GenericBasicInfoService<Model>> Model checkAndCreate(AssetType assetType, Dto dto, Service service) throws Exception {
-        if (dto.getId() == null) {
-            return service.createOne(dto.getName(), assetType);
+    public <Model extends BasicInfoAudit, Dto extends BasicInfo, Service extends GenericBasicInfoService<Model>> Model checkAndCreate(AssetType assetType, Dto dto, Service service) {
+        try {
+            if (dto.getId() == null) {
+                return service.createOne(dto.getName(), assetType);
+            }
+            else return service.findOne(dto.getId());
         }
-        else return service.findOne(dto.getId());
+        catch (Exception e) {
+            throw new MapperException(e);
+        }
     }
 
-    public <Model extends BasicCustomerAudit, Dto extends BasicInfo, Service extends GenericBasicCustomerService<Model, Dto>> Model checkAndCreate(Dto dto, Service service) throws Exception {
-        if (dto.getId() == null)
-            return service.createOne(dto.getName());
-        else return service.findOne(dto.getId());
+    public <Model extends BasicCustomerAudit, Dto extends BasicInfo, Service extends GenericBasicCustomerService<Model, Dto>> Model checkAndCreate(Dto dto, Service service) {
+        try {
+            if (dto.getId() == null)
+                return service.createOne(dto.getName());
+            else return service.findOne(dto.getId());
+        }
+        catch (Exception e) {
+            throw new MapperException(e);
+        }
     }
 }

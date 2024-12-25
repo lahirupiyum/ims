@@ -105,4 +105,9 @@ public class CustomerServiceImpl implements CustomerService {
     private Employee checkAndCreateAccountManger(EmployeeDto employeeDto) throws Exception {
         return genericDao.checkAndCreate(employeeDto, employeeService);
     }
+
+    @Override
+    public Customer findOne(Integer id) throws Exception {
+        return customerRepo.findActiveOne(id).orElseThrow(() -> new NotFoundException(CUSTOMER));
+    }
 }

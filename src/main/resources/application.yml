@@ -15,12 +15,20 @@ spring:
 endpoints:
     vendor: /vendor
     location: /location
-    asset: /asset
     customer: /customer
     employee: /employee
+    asset: /asset
     asset-network: ${endpoints.asset}/network
     asset-fixed: ${endpoints.asset}/fixed
 
     router: /router
     router-provider-edge: ${endpoints.router}/provider-edge
+    router-customer: ${endpoints.router}/customer
+
+    last-mile: /last-mile
+    last-mile-provider: ${endpoints.last-mile}/provider
+    last-mile-media: ${endpoints.last-mile}/media
+
+    service: /service
+    service-connection: ${endpoints.service}/connection
 

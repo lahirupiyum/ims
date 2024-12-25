@@ -1,20 +1,16 @@
 package com.lahiru.ims.feature.customer.router.customer;
 
+import com.lahiru.ims.common.model.StatusAwareAudit;
 import com.lahiru.ims.feature.inventory.asset.network.Network;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class CustomerRouter {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CusRouter extends StatusAwareAudit {
     private Integer id;
     private String wanPort;
     private String lanPort;

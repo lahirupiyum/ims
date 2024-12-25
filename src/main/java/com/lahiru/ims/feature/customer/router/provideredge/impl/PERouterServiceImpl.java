@@ -120,4 +120,9 @@ public class PERouterServiceImpl implements PERouterService {
         if (Objects.equals(e.getClass(), NotFoundException.class)) throw new NotFoundException(e.getMessage(), true);
         else throw new RuntimeException(e.getMessage());
     }
+
+    @Override
+    public PERouter findOne(Integer id) throws Exception {
+        return peRouterRepo.findActiveOne(id).orElseThrow(() -> new NotFoundException(PE_ROUTER));
+    }
 }
