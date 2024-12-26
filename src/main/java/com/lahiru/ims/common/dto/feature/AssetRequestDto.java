@@ -17,7 +17,6 @@ public class AssetRequestDto {
     private int statusId;
     private Integer vendorId;
     private Integer locationId;
-
     private ManufacturerDto manufacturer;
     private TypeDto type;
     private ModelDto model;
