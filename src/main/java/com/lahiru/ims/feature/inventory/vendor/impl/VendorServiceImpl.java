@@ -31,7 +31,6 @@ public class VendorServiceImpl implements VendorService {
     public static final String VENDOR_EMAIL = "Vendor email";
     private static final Logger log = LoggerFactory.getLogger(VendorServiceImpl.class);
     private final VendorRepo vendorRepo;
-    //    private  final VendorMappers vendorMappers;
     private final boolean activeStatus = true;
     private final ModelMapper modelMapper;
     @Override
