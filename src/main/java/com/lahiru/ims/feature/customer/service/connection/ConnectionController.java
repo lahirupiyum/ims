@@ -8,7 +8,9 @@ import com.lahiru.ims.feature.customer.service.connection.dto.ConnectionResponse
 import com.lahiru.ims.utils.ResponseEntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,6 +25,20 @@ public class ConnectionController implements GenericController<ConnectionRequest
     public ResponseEntity<PaginationResponse<ConnectionResponseDto>> getAllByPageWise(int page, int pageSize) throws Exception {
         PaginationResponse<ConnectionResponseDto> byPageWise = connectionService.findByPageWise(page, pageSize);
         return ResponseEntityManager.page(byPageWise);
+    }
+
+    @GetMapping("/ill")
+    public ResponseEntity<PaginationResponse<ConnectionResponseDto>> getIllPageWise(@RequestParam int page,
+                                                                                    @RequestParam int pageSize) throws Exception {
+        PaginationResponse<ConnectionResponseDto> illByPageWise = connectionService.findIllByPageWise(page, pageSize);
+        return ResponseEntityManager.page(illByPageWise);
+    }
+
+    @GetMapping("/mpls")
+    public ResponseEntity<PaginationResponse<ConnectionResponseDto>> getMplsByPageWise(@RequestParam int page,
+                                                                                       @RequestParam int pageSize) throws Exception {
+        PaginationResponse<ConnectionResponseDto> mplsByPageWise = connectionService.findMplsByPageWise(page, pageSize);
+        return ResponseEntityManager.page(mplsByPageWise);
     }
 
     @Override

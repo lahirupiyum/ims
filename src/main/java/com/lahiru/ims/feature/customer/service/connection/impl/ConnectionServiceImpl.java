@@ -23,6 +23,7 @@ import com.lahiru.ims.feature.customer.service.connection.ConnectionRepo;
 import com.lahiru.ims.feature.customer.service.connection.ConnectionService;
 import com.lahiru.ims.feature.customer.service.connection.dto.ConnectionRequestDto;
 import com.lahiru.ims.feature.customer.service.connection.dto.ConnectionResponseDto;
+import com.lahiru.ims.feature.customer.service.enums.NetworkServiceType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -44,6 +45,24 @@ public class ConnectionServiceImpl implements ConnectionService {
     private final CustomerService customerService;
     private final CusRouterService cusRouterService;
     private final PERouterService peRouterService;
+
+    @Override
+    public PaginationResponse<ConnectionResponseDto> findIllByPageWise(int page, int pageSize) throws Exception {
+        return getPageWiseByNetworkServiceType(page, pageSize, NetworkServiceType.ILL);
+    }
+
+    @Override
+    public PaginationResponse<ConnectionResponseDto> findMplsByPageWise(int page, int pageSize) throws Exception {
+        return getPageWiseByNetworkServiceType(page, pageSize, NetworkServiceType.MPLS);
+    }
+
+    private PaginationResponse<ConnectionResponseDto> getPageWiseByNetworkServiceType(int page, int pageSize, NetworkServiceType serviceType) throws Exception {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Connection> byServiceType = connectionRepo.findByServiceType(serviceType, pageable);
+        List<ConnectionResponseDto> all = byServiceType.map(this::convertToDto).stream().toList();
+        int totalCount = (int) byServiceType.getTotalElements();
+        return new PaginationResponse<>(all, totalCount);
+    }
 
     @Override
     public PaginationResponse<ConnectionResponseDto> findByPageWise(int page, int pageSize) throws Exception {

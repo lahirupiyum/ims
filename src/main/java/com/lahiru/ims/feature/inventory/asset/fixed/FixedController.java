@@ -41,8 +41,6 @@ public class FixedController implements GenericAssetController<FixedAssetRequest
         return ResponseEntityManager.ok(statusList);
     }
 
-
-
     @Override
     public ResponseEntity<PaginationResponse<FixedAssetResponseDto>> getAllByPageWise(int page, int pageSize) throws Exception {
         PaginationResponse<FixedAssetResponseDto> fixedPage = service.findByPageWise(page, pageSize);

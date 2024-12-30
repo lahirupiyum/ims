@@ -14,7 +14,6 @@ public class ConnectionDto {
     private Date dsp;
     private Date serviceChange;
     private Date terminationDate;
-    private Boolean activeStatus;
     private String remarks;
     private NetworkServiceType networkServiceType;
     private ManageStatus manageStatus;

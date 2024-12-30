@@ -16,4 +16,5 @@ public class ConnectionResponseDto extends ConnectionDto {
     private CustomerResponseDto customer;
     private PERouterResponseDto peRouter;
     private CusRouterResponseDto cusRouter;
+    private Boolean activeStatus;
 }
