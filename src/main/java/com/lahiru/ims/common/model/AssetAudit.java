@@ -24,7 +24,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class AssetAudit extends StatusAwareAudit {
     private String assetNumber;
     private String serialNumber;
-    private int quantity;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;

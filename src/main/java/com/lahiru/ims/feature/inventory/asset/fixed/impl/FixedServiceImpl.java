@@ -128,7 +128,6 @@ public class FixedServiceImpl implements FixedService {
         fixed.setPurchaseDate(dto.getPurchaseDate());
         fixed.setAssetNumber(dto.getAssetNumber());
         fixed.setSerialNumber(dto.getSerialNumber());
-        fixed.setQuantity(dto.getQuantity());
         return fixed;
     }
     @Override

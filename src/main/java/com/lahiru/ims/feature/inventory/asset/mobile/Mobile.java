@@ -27,7 +27,7 @@ public class Mobile extends AssetAudit {
     private Employee employee;
 
     public Mobile(String assetNumber, String serialNumber, int quantity, Vendor vendor, Location location, Model model, Type type, Status status, Manufacturer manufacturer, int warrantyExpireDate, int purchaseDate, String invoiceNumber, Employee employee) {
-        super(assetNumber, serialNumber, quantity, vendor, location, model, type, status, manufacturer);
+        super(assetNumber, serialNumber, vendor, location, model, type, status, manufacturer);
         this.warrantyExpireDate = warrantyExpireDate;
         this.purchaseDate = purchaseDate;
         this.invoiceNumber = invoiceNumber;

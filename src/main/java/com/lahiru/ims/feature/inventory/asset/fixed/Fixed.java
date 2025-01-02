@@ -26,8 +26,8 @@ public class Fixed extends AssetAudit {
     private String deprecationInfo;
     private Date purchaseDate;
 
-    public Fixed(String assetNumber, String serialNumber, int quantity, Vendor vendor, Location location, Model model, Type type, Status status, Manufacturer manufacturer, String invoiceNumber, String deprecationInfo, Date purchaseDate) {
-        super(assetNumber, serialNumber, quantity, vendor, location, model, type, status, manufacturer);
+    public Fixed(String assetNumber, String serialNumber, Vendor vendor, Location location, Model model, Type type, Status status, Manufacturer manufacturer, String invoiceNumber, String deprecationInfo, Date purchaseDate) {
+        super(assetNumber, serialNumber, vendor, location, model, type, status, manufacturer);
         this.invoiceNumber = invoiceNumber;
         this.deprecationInfo = deprecationInfo;
         this.purchaseDate = purchaseDate;
