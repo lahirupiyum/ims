@@ -25,13 +25,13 @@ public class FixedController implements GenericAssetController<FixedAssetRequest
 
     @Override
     public ResponseEntity<StandardReponse<List<ModelDto>>> getAllModels() throws Exception {
-        List<ModelDto> modelList = service.getAllModel();
+        List<ModelDto> modelList = service.getAllModels();
         return ResponseEntityManager.ok(modelList);
     }
 
     @Override
     public ResponseEntity<StandardReponse<List<TypeDto>>> getAllTypes() throws Exception {
-        List<TypeDto> typeList = service.getAllType();
+        List<TypeDto> typeList = service.getAllTypes();
         return ResponseEntityManager.ok(typeList);
     }
 
@@ -39,6 +39,11 @@ public class FixedController implements GenericAssetController<FixedAssetRequest
     public ResponseEntity<StandardReponse<List<StatusDto>>> getAllStatus() throws Exception {
         List<StatusDto> statusList = service.getAllStatus();
         return ResponseEntityManager.ok(statusList);
+    }
+
+    @Override
+    public ResponseEntity<StandardReponse<List<FixedAssetResponseDto>>> search(String key) throws Exception {
+        return null;
     }
 
     @Override

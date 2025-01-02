@@ -83,6 +83,11 @@ public class MobileServiceImpl implements MobileService {
     }
 
     @Override
+    public List<MobileAssetResponseDto> search(String serialNumber) throws Exception {
+        return List.of();
+    }
+
+    @Override
     public PaginationResponse<MobileAssetResponseDto> findByPageWise(int page, int pageSize) throws Exception {
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<Mobile> mobilePage = mobileRepo.findAllByPageWise(pageable);

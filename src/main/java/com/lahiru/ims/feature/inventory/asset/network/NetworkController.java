@@ -69,4 +69,9 @@ public class NetworkController implements GenericAssetController<NetworkAssetReq
         List<StatusDto> statusList = service.getAllStatus();
         return ResponseEntityManager.ok(statusList);
     }
+
+    @Override
+    public ResponseEntity<StandardReponse<List<NetworkAssetResponseDto>>> search(String key) throws Exception {
+        return null;
+    }
 }

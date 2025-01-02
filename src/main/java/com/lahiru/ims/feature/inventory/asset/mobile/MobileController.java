@@ -71,4 +71,9 @@ public class MobileController implements GenericAssetController<MobileAssetReque
         List<StatusDto> allStatus = service.getAllStatus();
         return ResponseEntityManager.ok(allStatus);
     }
+
+    @Override
+    public ResponseEntity<StandardReponse<List<MobileAssetResponseDto>>> search(String key) throws Exception {
+        return null;
+    }
 }

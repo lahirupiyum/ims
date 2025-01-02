@@ -178,6 +178,12 @@ public class NetworkServiceImpl implements NetworkService {
     }
 
     @Override
+    public List<NetworkAssetResponseDto> search(String serialNumber) throws Exception {
+        List<Network> networkList = networkRepo.findBySerialNumber(serialNumber);
+        return networkList.stream().map(this::convertToDto).toList();
+    }
+
+    @Override
     public Network findOne(Integer id) throws Exception {
         return networkRepo.findById(id).orElseThrow(() -> new NotFoundException(NETWORK));
     }
