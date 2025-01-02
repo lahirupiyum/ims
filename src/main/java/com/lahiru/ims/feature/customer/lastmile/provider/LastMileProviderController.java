@@ -22,4 +22,10 @@ public class LastMileProviderController implements GenericBasicInfoController<La
         List<LastMileProviderDto> all = lastMileProviderService.getAll();
         return ResponseEntityManager.ok(all);
     }
+
+    @Override
+    public ResponseEntity<StandardReponse<List<LastMileProviderDto>>> searchByName(String key) throws Exception {
+        List<LastMileProviderDto> all = lastMileProviderService.searchItem(key);
+        return ResponseEntityManager.ok(all);
+    }
 }

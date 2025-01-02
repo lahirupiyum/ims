@@ -1,13 +1,8 @@
 package com.lahiru.ims.feature.inventory.model;
 
-import com.lahiru.ims.common.enums.AssetType;
-import com.lahiru.ims.feature.inventory.status.Status;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.lahiru.ims.common.repository.BasicInfoRepo;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface ModelRepo extends JpaRepository<Model,Integer> {
-    List<Model> findAllByAssetType(AssetType assetType);
+public interface ModelRepo extends BasicInfoRepo<Model> {
 }

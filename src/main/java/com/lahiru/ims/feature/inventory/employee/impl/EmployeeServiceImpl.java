@@ -37,4 +37,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee findOne(Integer id) throws Exception {
         return employeeRepo.findById(id).orElseThrow(() -> new NotFoundException("Employee"));
     }
+
+    @Override
+    public List<EmployeeDto> searchItem(String searchKey) throws Exception {
+        List<Employee> employees = employeeRepo.searchByName(searchKey);
+        return employees.stream().map(employee -> modelMapper.map(employee, EmployeeDto.class)).toList();
+    }
 }
