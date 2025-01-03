@@ -3,8 +3,6 @@ package com.lahiru.ims.feature.customer.router.peconnection.impl;
 import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.exception.MapperException;
 import com.lahiru.ims.exception.NotFoundException;
-import com.lahiru.ims.feature.customer.router.pe.PERouter;
-import com.lahiru.ims.feature.customer.router.pe.PERouterService;
 import com.lahiru.ims.feature.customer.router.peconnection.PERouterConnection;
 import com.lahiru.ims.feature.customer.router.peconnection.PERouterConnectionRepo;
 import com.lahiru.ims.feature.customer.router.peconnection.PERouterConnectionService;
