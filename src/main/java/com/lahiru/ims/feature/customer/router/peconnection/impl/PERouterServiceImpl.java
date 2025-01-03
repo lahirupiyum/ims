@@ -30,7 +30,6 @@ public class PERouterServiceImpl implements PERouterConnectionService {
     private final ModelMapper modelMapper;
     private final PERouterConnectionRepo peRouterConnectionRepo;
     private final NetworkService networkService;
-    private final PERouterService peRouterService;
 
     @Override
     public PaginationResponse<PERouterConnectionResponseDto> findByPageWise(int page, int pageSize) throws Exception {
@@ -76,7 +75,7 @@ public class PERouterServiceImpl implements PERouterConnectionService {
                 .addMappings(mapper -> {
                     mapper.<Integer>map(PERouterConnectionRequestDto::getPeRouterId, (dest, value) -> {
                         try {
-                            dest.setPeRouter(peRouterService.findOne(value));
+                            dest.setPeRouter(networkService.findOne(value));
                         } catch (Exception e) {
                             throw new MapperException(e);
                         }
@@ -98,9 +97,9 @@ public class PERouterServiceImpl implements PERouterConnectionService {
     public PERouterConnectionResponseDto convertToDto(PERouterConnection peRouterConnection) {
         modelMapper.typeMap(PERouterConnection.class, PERouterConnectionResponseDto.class)
                 .addMappings(mapper -> {
-                    mapper.<PERouter>map(PERouterConnection::getPeRouter, (dest, value) -> {
+                    mapper.<Network>map(PERouterConnection::getPeRouter, (dest, value) -> {
                         try {
-                            dest.setPeRouter(peRouterService.convertToDto(value));
+                            dest.setPeRouter(networkService.convertToDto(value));
                         } catch (Exception e) {
                             throw new MapperException(e);
                         }
