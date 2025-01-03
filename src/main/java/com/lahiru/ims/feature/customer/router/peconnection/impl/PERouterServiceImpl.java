@@ -1,6 +1,7 @@
 package com.lahiru.ims.feature.customer.router.peconnection.impl;
 
 import com.lahiru.ims.common.dto.PaginationResponse;
+import com.lahiru.ims.exception.MapperException;
 import com.lahiru.ims.exception.NotFoundException;
 import com.lahiru.ims.feature.customer.router.pe.PERouter;
 import com.lahiru.ims.feature.customer.router.pe.PERouterService;
@@ -78,14 +79,14 @@ public class PERouterServiceImpl implements PERouterConnectionService {
                         try {
                             dest.setPeRouter(peRouterService.findOne(value));
                         } catch (Exception e) {
-                            throwMapperError(e);
+                            throw new MapperException(e);
                         }
                     });
                     mapper.<Integer>map(PERouterConnectionRequestDto::getNetworkSwitchId, (dest, value) -> {
                         try {
                             dest.setNetworkSwitch(networkService.findOne(value));
                         } catch (Exception e) {
-                            throwMapperError(e);
+                            throw new MapperException(e);
                         }
                     });
                 });
@@ -102,23 +103,18 @@ public class PERouterServiceImpl implements PERouterConnectionService {
                         try {
                             dest.setPeRouter(peRouterService.convertToDto(value));
                         } catch (Exception e) {
-                            throwMapperError(e);
+                            throw new MapperException(e);
                         }
                     });
                     mapper.<Network>map(PERouterConnection::getNetworkSwitch, (dest, value) -> {
                         try {
                             dest.setNetworkSwitch(networkService.convertToDto(value));
                         } catch (Exception e) {
-                            throwMapperError(e);
+                            throw new MapperException(e);
                         }
                     });
                 });
         return modelMapper.map(peRouterConnection, PERouterConnectionResponseDto.class);
-    }
-
-    private void throwMapperError(Exception e) {
-        if (Objects.equals(e.getClass(), NotFoundException.class)) throw new NotFoundException(e.getMessage(), true);
-        else throw new RuntimeException(e.getMessage());
     }
 
     @Override
