@@ -21,10 +21,10 @@ public class FixedAssetResponseDto extends AssetResponseDto {
     private String deprecationInfo;
     private Date purchaseDate;
 
-    public FixedAssetResponseDto(Integer id, ManufacturerDto manufacturer, String deprecationInfo, String assetNumber, String serialNumber, VendorResponseDto vendor, LocationResponseDto location, int quantity, ModelDto model, TypeDto type, StatusDto status, String invoiceNumber, String deprecationInfo1, Date purchaseDate) {
-        super(id, manufacturer, deprecationInfo, assetNumber, serialNumber, vendor, location, quantity, model, type, status);
+    public FixedAssetResponseDto(String assetNumber, String serialNumber, ManufacturerDto manufacturer, TypeDto type, ModelDto model, Integer id, VendorResponseDto vendor, LocationResponseDto location, StatusDto status, String invoiceNumber, String deprecationInfo, Date purchaseDate) {
+        super(assetNumber, serialNumber, manufacturer, type, model, id, vendor, location, status);
         this.invoiceNumber = invoiceNumber;
-        this.deprecationInfo = deprecationInfo1;
+        this.deprecationInfo = deprecationInfo;
         this.purchaseDate = purchaseDate;
     }
 }

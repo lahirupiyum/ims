@@ -20,8 +20,8 @@ public class MobileAssetResponseDto extends AssetResponseDto {
     private String invoiceNumber;
     private Integer employee;
 
-    public MobileAssetResponseDto(Integer id, ManufacturerDto manufacturer, String deprecationInfo, String assetNumber, String serialNumber, VendorResponseDto vendor, LocationResponseDto location, int quantity, ModelDto model, TypeDto type, StatusDto status, int warrantyExpireDate, int purchaseDate, String invoiceNumber, Integer employee) {
-        super(id, manufacturer, deprecationInfo, assetNumber, serialNumber, vendor, location, quantity, model, type, status);
+    public MobileAssetResponseDto(String assetNumber, String serialNumber, ManufacturerDto manufacturer, TypeDto type, ModelDto model, Integer id, VendorResponseDto vendor, LocationResponseDto location, StatusDto status, int warrantyExpireDate, int purchaseDate, String invoiceNumber, Integer employee) {
+        super(assetNumber, serialNumber, manufacturer, type, model, id, vendor, location, status);
         this.warrantyExpireDate = warrantyExpireDate;
         this.purchaseDate = purchaseDate;
         this.invoiceNumber = invoiceNumber;

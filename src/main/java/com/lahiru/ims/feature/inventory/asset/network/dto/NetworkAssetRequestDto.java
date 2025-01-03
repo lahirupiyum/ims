@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class NetworkAssetRequestDto extends AssetRequestDto {
-    public NetworkAssetRequestDto(String assetNumber, String serialNumber, int quantity, int statusId, Integer vendorId, Integer locationId, ManufacturerDto manufacturer, TypeDto type, ModelDto model) {
-        super(assetNumber, serialNumber, quantity, statusId, vendorId, locationId, manufacturer, type, model);
+    public NetworkAssetRequestDto(String assetNumber, String serialNumber, ManufacturerDto manufacturer, TypeDto type, ModelDto model, Integer statusId, Integer vendorId, Integer locationId) {
+        super(assetNumber, serialNumber, manufacturer, type, model, statusId, vendorId, locationId);
     }
 }

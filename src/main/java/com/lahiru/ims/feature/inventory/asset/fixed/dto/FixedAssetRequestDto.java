@@ -18,8 +18,8 @@ public class FixedAssetRequestDto extends AssetRequestDto {
     private String deprecationInfo;
     private Date purchaseDate;
 
-    public FixedAssetRequestDto(String assetNumber, String serialNumber, int quantity, int statusId, Integer vendorId, Integer locationId, ManufacturerDto manufacturer, TypeDto type, ModelDto model, String invoiceNumber, String deprecationInfo, Date purchaseDate) {
-        super(assetNumber, serialNumber, quantity, statusId, vendorId, locationId, manufacturer, type, model);
+    public FixedAssetRequestDto(String assetNumber, String serialNumber, ManufacturerDto manufacturer, TypeDto type, ModelDto model, Integer statusId, Integer vendorId, Integer locationId, String invoiceNumber, String deprecationInfo, Date purchaseDate) {
+        super(assetNumber, serialNumber, manufacturer, type, model, statusId, vendorId, locationId);
         this.invoiceNumber = invoiceNumber;
         this.deprecationInfo = deprecationInfo;
         this.purchaseDate = purchaseDate;
