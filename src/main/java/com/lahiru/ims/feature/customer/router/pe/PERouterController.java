@@ -1,10 +1,11 @@
-package com.lahiru.ims.feature.customer.router.provideredge;
+package com.lahiru.ims.feature.customer.router.pe;
 
 import com.lahiru.ims.common.controller.GenericController;
 import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.dto.StandardReponse;
-import com.lahiru.ims.feature.customer.router.provideredge.dto.PERouterResponseDto;
-import com.lahiru.ims.feature.customer.router.provideredge.dto.PERouterRequestDto;
+import com.lahiru.ims.exception.ValidationException;
+import com.lahiru.ims.feature.customer.router.pe.dto.PERouterRequestDto;
+import com.lahiru.ims.feature.customer.router.pe.dto.PERouterResponseDto;
 import com.lahiru.ims.utils.ResponseEntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("${endpoints.router-provider-edge}")
+@RequestMapping("${endpoints.router-provider-edge")
 @RequiredArgsConstructor
 public class PERouterController implements GenericController<PERouterRequestDto, PERouterResponseDto> {
     private final PERouterService peRouterService;
@@ -33,19 +34,18 @@ public class PERouterController implements GenericController<PERouterRequestDto,
 
     @Override
     public ResponseEntity<StandardReponse<PERouterResponseDto>> createOne(PERouterRequestDto peRouterRequestDto) throws Exception {
-        PERouterResponseDto createdPERouter = peRouterService.createOne(peRouterRequestDto);
-        return ResponseEntityManager.created(createdPERouter, "Provider edge");
+        PERouterResponseDto created = peRouterService.createOne(peRouterRequestDto);
+        return ResponseEntityManager.created(created, "PE Router");
     }
 
     @Override
     public ResponseEntity<StandardReponse<PERouterResponseDto>> updateOne(int id, PERouterRequestDto peRouterRequestDto) throws Exception {
-        PERouterResponseDto updatedRouter = peRouterService.updateOne(id, peRouterRequestDto);
-        return ResponseEntityManager.ok(updatedRouter);
+        PERouterResponseDto peRouterResponseDto = peRouterService.updateOne(id, peRouterRequestDto);
+        return ResponseEntityManager.ok(peRouterResponseDto);
     }
 
     @Override
     public ResponseEntity<StandardReponse<PERouterResponseDto>> deleteOne(int id) throws Exception {
-        PERouterResponseDto deletedRouter = peRouterService.deleteOne(id);
-        return ResponseEntityManager.ok(deletedRouter);
+        throw new ValidationException("You can't perform delete on pe routes!");
     }
 }

@@ -16,8 +16,8 @@ import com.lahiru.ims.feature.customer.router.customer.CusRouterService;
 import com.lahiru.ims.feature.customer.router.firewallcredentials.RouterFirewallCredentials;
 import com.lahiru.ims.feature.customer.router.firewallcredentials.RouterFirewallCredentialsService;
 import com.lahiru.ims.feature.customer.router.firewallcredentials.dto.RouterFirewallCredentialsDto;
-import com.lahiru.ims.feature.customer.router.provideredge.PERouter;
-import com.lahiru.ims.feature.customer.router.provideredge.PERouterService;
+import com.lahiru.ims.feature.customer.router.peconnection.PERouterConnection;
+import com.lahiru.ims.feature.customer.router.peconnection.PERouterConnectionService;
 import com.lahiru.ims.feature.customer.service.connection.Connection;
 import com.lahiru.ims.feature.customer.service.connection.ConnectionRepo;
 import com.lahiru.ims.feature.customer.service.connection.ConnectionService;
@@ -44,7 +44,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     private final ModelMapper modelMapper;
     private final CustomerService customerService;
     private final CusRouterService cusRouterService;
-    private final PERouterService peRouterService;
+    private final PERouterConnectionService peRouterConnectionService;
 
     @Override
     public PaginationResponse<ConnectionResponseDto> findIllByPageWise(int page, int pageSize) throws Exception {
@@ -132,7 +132,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                             dest.setCusRouter(getModel(value, cusRouterService))
                     );
                     mapper.<Integer>map(ConnectionRequestDto::getPeRouterId, (dest, value) ->
-                            dest.setPeRouter(getModel(value, peRouterService))
+                            dest.setPeRouterConnection(getModel(value, peRouterConnectionService))
                     );
                 });
 
@@ -157,8 +157,8 @@ public class ConnectionServiceImpl implements ConnectionService {
                     mapper.<CusRouter>map(Connection::getCusRouter, (dest, value) -> {
                         dest.setCusRouter(getResponseDto(value, cusRouterService));
                     });
-                    mapper.<PERouter>map(Connection::getPeRouter, (dest, value) -> {
-                        dest.setPeRouter(getResponseDto(value, peRouterService));
+                    mapper.<PERouterConnection>map(Connection::getPeRouterConnection, (dest, value) -> {
+                        dest.setPeRouter(getResponseDto(value, peRouterConnectionService));
                     });
                 });
 

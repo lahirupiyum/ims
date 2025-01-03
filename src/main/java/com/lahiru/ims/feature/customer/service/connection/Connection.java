@@ -4,7 +4,7 @@ import com.lahiru.ims.feature.customer.customer.Customer;
 import com.lahiru.ims.feature.customer.lastmile.connection.LastMileConnection;
 import com.lahiru.ims.feature.customer.router.customer.CusRouter;
 import com.lahiru.ims.feature.customer.router.firewallcredentials.RouterFirewallCredentials;
-import com.lahiru.ims.feature.customer.router.provideredge.PERouter;
+import com.lahiru.ims.feature.customer.router.peconnection.PERouterConnection;
 import com.lahiru.ims.feature.customer.service.enums.ManageStatus;
 import com.lahiru.ims.feature.customer.service.enums.NetworkServiceType;
 import jakarta.persistence.*;
@@ -36,7 +36,7 @@ public class Connection {
     @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
     @ManyToOne(fetch = FetchType.LAZY)
-    private PERouter peRouter;
+    private PERouterConnection peRouterConnection;
     @ManyToOne(fetch = FetchType.LAZY)
     private CusRouter cusRouter;
     @OneToOne(fetch = FetchType.LAZY)
