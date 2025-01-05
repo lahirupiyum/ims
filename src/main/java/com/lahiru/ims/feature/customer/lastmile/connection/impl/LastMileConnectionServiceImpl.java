@@ -45,31 +45,28 @@ public class LastMileConnectionServiceImpl implements LastMileConnectionService 
 
     @Override
     public LastMileConnection convertToModel(LastMileConnectionRequestDto requestDto) throws Exception {
-        modelMapper.typeMap(LastMileConnectionRequestDto.class, LastMileConnection.class)
-                .addMappings(mapper ->  {
-                    mapper.<LastMileMediaDto>map(LastMileConnectionRequestDto::getMedia, (dest, value) -> {
-                            dest.setMedia(genericDao.checkAndCreate(value, mediaService));
-                    });
-                    mapper.<LastMileProviderDto>map(LastMileConnectionRequestDto::getLastMileProvider, (dest, value) -> {
-                            dest.setLastMileProvider(genericDao.checkAndCreate(value, providerService));
-                    });
-                });
+        LastMileConnection lastMileConnection = new LastMileConnection();
+        lastMileConnection.setLastMileProvider(genericDao.checkAndCreate(requestDto.getLastMileProvider(), providerService));
+        lastMileConnection.setMedia(genericDao.checkAndCreate(requestDto.getMedia(), mediaService));
+        lastMileConnection.setBandwidth(requestDto.getBandwidth());
+        lastMileConnection.setCircuitId(requestDto.getCircuitId());
+        lastMileConnection.setSwitchPort(requestDto.getSwitchPort());
 
-        return modelMapper.map(requestDto, LastMileConnection.class);
+        return lastMileConnection;
     }
 
     @Override
     public LastMileConnectionResponseDto convertToDto(LastMileConnection lastMileConnection) throws Exception {
-        modelMapper.typeMap(LastMileConnection.class, LastMileConnectionResponseDto.class)
-                .addMappings(mapper -> {
-                    mapper.<LastMileMedia>map(LastMileConnection::getMedia, (dest, value) -> {
-                        dest.setMedia(new LastMileMediaDto(value.getId(), value.getName()));
-                    });
-                    mapper.<LastMileProvider>map(LastMileConnection::getLastMileProvider, (dest, value) -> {
-                        dest.setLastMileProvider(new LastMileProviderDto(value.getId(), value.getName()));
-                    });
-                });
+        LastMileConnectionResponseDto responseDto = new LastMileConnectionResponseDto();
+        LastMileProvider lastMileProvider = lastMileConnection.getLastMileProvider();
+        LastMileMedia lastMileMedia = lastMileConnection.getMedia();
+        responseDto.setLastMileProvider(new LastMileProviderDto(lastMileProvider.getId(), lastMileProvider.getName()));
+        responseDto.setMedia(new LastMileMediaDto(lastMileMedia.getId(), lastMileMedia.getName()));
+        responseDto.setId(lastMileConnection.getId());
+        responseDto.setBandwidth(lastMileConnection.getBandwidth());
+        responseDto.setSwitchPort(lastMileConnection.getSwitchPort());
+        responseDto.setCircuitId(lastMileConnection.getCircuitId());
 
-        return modelMapper.map(lastMileConnection, LastMileConnectionResponseDto.class);
+        return responseDto;
     }
 }

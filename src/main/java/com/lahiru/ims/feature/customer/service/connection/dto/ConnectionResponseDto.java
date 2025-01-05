@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class ConnectionResponseDto extends ConnectionDto {
+    private Integer id;
     private LastMileConnectionResponseDto lastMileConnection;
     private CustomerResponseDto customer;
     private PERouterConnectionResponseDto peRouter;

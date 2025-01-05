@@ -14,6 +14,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PERouterServiceImpl implements PERouterConnectionService {
     public static final String PE_ROUTER_CONNECTION = "PE Router Connection";
+    private static final Logger log = LoggerFactory.getLogger(PERouterServiceImpl.class);
     private final ModelMapper modelMapper;
     private final PERouterConnectionRepo peRouterConnectionRepo;
     private final NetworkService networkService;
@@ -71,57 +74,31 @@ public class PERouterServiceImpl implements PERouterConnectionService {
     @SneakyThrows
     @Override
     public PERouterConnection convertToModel(PERouterConnectionRequestDto peRouterRequestDto) {
-        PERouterConnection peRouterConnection = new PERouterConnection();
-        peRouterConnection.setIp(peRouterRequestDto.getIp());
-        peRouterConnection.setPort(peRouterConnection.getPort());
-        peRouterConnection.setSwitchPort(peRouterConnection.getSwitchPort());
-        peRouterConnection.setWanIpPool(peRouterConnection.getWanIpPool());
-        peRouterConnection.setPeRouter(networkService.findOne(peRouterRequestDto.getPeRouterId()));
-        peRouterConnection.setNetworkSwitch(networkService.findOne(peRouterRequestDto.getNetworkSwitchId()));
-//
-//        modelMapper.typeMap(PERouterConnectionRequestDto.class, PERouterConnection.class)
-//                .addMappings(mapper -> {
-//                    mapper.skip(PERouterConnection::setId);
-//                    mapper.<Integer>map(PERouterConnectionRequestDto::getPeRouterId, (dest, value) -> {
-//                        try {
-//                            dest.setPeRouter(networkService.findOne(value));
-//                        } catch (Exception e) {
-//                            throw new MapperException(e);
-//                        }
-//                    });
-//                    mapper.<Integer>map(PERouterConnectionRequestDto::getNetworkSwitchId, (dest, value) -> {
-//                        try {
-//                            dest.setNetworkSwitch(networkService.findOne(value));
-//                        } catch (Exception e) {
-//                            throw new MapperException(e);
-//                        }
-//                    });
-//                });
-//        PERouterConnection peRouterConnection = modelMapper.map(peRouterRequestDto, PERouterConnection.class);
-        peRouterConnection.setIsActive(true);
-        return peRouterConnection;
+        PERouterConnection connection = new PERouterConnection();
+        connection.setIp(peRouterRequestDto.getIp());
+        connection.setPort(peRouterRequestDto.getPort());
+        connection.setSwitchPort(peRouterRequestDto.getSwitchPort());
+        connection.setWanIpPool(peRouterRequestDto.getWanIpPool());
+        connection.setPeRouter(networkService.findOne(peRouterRequestDto.getPeRouterId()));
+        connection.setNetworkSwitch(networkService.findOne(peRouterRequestDto.getNetworkSwitchId()));
+        connection.setIsActive(true);
+        return connection;
     }
 
+    @SneakyThrows
     @Override
     public PERouterConnectionResponseDto convertToDto(PERouterConnection peRouterConnection) {
-        modelMapper.typeMap(PERouterConnection.class, PERouterConnectionResponseDto.class)
-                .addMappings(mapper -> {
-                    mapper.<Network>map(PERouterConnection::getPeRouter, (dest, value) -> {
-                        try {
-                            dest.setPeRouter(networkService.convertToDto(value));
-                        } catch (Exception e) {
-                            throw new MapperException(e);
-                        }
-                    });
-                    mapper.<Network>map(PERouterConnection::getNetworkSwitch, (dest, value) -> {
-                        try {
-                            dest.setNetworkSwitch(networkService.convertToDto(value));
-                        } catch (Exception e) {
-                            throw new MapperException(e);
-                        }
-                    });
-                });
-        return modelMapper.map(peRouterConnection, PERouterConnectionResponseDto.class);
+        PERouterConnectionResponseDto responseDto = new PERouterConnectionResponseDto();
+
+        responseDto.setId(peRouterConnection.getId());
+        responseDto.setPort(peRouterConnection.getPort());
+        responseDto.setIp(peRouterConnection.getIp());
+        responseDto.setSwitchPort(peRouterConnection.getSwitchPort());
+        responseDto.setWanIpPool(peRouterConnection.getWanIpPool());
+        responseDto.setPeRouter(networkService.convertToDto(peRouterConnection.getPeRouter()));
+        responseDto.setNetworkSwitch(networkService.convertToDto(peRouterConnection.getNetworkSwitch()));
+
+        return responseDto;
     }
 
     @Override

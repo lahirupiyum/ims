@@ -8,6 +8,6 @@ import java.util.List;
 
 @NoRepositoryBean
 public interface AssetRepo <Model extends AssetAudit> extends StatusAwareRepo<Model> {
-    @Query("SELECT e FROM #{#entityName} e WHERE e.serialNumber LIKE %:serialNumber%")
+    @Query("SELECT e FROM #{#entityName} e WHERE e.serialNumber LIKE %:serialNumber% AND e.isActive = true")
     List<Model> findBySerialNumber(String serialNumber);
 }

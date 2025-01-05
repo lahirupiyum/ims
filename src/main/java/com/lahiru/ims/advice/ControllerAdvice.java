@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.Arrays;
+
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class ControllerAdvice {
@@ -40,6 +42,7 @@ public class ControllerAdvice {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StandardReponse<Object>> handleInternalServerError(Exception exception, WebRequest webRequest) {
         logError(exception, webRequest);
+        exception.printStackTrace();
         return ResponseEntityManager.internalServerError("Sorry! There must be an error in the server");
     }
 

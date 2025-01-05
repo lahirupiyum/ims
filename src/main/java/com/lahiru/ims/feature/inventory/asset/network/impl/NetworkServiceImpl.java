@@ -195,7 +195,7 @@ public class NetworkServiceImpl implements NetworkService {
 
     @Override
     public Network findOne(Integer id) throws Exception {
-        return networkRepo.findById(id).orElseThrow(() -> new NotFoundException(NETWORK));
+        return networkRepo.findActiveOne(id).orElseThrow(() -> new NotFoundException(NETWORK));
     }
 
     @Override
@@ -226,7 +226,7 @@ public class NetworkServiceImpl implements NetworkService {
         List<Type> all = typeService.getAll(AssetType.NETWORK);
         // if unable to find the required type, there might be issue with the data seeder
         return all.stream()
-                .filter(type -> type.getName().equalsIgnoreCase(networkAssetType.name()))
+                .filter(type -> type.getName().equalsIgnoreCase(networkAssetType.getDisplayName()))
                 .findAny().orElseThrow(() -> new NotFoundException("PE Router Type"));
     }
 

@@ -27,6 +27,6 @@ public class EmployeeController implements GenericBasicInfoController<EmployeeDt
     @Override
     public ResponseEntity<StandardReponse<List<EmployeeDto>>> searchByName(String key) throws Exception {
         List<EmployeeDto> employeeDtoList = employeeService.searchItem(key);
-        return null;
+        return ResponseEntityManager.ok(employeeDtoList);
     }
 }

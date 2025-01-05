@@ -26,6 +26,7 @@ import com.lahiru.ims.feature.customer.service.connection.dto.ConnectionResponse
 import com.lahiru.ims.feature.customer.service.enums.NetworkServiceType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -121,49 +122,42 @@ public class ConnectionServiceImpl implements ConnectionService {
         return convertToDto(connection);
     }
 
+    @SneakyThrows
     @Override
     public Connection convertToModel(ConnectionRequestDto connectionRequestDto) {
-        modelMapper.typeMap(ConnectionRequestDto.class, Connection.class)
-                .addMappings(mapper -> {
-                    mapper.skip(Connection::setRouterFirewallCredentials);
-                    mapper.skip(Connection::setLastMileConnection);
-                    mapper.<Integer>map(ConnectionRequestDto::getCustomerId, (dest, value) -> dest.setCustomer(getModel(value, customerService)));
-                    mapper.<Integer>map(ConnectionRequestDto::getCusRouterId, (dest, value) ->
-                            dest.setCusRouter(getModel(value, cusRouterService))
-                    );
-                    mapper.<Integer>map(ConnectionRequestDto::getPeRouterId, (dest, value) ->
-                            dest.setPeRouterConnection(getModel(value, peRouterConnectionService))
-                    );
-                });
-
-        Connection connection = modelMapper.map(connectionRequestDto, Connection.class);
+        Connection connection = new Connection();
+        connection.setRemarks(connectionRequestDto.getRemarks());
+        connection.setCustomer(customerService.findOne(connectionRequestDto.getCustomerId()));
+        connection.setPeRouterConnection(peRouterConnectionService.findOne(connectionRequestDto.getPeRouterId()));
+        connection.setCusRouter(cusRouterService.findOne(connectionRequestDto.getCusRouterId()));
         connection.setActiveStatus(true);
+        connection.setManageStatus(connectionRequestDto.getManageStatus());
+        connection.setDsp(connectionRequestDto.getDsp());
+        connection.setServiceChange(connectionRequestDto.getServiceChange());
+        connection.setTerminationDate(connectionRequestDto.getTerminationDate());
+        connection.setServiceType(connectionRequestDto.getNetworkServiceType());
+
         return connection;
     }
 
     @Override
     public ConnectionResponseDto convertToDto(Connection connection) {
-        modelMapper.typeMap(Connection.class, ConnectionResponseDto.class)
-                .addMappings(mapper -> {
-                    mapper.<LastMileConnection>map(Connection::getLastMileConnection, (dest, value) -> {
-                        dest.setLastMileConnection(getResponseDto(value, lastMileConnectionService));
-                    });
-                    mapper.<RouterFirewallCredentials>map(Connection::getRouterFirewallCredentials, (dest, value) -> {
-                        dest.setFirewallCredentials(getResponseDto(value, firewallCredentialsService));
-                    });
-                    mapper.<Customer>map(Connection::getCustomer, (dest, value) -> {
-                        dest.setCustomer(getResponseDto(value, customerService));
-                    });
-                    mapper.<CusRouter>map(Connection::getCusRouter, (dest, value) -> {
-                        dest.setCusRouter(getResponseDto(value, cusRouterService));
-                    });
-                    mapper.<PERouterConnection>map(Connection::getPeRouterConnection, (dest, value) -> {
-                        dest.setPeRouter(getResponseDto(value, peRouterConnectionService));
-                    });
-                });
+        ConnectionResponseDto responseDto = new ConnectionResponseDto();
+        responseDto.setFirewallCredentials(getResponseDto(connection.getRouterFirewallCredentials(), firewallCredentialsService));
+        responseDto.setLastMileConnection(getResponseDto(connection.getLastMileConnection(), lastMileConnectionService));
+        responseDto.setCustomer(getResponseDto(connection.getCustomer(), customerService));
+        responseDto.setCusRouter(getResponseDto(connection.getCusRouter(), cusRouterService));
+        responseDto.setPeRouter(getResponseDto(connection.getPeRouterConnection(), peRouterConnectionService));
+        responseDto.setDsp(connection.getDsp());
+        responseDto.setServiceChange(connection.getServiceChange());
+        responseDto.setTerminationDate(connection.getTerminationDate());
+        responseDto.setActiveStatus(connection.getActiveStatus());
+        responseDto.setRemarks(connection.getRemarks());
+        responseDto.setNetworkServiceType(connection.getServiceType());
+        responseDto.setManageStatus(connection.getManageStatus());
+        responseDto.setId(connection.getId());
 
-
-        return modelMapper.map(connection, ConnectionResponseDto.class);
+        return responseDto;
     }
 
     private <Model extends StatusAwareAudit, ModelService extends EntityFinderService<Model>> Model getModel(Integer id, ModelService modelService) {
