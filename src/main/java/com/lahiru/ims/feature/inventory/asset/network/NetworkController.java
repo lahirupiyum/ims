@@ -6,14 +6,14 @@ import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.dto.StandardReponse;
 import com.lahiru.ims.feature.inventory.asset.network.dto.NetworkAssetRequestDto;
 import com.lahiru.ims.feature.inventory.asset.network.dto.NetworkAssetResponseDto;
+import com.lahiru.ims.feature.inventory.manufacturer.dto.ManufacturerDto;
 import com.lahiru.ims.feature.inventory.model.dto.ModelDto;
 import com.lahiru.ims.feature.inventory.status.dto.StatusDto;
 import com.lahiru.ims.feature.inventory.type.dto.TypeDto;
 import com.lahiru.ims.utils.ResponseEntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RequestMapping("${endpoints.asset-network}")
@@ -37,7 +37,7 @@ public class NetworkController implements GenericAssetController<NetworkAssetReq
     @Override
     public ResponseEntity<StandardReponse<NetworkAssetResponseDto>> createOne(NetworkAssetRequestDto networkAssetRequestDto) throws Exception {
         NetworkAssetResponseDto network = service.createOne(networkAssetRequestDto);
-        return ResponseEntityManager.created(network,"Network");
+        return ResponseEntityManager.created(network,"Network Asset");
     }
 
     @Override
@@ -71,7 +71,31 @@ public class NetworkController implements GenericAssetController<NetworkAssetReq
     }
 
     @Override
+    public ResponseEntity<StandardReponse<List<ManufacturerDto>>> getAllManufacturer() throws Exception {
+        List<ManufacturerDto> allManufacturers = service.getAllManufacturers();
+        return ResponseEntityManager.ok(allManufacturers);
+    }
+
+    @Override
     public ResponseEntity<StandardReponse<List<NetworkAssetResponseDto>>> search(String key) throws Exception {
         return null;
+    }
+
+    @GetMapping("/pe-router/all")
+    public ResponseEntity<StandardReponse<List<NetworkAssetResponseDto>>> getAllPERouters() throws Exception {
+        List<NetworkAssetResponseDto> allPERouters = service.findAllPERouters();
+        return ResponseEntityManager.ok(allPERouters);
+    }
+
+    @GetMapping("/switch/search")
+    public ResponseEntity<StandardReponse<List<NetworkAssetResponseDto>>> searchSwitches(@RequestParam("key") String key) throws Exception {
+        List<NetworkAssetResponseDto> switchList = service.searchSwitches(key);
+        return ResponseEntityManager.ok(switchList);
+    }
+
+    @GetMapping("/router/search")
+    public ResponseEntity<StandardReponse<List<NetworkAssetResponseDto>>> searchRouters(@RequestParam("key") String key) throws Exception {
+        List<NetworkAssetResponseDto> routersList = service.searchRouters(key);
+        return ResponseEntityManager.ok(routersList);
     }
 }

@@ -8,7 +8,9 @@ import com.lahiru.ims.feature.customer.customer.dto.CustomerResponseDto;
 import com.lahiru.ims.utils.ResponseEntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -47,5 +49,11 @@ public class CustomerController implements GenericController<CustomerRequestDto,
     public ResponseEntity<StandardReponse<CustomerResponseDto>> deleteOne(int id) throws Exception {
         CustomerResponseDto customerResponseDto = customerService.deleteOne(id);
         return ResponseEntityManager.ok(customerResponseDto);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<StandardReponse<List<CustomerResponseDto>>> searchCustomers(@RequestParam("key") String key) throws Exception {
+        List<CustomerResponseDto> customersList = customerService.searchItem(key);
+        return ResponseEntityManager.ok(customersList);
     }
 }

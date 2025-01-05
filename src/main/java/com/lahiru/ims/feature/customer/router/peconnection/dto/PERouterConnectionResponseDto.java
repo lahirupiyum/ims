@@ -1,6 +1,5 @@
 package com.lahiru.ims.feature.customer.router.peconnection.dto;
 
-import com.lahiru.ims.feature.inventory.asset.network.Network;
 import com.lahiru.ims.feature.inventory.asset.network.dto.NetworkAssetResponseDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

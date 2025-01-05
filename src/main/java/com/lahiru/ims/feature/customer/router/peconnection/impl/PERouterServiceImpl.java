@@ -12,6 +12,7 @@ import com.lahiru.ims.feature.inventory.asset.network.Network;
 import com.lahiru.ims.feature.inventory.asset.network.NetworkService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -67,26 +68,36 @@ public class PERouterServiceImpl implements PERouterConnectionService {
         return convertToDto(deletedRouter);
     }
 
+    @SneakyThrows
     @Override
     public PERouterConnection convertToModel(PERouterConnectionRequestDto peRouterRequestDto) {
-        modelMapper.typeMap(PERouterConnectionRequestDto.class, PERouterConnection.class)
-                .addMappings(mapper -> {
-                    mapper.<Integer>map(PERouterConnectionRequestDto::getPeRouterId, (dest, value) -> {
-                        try {
-                            dest.setPeRouter(networkService.findOne(value));
-                        } catch (Exception e) {
-                            throw new MapperException(e);
-                        }
-                    });
-                    mapper.<Integer>map(PERouterConnectionRequestDto::getNetworkSwitchId, (dest, value) -> {
-                        try {
-                            dest.setNetworkSwitch(networkService.findOne(value));
-                        } catch (Exception e) {
-                            throw new MapperException(e);
-                        }
-                    });
-                });
-        PERouterConnection peRouterConnection = modelMapper.map(peRouterRequestDto, PERouterConnection.class);
+        PERouterConnection peRouterConnection = new PERouterConnection();
+        peRouterConnection.setIp(peRouterRequestDto.getIp());
+        peRouterConnection.setPort(peRouterConnection.getPort());
+        peRouterConnection.setSwitchPort(peRouterConnection.getSwitchPort());
+        peRouterConnection.setWanIpPool(peRouterConnection.getWanIpPool());
+        peRouterConnection.setPeRouter(networkService.findOne(peRouterRequestDto.getPeRouterId()));
+        peRouterConnection.setNetworkSwitch(networkService.findOne(peRouterRequestDto.getNetworkSwitchId()));
+//
+//        modelMapper.typeMap(PERouterConnectionRequestDto.class, PERouterConnection.class)
+//                .addMappings(mapper -> {
+//                    mapper.skip(PERouterConnection::setId);
+//                    mapper.<Integer>map(PERouterConnectionRequestDto::getPeRouterId, (dest, value) -> {
+//                        try {
+//                            dest.setPeRouter(networkService.findOne(value));
+//                        } catch (Exception e) {
+//                            throw new MapperException(e);
+//                        }
+//                    });
+//                    mapper.<Integer>map(PERouterConnectionRequestDto::getNetworkSwitchId, (dest, value) -> {
+//                        try {
+//                            dest.setNetworkSwitch(networkService.findOne(value));
+//                        } catch (Exception e) {
+//                            throw new MapperException(e);
+//                        }
+//                    });
+//                });
+//        PERouterConnection peRouterConnection = modelMapper.map(peRouterRequestDto, PERouterConnection.class);
         peRouterConnection.setIsActive(true);
         return peRouterConnection;
     }

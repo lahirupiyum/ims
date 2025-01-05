@@ -14,4 +14,6 @@ public interface VendorRepo extends JpaRepository<Vendor, Integer> {
 
     Optional<Vendor> findByIdAndIsActive(Integer id, Boolean status);
     Boolean existsByEmailAndIsActive(String email, Boolean isActive);
+
+    List<Vendor> findAllByNameContaining(String name);
 }

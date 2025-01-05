@@ -7,6 +7,7 @@ import com.lahiru.ims.feature.inventory.asset.fixed.dto.FixedAssetRequestDto;
 import com.lahiru.ims.feature.inventory.asset.fixed.dto.FixedAssetResponseDto;
 import com.lahiru.ims.feature.inventory.location.Location;
 import com.lahiru.ims.feature.inventory.location.dto.LocationResponseDto;
+import com.lahiru.ims.feature.inventory.manufacturer.dto.ManufacturerDto;
 import com.lahiru.ims.feature.inventory.model.dto.ModelDto;
 import com.lahiru.ims.feature.inventory.status.dto.StatusDto;
 import com.lahiru.ims.feature.inventory.type.dto.TypeDto;
@@ -39,6 +40,11 @@ public class FixedController implements GenericAssetController<FixedAssetRequest
     public ResponseEntity<StandardReponse<List<StatusDto>>> getAllStatus() throws Exception {
         List<StatusDto> statusList = service.getAllStatus();
         return ResponseEntityManager.ok(statusList);
+    }
+
+    @Override
+    public ResponseEntity<StandardReponse<List<ManufacturerDto>>> getAllManufacturer() throws Exception {
+        return null;
     }
 
     @Override

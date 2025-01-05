@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 class PERouterConnectionDto {
-    private String name;
     private String port;
     private String ip;
     private String wanIpPool;

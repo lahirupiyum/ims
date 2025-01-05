@@ -103,4 +103,10 @@ public class VendorServiceImpl implements VendorService {
     public Vendor findOne(Integer id) throws Exception {
         return vendorRepo.findById(id).orElseThrow(()->new NotFoundException(VENDOR));
     }
+
+    @Override
+    public List<VendorResponseDto> searchItem(String searchKey) throws Exception {
+        List<Vendor> allByNameContaining = vendorRepo.findAllByNameContaining(searchKey);
+        return allByNameContaining.stream().map(vendor -> modelMapper.map(vendor, VendorResponseDto.class)).toList();
+    }
 }

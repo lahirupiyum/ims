@@ -14,6 +14,7 @@ import com.lahiru.ims.feature.inventory.location.Location;
 import com.lahiru.ims.feature.inventory.location.LocationService;
 import com.lahiru.ims.feature.inventory.manufacturer.Manufacturer;
 import com.lahiru.ims.feature.inventory.manufacturer.ManufacturerService;
+import com.lahiru.ims.feature.inventory.manufacturer.dto.ManufacturerDto;
 import com.lahiru.ims.feature.inventory.model.Model;
 import com.lahiru.ims.feature.inventory.model.ModelService;
 import com.lahiru.ims.feature.inventory.model.dto.ModelDto;
@@ -165,6 +166,11 @@ public class FixedServiceImpl implements FixedService {
             List<StatusDto> statusDtoList = modelMapper.map(statusList, new TypeToken<List<StatusDto>>() {
             }.getType());
             return (!statusDtoList.isEmpty()) ? statusDtoList : Collections.emptyList();
+    }
+
+    @Override
+    public List<ManufacturerDto> getAllManufacturers() throws Exception {
+        return List.of();
     }
 
     @Override

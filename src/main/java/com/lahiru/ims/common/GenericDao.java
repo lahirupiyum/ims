@@ -23,7 +23,7 @@ public class GenericDao {
 
     public <Model extends BasicInfoAudit, Dto extends BasicInfo, Service extends GenericBasicInfoService<Model>> Model checkAndCreate(AssetType assetType, Dto dto, Service service) {
         try {
-            if (dto.getId() == null) {
+            if (dto.getId() == null || dto.getId() == 0) {
                 return service.createOne(dto.getName(), assetType);
             }
             else return service.findOne(dto.getId());
@@ -35,7 +35,7 @@ public class GenericDao {
 
     public <Model extends IDNameAudit, Dto extends BasicInfo, Service extends GenericBasicCustomerService<Model, Dto>> Model checkAndCreate(Dto dto, Service service) {
         try {
-            if (dto.getId() == null)
+            if (dto.getId() == null || dto.getId() == 0)
                 return service.createOne(dto.getName());
             else return service.findOne(dto.getId());
         }

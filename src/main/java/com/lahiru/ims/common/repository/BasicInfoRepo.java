@@ -11,4 +11,7 @@ import java.util.List;
 public interface BasicInfoRepo <Model extends BasicInfoAudit> extends IDNameRepo<Model>{
     @Query("SELECT e FROM #{#entityName} e WHERE e.assetType = :assetType")
     List<Model> findAllByAssetType(AssetType assetType);
+
+    @Query("SELECT COUNT(e) > 0 FROM #{#entityName} e WHERE e.name = :name")
+    Boolean isExistsByName(String name);
 }

@@ -17,4 +17,7 @@ public interface NetworkService extends
         ModelMapperService<Network, NetworkAssetRequestDto, NetworkAssetResponseDto>,
         EntityFinderService<Network> {
 
+        List<NetworkAssetResponseDto> findAllPERouters() throws Exception;
+        List<NetworkAssetResponseDto> searchSwitches(String serialNumber) throws Exception;
+        List<NetworkAssetResponseDto> searchRouters(String serialNumber) throws  Exception;
 }

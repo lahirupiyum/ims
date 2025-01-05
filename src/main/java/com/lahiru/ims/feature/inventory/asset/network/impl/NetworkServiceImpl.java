@@ -5,6 +5,8 @@ import com.lahiru.ims.common.GenericDao;
 import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.enums.AssetType;
 import com.lahiru.ims.exception.NotFoundException;
+import com.lahiru.ims.feature.inventory.manufacturer.dto.ManufacturerDto;
+import com.lahiru.ims.feature.inventory.type.enums.NetworkAsset;
 import com.lahiru.ims.feature.inventory.asset.network.Network;
 import com.lahiru.ims.feature.inventory.asset.network.NetworkRepo;
 import com.lahiru.ims.feature.inventory.asset.network.NetworkService;
@@ -136,6 +138,7 @@ public class NetworkServiceImpl implements NetworkService {
             network.setStatus(status);
             network.setLocation(location);
             network.setVendor(vendor);
+            network.setIsActive(true);
             return network;
         } catch (Exception e) {
             log.error("Model Mapper Converting Error Where {} -> {} ", NETWORK, "ConvertDtoToEntity");
@@ -155,7 +158,7 @@ public class NetworkServiceImpl implements NetworkService {
     // Get Model , Type ,Status
     @Override
     public List<ModelDto> getAllModels() throws Exception {
-        List<Model> modelList = modelService.getAll(AssetType.FIXED);
+        List<Model> modelList = modelService.getAll(AssetType.NETWORK);
         List<ModelDto> modelDtoList = modelMapper.map(modelList, new TypeToken<List<ModelDto>>() {
         }.getType());
         return (!modelDtoList.isEmpty()) ? modelDtoList : Collections.emptyList();
@@ -163,7 +166,7 @@ public class NetworkServiceImpl implements NetworkService {
 
     @Override
     public List<TypeDto> getAllTypes() throws Exception {
-        List<Type> typeList = typeService.getAll(AssetType.FIXED);
+        List<Type> typeList = typeService.getAll(AssetType.NETWORK);
         List<TypeDto> typeDtoList = modelMapper.map(typeList, new TypeToken<List<TypeDto>>() {
         }.getType());
         return (!typeDtoList.isEmpty()) ? typeDtoList : Collections.emptyList();
@@ -171,10 +174,17 @@ public class NetworkServiceImpl implements NetworkService {
 
     @Override
     public List<StatusDto> getAllStatus() throws Exception {
-        List<Type> statusList = typeService.getAll(AssetType.FIXED);
+        List<Status> statusList = statusService.getAll(AssetType.NETWORK);
         List<StatusDto> statusDtoList = modelMapper.map(statusList, new TypeToken<List<StatusDto>>() {
         }.getType());
         return (!statusDtoList.isEmpty()) ? statusDtoList : Collections.emptyList();
+    }
+
+    @Override
+    public List<ManufacturerDto> getAllManufacturers() throws Exception {
+        List<Manufacturer> all = manufacturerService.getAll(AssetType.NETWORK);
+        List<ManufacturerDto> manufacturerDtoList = modelMapper.map(all, new TypeToken<List<ManufacturerDto>>(){}.getType());
+        return (!manufacturerDtoList.isEmpty()) ? manufacturerDtoList : Collections.emptyList();
     }
 
     @Override
@@ -187,4 +197,37 @@ public class NetworkServiceImpl implements NetworkService {
     public Network findOne(Integer id) throws Exception {
         return networkRepo.findById(id).orElseThrow(() -> new NotFoundException(NETWORK));
     }
+
+    @Override
+    public List<NetworkAssetResponseDto> findAllPERouters() throws Exception {
+        Type peRouterType = getRequiredType(NetworkAsset.PROVIDER_EDGE_ROUTER);
+        List<Network> allByType = networkRepo.findAllByType(peRouterType);
+        return allByType.stream().map(this::convertToDto).toList();
+    }
+
+    @Override
+    public List<NetworkAssetResponseDto> searchSwitches(String serialNumber) throws Exception {
+        return searchNetworkAssets(NetworkAsset.SWITCH, serialNumber);
+    }
+
+    @Override
+    public List<NetworkAssetResponseDto> searchRouters(String serialNumber) throws Exception {
+        return searchNetworkAssets(NetworkAsset.ROUTER, serialNumber);
+    }
+
+    private List<NetworkAssetResponseDto> searchNetworkAssets(NetworkAsset networkAssetType, String serialNumber) throws Exception {
+        Type requiredType = getRequiredType(networkAssetType);
+        return networkRepo.searchByTypeAndSerialNumber(requiredType, serialNumber).stream()
+                .map(this::convertToDto)
+                .toList();
+    }
+
+    private Type getRequiredType(NetworkAsset networkAssetType) throws Exception {
+        List<Type> all = typeService.getAll(AssetType.NETWORK);
+        // if unable to find the required type, there might be issue with the data seeder
+        return all.stream()
+                .filter(type -> type.getName().equalsIgnoreCase(networkAssetType.name()))
+                .findAny().orElseThrow(() -> new NotFoundException("PE Router Type"));
+    }
+
 }

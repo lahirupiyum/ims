@@ -2,6 +2,7 @@ package com.lahiru.ims.common.service;
 
 import com.lahiru.ims.common.dto.feature.AssetRequestDto;
 import com.lahiru.ims.common.dto.feature.AssetResponseDto;
+import com.lahiru.ims.feature.inventory.manufacturer.dto.ManufacturerDto;
 import com.lahiru.ims.feature.inventory.model.dto.ModelDto;
 import com.lahiru.ims.feature.inventory.status.dto.StatusDto;
 import com.lahiru.ims.feature.inventory.type.dto.TypeDto;
@@ -14,6 +15,8 @@ public interface GenericAssetService<RequestDto extends AssetRequestDto, Respons
     List<TypeDto> getAllTypes() throws Exception;
 
     List<StatusDto> getAllStatus() throws Exception;
+
+    List<ManufacturerDto> getAllManufacturers() throws Exception;
 
     List<ResponseDto> search(String serialNumber) throws Exception;
 }

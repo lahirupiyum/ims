@@ -6,6 +6,7 @@ import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.dto.StandardReponse;
 import com.lahiru.ims.feature.inventory.asset.mobile.dto.MobileAssetRequestDto;
 import com.lahiru.ims.feature.inventory.asset.mobile.dto.MobileAssetResponseDto;
+import com.lahiru.ims.feature.inventory.manufacturer.dto.ManufacturerDto;
 import com.lahiru.ims.feature.inventory.model.dto.ModelDto;
 import com.lahiru.ims.feature.inventory.status.dto.StatusDto;
 import com.lahiru.ims.feature.inventory.type.dto.TypeDto;
@@ -70,6 +71,11 @@ public class MobileController implements GenericAssetController<MobileAssetReque
     public ResponseEntity<StandardReponse<List<StatusDto>>> getAllStatus() throws Exception {
         List<StatusDto> allStatus = service.getAllStatus();
         return ResponseEntityManager.ok(allStatus);
+    }
+
+    @Override
+    public ResponseEntity<StandardReponse<List<ManufacturerDto>>> getAllManufacturer() throws Exception {
+        return null;
     }
 
     @Override

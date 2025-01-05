@@ -10,7 +10,9 @@ import com.lahiru.ims.utils.ResponseEntityManager;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -53,6 +55,12 @@ public class VendorController implements GenericController<VendorRequestDto, Ven
     public ResponseEntity<StandardReponse<VendorResponseDto>> deleteOne(int id) throws Exception {
         VendorResponseDto deletedVendor = vendorService.deleteOne(id);
         return ResponseEntityManager.ok(deletedVendor);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<StandardReponse<List<VendorResponseDto>>> searchVendors(@RequestParam("key") String key) throws Exception {
+        List<VendorResponseDto> vendorList = vendorService.searchItem(key);
+        return ResponseEntityManager.ok(vendorList);
     }
 
 }
