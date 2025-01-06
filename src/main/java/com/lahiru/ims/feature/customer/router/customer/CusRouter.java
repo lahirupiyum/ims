@@ -19,7 +19,7 @@ public class CusRouter extends StatusAwareAudit {
     private String wanIpPool;
     private String lanIpPool;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "network_asset_id")
     private Network networkAsset;
 }

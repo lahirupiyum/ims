@@ -19,6 +19,7 @@ import java.util.List;
 @RequestMapping("${endpoints.service-connection}")
 @RequiredArgsConstructor
 public class ConnectionController implements GenericController<ConnectionRequestDto, ConnectionResponseDto> {
+    public static final String SERVICE_CONNECTION = "Service Connection";
     private final ConnectionService connectionService;
 
     @Override
@@ -50,18 +51,18 @@ public class ConnectionController implements GenericController<ConnectionRequest
     @Override
     public ResponseEntity<StandardReponse<ConnectionResponseDto>> createOne(ConnectionRequestDto connectionRequestDto) throws Exception {
         ConnectionResponseDto one = connectionService.createOne(connectionRequestDto);
-        return ResponseEntityManager.created(one, "Service Connection");
+        return ResponseEntityManager.created(one, SERVICE_CONNECTION);
     }
 
     @Override
     public ResponseEntity<StandardReponse<ConnectionResponseDto>> updateOne(int id, ConnectionRequestDto connectionRequestDto) throws Exception {
         ConnectionResponseDto connectionResponseDto = connectionService.updateOne(id, connectionRequestDto);
-        return ResponseEntityManager.ok(connectionResponseDto);
+        return ResponseEntityManager.updated(connectionResponseDto, SERVICE_CONNECTION);
     }
 
     @Override
     public ResponseEntity<StandardReponse<ConnectionResponseDto>> deleteOne(int id) throws Exception {
         ConnectionResponseDto connectionResponseDto = connectionService.deleteOne(id);
-        return ResponseEntityManager.ok(connectionResponseDto);
+        return ResponseEntityManager.ok(connectionResponseDto, SERVICE_CONNECTION + " has been terminated!");
     }
 }

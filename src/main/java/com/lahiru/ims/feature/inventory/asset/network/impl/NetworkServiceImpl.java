@@ -4,8 +4,14 @@ package com.lahiru.ims.feature.inventory.asset.network.impl;
 import com.lahiru.ims.common.GenericDao;
 import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.enums.AssetType;
+import com.lahiru.ims.common.model.BasicInfoAudit;
+import com.lahiru.ims.exception.DataConflictException;
 import com.lahiru.ims.exception.NotFoundException;
+import com.lahiru.ims.exception.ValidationException;
+import com.lahiru.ims.feature.customer.router.customer.CusRouterRepo;
+import com.lahiru.ims.feature.customer.router.peconnection.PERouterConnectionRepo;
 import com.lahiru.ims.feature.inventory.manufacturer.dto.ManufacturerDto;
+import com.lahiru.ims.feature.inventory.status.enums.NetworkAssetStatus;
 import com.lahiru.ims.feature.inventory.type.enums.NetworkAsset;
 import com.lahiru.ims.feature.inventory.asset.network.Network;
 import com.lahiru.ims.feature.inventory.asset.network.NetworkRepo;
@@ -40,6 +46,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -55,19 +62,17 @@ public class NetworkServiceImpl implements NetworkService {
     private final GenericDao genericDao;
     private final NetworkRepo networkRepo;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final CusRouterRepo cusRouterRepo;
+    private final PERouterConnectionRepo peRouterConnectionRepo;
+
     @Override
     public PaginationResponse<NetworkAssetResponseDto> findByPageWise(int page, int pageSize) throws Exception {
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<Network> networkPage = networkRepo.findAllByPageWise(pageable);
         try {
-            List<NetworkAssetResponseDto> responseDtoList = modelMapper
-                    .map(networkPage.stream().toList(),
-                            new TypeToken<List<NetworkAssetResponseDto>>() {
-                            }.getType());
-            return new PaginationResponse<>(
-                    responseDtoList,
-                    (int) networkPage.getTotalElements()
-            );
+            List<NetworkAssetResponseDto> responseDtoList = modelMapper.map(networkPage.stream().toList(), new TypeToken<List<NetworkAssetResponseDto>>() {
+            }.getType());
+            return new PaginationResponse<>(responseDtoList, (int) networkPage.getTotalElements());
         } catch (Exception e) {
             log.info("Model Mapper Error Generate From findByPageWise");
             throw new RuntimeException(e);
@@ -93,13 +98,20 @@ public class NetworkServiceImpl implements NetworkService {
         Network savedNetwork = networkRepo.save(toSave);
         log.info("Saved NETWORK Asset !");
         return convertToDto(savedNetwork);
-
     }
 
     @Override
     public NetworkAssetResponseDto updateOne(int id, NetworkAssetRequestDto networkAssetRequestDto) throws Exception {
+        String validationError = "You cannot update %s for this asset !";
         Network foundNetwork = networkRepo.findActiveOne(id).orElseThrow(() -> new NotFoundException(NETWORK));
+
         Network updatedNetwork = convertToModel(networkAssetRequestDto);
+        boolean isInUse = cusRouterRepo.isOneExistsByAsset(foundNetwork) || peRouterConnectionRepo.isExistsByNetworkAsset(foundNetwork);
+        boolean isStatusCorrect = !isInUse || Objects.equals(updatedNetwork.getStatus(), foundNetwork.getStatus());
+        boolean isTypeCorrect = !isInUse || Objects.equals(updatedNetwork.getType(), foundNetwork.getType());
+        if (!isStatusCorrect) throw new ValidationException(String.format(validationError, "status"));
+        if (!isTypeCorrect) throw new ValidationException(String.format(validationError, "type"));
+
         updatedNetwork.setId(foundNetwork.getId());
         Network saveUpdated = networkRepo.saveAndFlush(updatedNetwork);
         return convertToDto(saveUpdated);
@@ -183,7 +195,8 @@ public class NetworkServiceImpl implements NetworkService {
     @Override
     public List<ManufacturerDto> getAllManufacturers() throws Exception {
         List<Manufacturer> all = manufacturerService.getAll(AssetType.NETWORK);
-        List<ManufacturerDto> manufacturerDtoList = modelMapper.map(all, new TypeToken<List<ManufacturerDto>>(){}.getType());
+        List<ManufacturerDto> manufacturerDtoList = modelMapper.map(all, new TypeToken<List<ManufacturerDto>>() {
+        }.getType());
         return (!manufacturerDtoList.isEmpty()) ? manufacturerDtoList : Collections.emptyList();
     }
 
@@ -215,19 +228,42 @@ public class NetworkServiceImpl implements NetworkService {
         return searchNetworkAssets(NetworkAsset.ROUTER, serialNumber);
     }
 
+    @Override
+    public Network updateAssetStatus(Integer id, NetworkAssetStatus status) throws Exception {
+        Network networkAsset = findOne(id);
+        return updateAssetStatus(networkAsset, status);
+    }
+
+    @Override
+    public Network updateAssetStatus(Network networkAsset, NetworkAssetStatus status) throws Exception {
+        if (networkAsset.getId() == null) throw new NotFoundException("Network Asset");
+        List<Status> all = statusService.getAll(AssetType.NETWORK);
+        Status networkStatus = all.stream().filter(networkAssetStatus -> networkAssetStatus.getName().equals(status.getDisplayName())).findAny()
+                // if unable to find required type, there might be issue with the data seeder
+                .orElseThrow(() -> new NotFoundException("Unable to find required status due to Server Error", true));
+
+
+        if (!status.equals(NetworkAssetStatus.AVAILABLE) && !networkAsset.getStatus().getName().equals(NetworkAssetStatus.AVAILABLE.getDisplayName())) {
+            throw new DataConflictException(String.format("%s with serial no: %s is already %s",
+                    networkAsset.getType().getName(),
+                    networkAsset.getSerialNumber(),
+                    networkAsset.getStatus().getName().toLowerCase()), true);
+        }
+        else {
+            networkAsset.setStatus(networkStatus);
+            return networkRepo.save(networkAsset);
+        }
+    }
+
     private List<NetworkAssetResponseDto> searchNetworkAssets(NetworkAsset networkAssetType, String serialNumber) throws Exception {
         Type requiredType = getRequiredType(networkAssetType);
-        return networkRepo.searchByTypeAndSerialNumber(requiredType, serialNumber).stream()
-                .map(this::convertToDto)
-                .toList();
+        return networkRepo.searchByTypeAndSerialNumber(requiredType, serialNumber).stream().map(this::convertToDto).toList();
     }
 
     private Type getRequiredType(NetworkAsset networkAssetType) throws Exception {
         List<Type> all = typeService.getAll(AssetType.NETWORK);
         // if unable to find the required type, there might be issue with the data seeder
-        return all.stream()
-                .filter(type -> type.getName().equalsIgnoreCase(networkAssetType.getDisplayName()))
-                .findAny().orElseThrow(() -> new NotFoundException("PE Router Type"));
+        return all.stream().filter(type -> type.getName().equalsIgnoreCase(networkAssetType.getDisplayName())).findAny().orElseThrow(() -> new NotFoundException("PE Router Type"));
     }
 
 }

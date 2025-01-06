@@ -22,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 public class MobileController implements GenericAssetController<MobileAssetRequestDto, MobileAssetResponseDto> {
+    public static final String MOBILE_ASSET = "Mobile Asset";
     private final MobileService service;
 
     @Override
@@ -40,19 +41,19 @@ public class MobileController implements GenericAssetController<MobileAssetReque
     @Override
     public ResponseEntity<StandardReponse<MobileAssetResponseDto>> createOne(MobileAssetRequestDto mobileAssetRequestDto) throws Exception {
         MobileAssetResponseDto mobileSaved = service.createOne(mobileAssetRequestDto);
-        return ResponseEntityManager.created(mobileSaved, "Mobile");
+        return ResponseEntityManager.created(mobileSaved, MOBILE_ASSET);
     }
 
     @Override
     public ResponseEntity<StandardReponse<MobileAssetResponseDto>> updateOne(int id, MobileAssetRequestDto mobileAssetRequestDto) throws Exception {
         MobileAssetResponseDto mobileUpdated = service.updateOne(id, mobileAssetRequestDto);
-        return ResponseEntityManager.ok(mobileUpdated);
+        return ResponseEntityManager.updated(mobileUpdated, MOBILE_ASSET);
     }
 
     @Override
     public ResponseEntity<StandardReponse<MobileAssetResponseDto>> deleteOne(int id) throws Exception {
         MobileAssetResponseDto mobileDelete = service.deleteOne(id);
-        return ResponseEntityManager.ok(mobileDelete);
+        return ResponseEntityManager.deleted(mobileDelete, MOBILE_ASSET);
     }
 
     @Override

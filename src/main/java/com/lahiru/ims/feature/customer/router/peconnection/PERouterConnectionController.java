@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("${endpoints.router-provider-edge}")
 @RequiredArgsConstructor
 public class PERouterConnectionController implements GenericController<PERouterConnectionRequestDto, PERouterConnectionResponseDto> {
+    public static final String PROVIDER_EDGE = "Provider edge connection";
     private final PERouterConnectionService peRouterConnectionService;
 
     @Override
@@ -34,18 +35,18 @@ public class PERouterConnectionController implements GenericController<PERouterC
     @Override
     public ResponseEntity<StandardReponse<PERouterConnectionResponseDto>> createOne(PERouterConnectionRequestDto peRouterRequestDto) throws Exception {
         PERouterConnectionResponseDto createdPERouter = peRouterConnectionService.createOne(peRouterRequestDto);
-        return ResponseEntityManager.created(createdPERouter, "Provider edge");
+        return ResponseEntityManager.created(createdPERouter, PROVIDER_EDGE);
     }
 
     @Override
     public ResponseEntity<StandardReponse<PERouterConnectionResponseDto>> updateOne(int id, PERouterConnectionRequestDto peRouterRequestDto) throws Exception {
         PERouterConnectionResponseDto updatedRouter = peRouterConnectionService.updateOne(id, peRouterRequestDto);
-        return ResponseEntityManager.ok(updatedRouter);
+        return ResponseEntityManager.updated(updatedRouter, PROVIDER_EDGE);
     }
 
     @Override
     public ResponseEntity<StandardReponse<PERouterConnectionResponseDto>> deleteOne(int id) throws Exception {
         PERouterConnectionResponseDto deletedRouter = peRouterConnectionService.deleteOne(id);
-        return ResponseEntityManager.ok(deletedRouter);
+        return ResponseEntityManager.ok(deletedRouter, PROVIDER_EDGE + " has been terminated!");
     }
 }

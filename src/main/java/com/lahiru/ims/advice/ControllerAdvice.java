@@ -3,6 +3,7 @@ package com.lahiru.ims.advice;
 import com.lahiru.ims.common.dto.StandardReponse;
 import com.lahiru.ims.exception.DataConflictException;
 import com.lahiru.ims.exception.NotFoundException;
+import com.lahiru.ims.exception.ValidationException;
 import com.lahiru.ims.utils.ResponseEntityManager;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -37,6 +38,12 @@ public class ControllerAdvice {
     public ResponseEntity<StandardReponse<Object>> handleConflict(DataConflictException dataConflictException, WebRequest webRequest) {
         logError(dataConflictException, webRequest);
         return ResponseEntityManager.conflict(dataConflictException.getMessage());
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<StandardReponse<Object>> handleValidationError(ValidationException validationException, WebRequest webRequest) {
+        logError(validationException, webRequest);
+        return ResponseEntityManager.unprocessableEntity(validationException.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

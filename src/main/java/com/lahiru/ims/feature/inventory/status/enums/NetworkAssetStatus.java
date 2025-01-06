@@ -7,6 +7,7 @@ public enum NetworkAssetStatus implements DataSeederEnum {
     SOLD("Sold"),
     RENTED("Rented"),
     LOANED("Loaned"),
+    AVAILABLE("Available"),
     ;
 
     private final String displayName;

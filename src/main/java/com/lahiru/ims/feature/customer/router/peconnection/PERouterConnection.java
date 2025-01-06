@@ -23,7 +23,7 @@ public class PERouterConnection extends StatusAwareAudit {
     @JoinColumn(name = "pe_router")
     private Network peRouter;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "switch")
     private Network networkSwitch;
 }

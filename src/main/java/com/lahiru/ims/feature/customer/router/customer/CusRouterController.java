@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("${endpoints.router-customer}")
 @RequiredArgsConstructor
 public class CusRouterController implements GenericController<CusRouterRequestDto, CusRouterResponseDto> {
+    public static final String CUSTOMER_ROUTER = "Customer Router";
     private final CusRouterService cusRouterService;
 
     @Override
@@ -34,18 +35,18 @@ public class CusRouterController implements GenericController<CusRouterRequestDt
     @Override
     public ResponseEntity<StandardReponse<CusRouterResponseDto>> createOne(CusRouterRequestDto cusRouterRequestDto) throws Exception {
         CusRouterResponseDto createdRouter = cusRouterService.createOne(cusRouterRequestDto);
-        return ResponseEntityManager.created(createdRouter, "Customer Router");
+        return ResponseEntityManager.created(createdRouter, CUSTOMER_ROUTER);
     }
 
     @Override
     public ResponseEntity<StandardReponse<CusRouterResponseDto>> updateOne(int id, CusRouterRequestDto cusRouterRequestDto) throws Exception {
         CusRouterResponseDto updatedRouter = cusRouterService.updateOne(id, cusRouterRequestDto);
-        return ResponseEntityManager.ok(updatedRouter);
+        return ResponseEntityManager.updated(updatedRouter, CUSTOMER_ROUTER);
     }
 
     @Override
     public ResponseEntity<StandardReponse<CusRouterResponseDto>> deleteOne(int id) throws Exception {
         CusRouterResponseDto deletedRouter = cusRouterService.deleteOne(id);
-        return ResponseEntityManager.ok(deletedRouter);
+        return ResponseEntityManager.deleted(deletedRouter, CUSTOMER_ROUTER);
     }
 }

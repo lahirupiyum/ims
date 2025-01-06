@@ -20,6 +20,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class NetworkController implements GenericAssetController<NetworkAssetRequestDto, NetworkAssetResponseDto> {
+    public static final String NETWORK_ASSET = "Network Asset";
     private final NetworkService service;
 
     @Override
@@ -37,19 +38,19 @@ public class NetworkController implements GenericAssetController<NetworkAssetReq
     @Override
     public ResponseEntity<StandardReponse<NetworkAssetResponseDto>> createOne(NetworkAssetRequestDto networkAssetRequestDto) throws Exception {
         NetworkAssetResponseDto network = service.createOne(networkAssetRequestDto);
-        return ResponseEntityManager.created(network,"Network Asset");
+        return ResponseEntityManager.created(network, NETWORK_ASSET);
     }
 
     @Override
     public ResponseEntity<StandardReponse<NetworkAssetResponseDto>> updateOne(int id, NetworkAssetRequestDto networkAssetRequestDto) throws Exception {
         NetworkAssetResponseDto networkAssetResponseDto = service.updateOne(id, networkAssetRequestDto);
-        return ResponseEntityManager.ok(networkAssetResponseDto);
+        return ResponseEntityManager.updated(networkAssetResponseDto, NETWORK_ASSET);
     }
 
     @Override
     public ResponseEntity<StandardReponse<NetworkAssetResponseDto>> deleteOne(int id) throws Exception {
         NetworkAssetResponseDto networkAssetResponseDto = service.deleteOne(id);
-        return ResponseEntityManager.ok(networkAssetResponseDto);
+        return ResponseEntityManager.deleted(networkAssetResponseDto, NETWORK_ASSET);
     }
 
     @Override

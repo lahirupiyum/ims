@@ -10,6 +10,7 @@ import com.lahiru.ims.feature.customer.router.peconnection.dto.PERouterConnectio
 import com.lahiru.ims.feature.customer.router.peconnection.dto.PERouterConnectionResponseDto;
 import com.lahiru.ims.feature.inventory.asset.network.Network;
 import com.lahiru.ims.feature.inventory.asset.network.NetworkService;
+import com.lahiru.ims.feature.inventory.status.enums.NetworkAssetStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -79,8 +80,8 @@ public class PERouterServiceImpl implements PERouterConnectionService {
         connection.setPort(peRouterRequestDto.getPort());
         connection.setSwitchPort(peRouterRequestDto.getSwitchPort());
         connection.setWanIpPool(peRouterRequestDto.getWanIpPool());
-        connection.setPeRouter(networkService.findOne(peRouterRequestDto.getPeRouterId()));
-        connection.setNetworkSwitch(networkService.findOne(peRouterRequestDto.getNetworkSwitchId()));
+        connection.setPeRouter(networkService.updateAssetStatus(peRouterRequestDto.getPeRouterId(), NetworkAssetStatus.IN_USE));
+        connection.setNetworkSwitch(networkService.updateAssetStatus(peRouterRequestDto.getNetworkSwitchId(), NetworkAssetStatus.IN_USE));
         connection.setIsActive(true);
         return connection;
     }

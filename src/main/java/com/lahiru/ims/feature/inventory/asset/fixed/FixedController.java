@@ -22,7 +22,8 @@ import java.util.List;
 @RequestMapping("${endpoints.asset-fixed}")
 @RequiredArgsConstructor
 public class FixedController implements GenericAssetController<FixedAssetRequestDto, FixedAssetResponseDto> {
-   private final FixedService service;
+    public static final String FIXED_ASSET = "Fixed Asset";
+    private final FixedService service;
 
     @Override
     public ResponseEntity<StandardReponse<List<ModelDto>>> getAllModels() throws Exception {
@@ -67,19 +68,19 @@ public class FixedController implements GenericAssetController<FixedAssetRequest
     @Override
     public ResponseEntity<StandardReponse<FixedAssetResponseDto>> createOne(FixedAssetRequestDto fixedAssetRequestDto) throws Exception {
         FixedAssetResponseDto fixedAsset = service.createOne(fixedAssetRequestDto);
-        return ResponseEntityManager.created(fixedAsset, "Fixed");
+        return ResponseEntityManager.created(fixedAsset, FIXED_ASSET);
     }
 
     @Override
     public ResponseEntity<StandardReponse<FixedAssetResponseDto>> updateOne(int id, FixedAssetRequestDto fixedAssetRequestDto) throws Exception {
         FixedAssetResponseDto assetResponseDto = service.updateOne(id, fixedAssetRequestDto);
-        return ResponseEntityManager.created(assetResponseDto, "Fixed");
+        return ResponseEntityManager.updated(assetResponseDto, FIXED_ASSET);
     }
 
     @Override
     public ResponseEntity<StandardReponse<FixedAssetResponseDto>> deleteOne(int id) throws Exception {
         FixedAssetResponseDto fixedAssetResponseDto = service.deleteOne(id);
-        return ResponseEntityManager.ok(fixedAssetResponseDto);
+        return ResponseEntityManager.deleted(fixedAssetResponseDto, FIXED_ASSET);
     }
 
 
