@@ -2,7 +2,7 @@ server:
     port: 8081
     servlet:
         context-path: /api/v1
-
+    address: 0.0.0.0
 spring:
     application:
         name: ims
@@ -14,13 +14,22 @@ spring:
 
 endpoints:
     vendor: /vendor
-    branch: /branch
+    location: /location
+    customer: /customer
+    employee: /employee
     asset: /asset
     asset-network: ${endpoints.asset}/network
-    asset-network-device: ${endpoints.asset-network}/device
-    asset-network-device-model: ${endpoints.asset-network-device}/model
-    asset-network-device-manufacturer: ${endpoints.asset-network-device}/manufacturer
-    asset-network-device-status: ${endpoints.asset-network-device}/status
-    asset-network-device-type: ${endpoints.asset-network-device}/type
+    asset-fixed: ${endpoints.asset}/fixed
+    asset-mobile: ${endpoints.asset}/mobile
 
+    router: /router
+    router-provider-edge: ${endpoints.router}/provider-edge
+    router-customer: ${endpoints.router}/customer
+
+    last-mile: /last-mile
+    last-mile-provider: ${endpoints.last-mile}/provider
+    last-mile-media: ${endpoints.last-mile}/media
+
+    service: /service
+    service-connection: ${endpoints.service}/connection
 
