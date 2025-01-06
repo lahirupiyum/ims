@@ -1,8 +1,8 @@
 package com.lahiru.ims.feature.inventory.employee;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.lahiru.ims.common.repository.IDNameRepo;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EmployeeRepo extends JpaRepository<Employee, Integer> {
+public interface EmployeeRepo extends IDNameRepo<Employee> {
 }

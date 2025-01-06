@@ -10,7 +10,9 @@ import com.lahiru.ims.utils.ResponseEntityManager;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VendorController implements GenericController<VendorRequestDto, VendorResponseDto> {
 
+    public static final String VENDOR = "Vendor";
     private final VendorService vendorService;
 
     @Override
@@ -39,20 +42,26 @@ public class VendorController implements GenericController<VendorRequestDto, Ven
     public ResponseEntity<StandardReponse<VendorResponseDto>> createOne(VendorRequestDto requestDto)
             throws Exception {
         VendorResponseDto vendor = vendorService.createOne(requestDto);
-        return ResponseEntityManager.created(vendor, "Vendor");
+        return ResponseEntityManager.created(vendor, VENDOR);
     }
 
     @Override
     public ResponseEntity<StandardReponse<VendorResponseDto>> updateOne(int id, @Valid VendorRequestDto requestDto)
             throws Exception {
         VendorResponseDto vendor = vendorService.updateOne(id, requestDto);
-        return ResponseEntityManager.ok(vendor);
+        return ResponseEntityManager.updated(vendor, VENDOR);
     }
 
     @Override
     public ResponseEntity<StandardReponse<VendorResponseDto>> deleteOne(int id) throws Exception {
         VendorResponseDto deletedVendor = vendorService.deleteOne(id);
-        return ResponseEntityManager.ok(deletedVendor);
+        return ResponseEntityManager.deleted(deletedVendor, VENDOR);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<StandardReponse<List<VendorResponseDto>>> searchVendors(@RequestParam("key") String key) throws Exception {
+        List<VendorResponseDto> vendorList = vendorService.searchItem(key);
+        return ResponseEntityManager.ok(vendorList);
     }
 
 }

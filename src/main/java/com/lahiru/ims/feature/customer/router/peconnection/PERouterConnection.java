@@ -1,26 +1,29 @@
-package com.lahiru.ims.feature.customer.router.provideredge;
+package com.lahiru.ims.feature.customer.router.peconnection;
 
 import com.lahiru.ims.common.model.StatusAwareAudit;
 import com.lahiru.ims.feature.inventory.asset.network.Network;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class PERouter extends StatusAwareAudit {
-    private String name;
+public class PERouterConnection extends StatusAwareAudit {
     private String port;
     private String ip;
     private String wanIpPool;
     private String switchPort;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "network_asset_id")
-    private Network networkAsset;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pe_router")
+    private Network peRouter;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "switch")
     private Network networkSwitch;
 }

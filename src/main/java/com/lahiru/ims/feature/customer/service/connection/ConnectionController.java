@@ -8,7 +8,9 @@ import com.lahiru.ims.feature.customer.service.connection.dto.ConnectionResponse
 import com.lahiru.ims.utils.ResponseEntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,12 +19,27 @@ import java.util.List;
 @RequestMapping("${endpoints.service-connection}")
 @RequiredArgsConstructor
 public class ConnectionController implements GenericController<ConnectionRequestDto, ConnectionResponseDto> {
+    public static final String SERVICE_CONNECTION = "Service Connection";
     private final ConnectionService connectionService;
 
     @Override
     public ResponseEntity<PaginationResponse<ConnectionResponseDto>> getAllByPageWise(int page, int pageSize) throws Exception {
         PaginationResponse<ConnectionResponseDto> byPageWise = connectionService.findByPageWise(page, pageSize);
         return ResponseEntityManager.page(byPageWise);
+    }
+
+    @GetMapping("/ill")
+    public ResponseEntity<PaginationResponse<ConnectionResponseDto>> getIllPageWise(@RequestParam int page,
+                                                                                    @RequestParam int pageSize) throws Exception {
+        PaginationResponse<ConnectionResponseDto> illByPageWise = connectionService.findIllByPageWise(page, pageSize);
+        return ResponseEntityManager.page(illByPageWise);
+    }
+
+    @GetMapping("/mpls")
+    public ResponseEntity<PaginationResponse<ConnectionResponseDto>> getMplsByPageWise(@RequestParam int page,
+                                                                                       @RequestParam int pageSize) throws Exception {
+        PaginationResponse<ConnectionResponseDto> mplsByPageWise = connectionService.findMplsByPageWise(page, pageSize);
+        return ResponseEntityManager.page(mplsByPageWise);
     }
 
     @Override
@@ -34,18 +51,18 @@ public class ConnectionController implements GenericController<ConnectionRequest
     @Override
     public ResponseEntity<StandardReponse<ConnectionResponseDto>> createOne(ConnectionRequestDto connectionRequestDto) throws Exception {
         ConnectionResponseDto one = connectionService.createOne(connectionRequestDto);
-        return ResponseEntityManager.created(one, "Service Connection");
+        return ResponseEntityManager.created(one, SERVICE_CONNECTION);
     }
 
     @Override
     public ResponseEntity<StandardReponse<ConnectionResponseDto>> updateOne(int id, ConnectionRequestDto connectionRequestDto) throws Exception {
         ConnectionResponseDto connectionResponseDto = connectionService.updateOne(id, connectionRequestDto);
-        return ResponseEntityManager.ok(connectionResponseDto);
+        return ResponseEntityManager.updated(connectionResponseDto, SERVICE_CONNECTION);
     }
 
     @Override
     public ResponseEntity<StandardReponse<ConnectionResponseDto>> deleteOne(int id) throws Exception {
         ConnectionResponseDto connectionResponseDto = connectionService.deleteOne(id);
-        return ResponseEntityManager.ok(connectionResponseDto);
+        return ResponseEntityManager.ok(connectionResponseDto, SERVICE_CONNECTION + " has been terminated!");
     }
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class TypeDto extends BasicInfo {
-    public TypeDto(int id, String name) {
+    public TypeDto(Integer id, String name) {
         super(id, name);
     }
 }

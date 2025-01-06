@@ -8,7 +8,6 @@ import com.lahiru.ims.feature.inventory.employee.dto.EmployeeDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,5 +35,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee findOne(Integer id) throws Exception {
         return employeeRepo.findById(id).orElseThrow(() -> new NotFoundException("Employee"));
+    }
+
+    @Override
+    public List<EmployeeDto> searchItem(String searchKey) throws Exception {
+        List<Employee> employees = employeeRepo.searchByName(searchKey);
+        return employees.stream().map(employee -> modelMapper.map(employee, EmployeeDto.class)).toList();
     }
 }

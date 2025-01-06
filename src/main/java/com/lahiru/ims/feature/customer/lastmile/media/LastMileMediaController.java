@@ -22,4 +22,9 @@ public class LastMileMediaController implements GenericBasicInfoController<LastM
         List<LastMileMediaDto> all = lastMileMediaService.getAll();
         return ResponseEntityManager.ok(all);
     }
+
+    @Override
+    public ResponseEntity<StandardReponse<List<LastMileMediaDto>>> searchByName(String key) throws Exception {
+        return null;
+    }
 }

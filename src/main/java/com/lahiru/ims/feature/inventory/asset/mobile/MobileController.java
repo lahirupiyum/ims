@@ -6,6 +6,7 @@ import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.dto.StandardReponse;
 import com.lahiru.ims.feature.inventory.asset.mobile.dto.MobileAssetRequestDto;
 import com.lahiru.ims.feature.inventory.asset.mobile.dto.MobileAssetResponseDto;
+import com.lahiru.ims.feature.inventory.manufacturer.dto.ManufacturerDto;
 import com.lahiru.ims.feature.inventory.model.dto.ModelDto;
 import com.lahiru.ims.feature.inventory.status.dto.StatusDto;
 import com.lahiru.ims.feature.inventory.type.dto.TypeDto;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 public class MobileController implements GenericAssetController<MobileAssetRequestDto, MobileAssetResponseDto> {
+    public static final String MOBILE_ASSET = "Mobile Asset";
     private final MobileService service;
 
     @Override
@@ -39,19 +41,19 @@ public class MobileController implements GenericAssetController<MobileAssetReque
     @Override
     public ResponseEntity<StandardReponse<MobileAssetResponseDto>> createOne(MobileAssetRequestDto mobileAssetRequestDto) throws Exception {
         MobileAssetResponseDto mobileSaved = service.createOne(mobileAssetRequestDto);
-        return ResponseEntityManager.created(mobileSaved, "Mobile");
+        return ResponseEntityManager.created(mobileSaved, MOBILE_ASSET);
     }
 
     @Override
     public ResponseEntity<StandardReponse<MobileAssetResponseDto>> updateOne(int id, MobileAssetRequestDto mobileAssetRequestDto) throws Exception {
         MobileAssetResponseDto mobileUpdated = service.updateOne(id, mobileAssetRequestDto);
-        return ResponseEntityManager.ok(mobileUpdated);
+        return ResponseEntityManager.updated(mobileUpdated, MOBILE_ASSET);
     }
 
     @Override
     public ResponseEntity<StandardReponse<MobileAssetResponseDto>> deleteOne(int id) throws Exception {
         MobileAssetResponseDto mobileDelete = service.deleteOne(id);
-        return ResponseEntityManager.ok(mobileDelete);
+        return ResponseEntityManager.deleted(mobileDelete, MOBILE_ASSET);
     }
 
     @Override
@@ -70,5 +72,15 @@ public class MobileController implements GenericAssetController<MobileAssetReque
     public ResponseEntity<StandardReponse<List<StatusDto>>> getAllStatus() throws Exception {
         List<StatusDto> allStatus = service.getAllStatus();
         return ResponseEntityManager.ok(allStatus);
+    }
+
+    @Override
+    public ResponseEntity<StandardReponse<List<ManufacturerDto>>> getAllManufacturer() throws Exception {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<StandardReponse<List<MobileAssetResponseDto>>> search(String key) throws Exception {
+        return null;
     }
 }

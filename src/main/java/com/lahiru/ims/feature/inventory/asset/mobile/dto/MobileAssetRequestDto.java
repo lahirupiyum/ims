@@ -16,10 +16,10 @@ public class MobileAssetRequestDto extends AssetRequestDto {
     private int warrantyExpireDate;
     private int purchaseDate;
     private String invoiceNumber;
-private EmployeeDto employee;
+    private EmployeeDto employee;
 
-    public MobileAssetRequestDto(String assetNumber, String serialNumber, int quantity, int statusId, Integer vendorId, Integer locationId, ManufacturerDto manufacturer, TypeDto type, ModelDto model, int warrantyExpireDate, int purchaseDate, String invoiceNumber, EmployeeDto employee) {
-        super(assetNumber, serialNumber, quantity, statusId, vendorId, locationId, manufacturer, type, model);
+    public MobileAssetRequestDto(String assetNumber, String serialNumber, ManufacturerDto manufacturer, TypeDto type, ModelDto model, Integer statusId, Integer vendorId, Integer locationId, int warrantyExpireDate, int purchaseDate, String invoiceNumber, EmployeeDto employee) {
+        super(assetNumber, serialNumber, manufacturer, type, model, statusId, vendorId, locationId);
         this.warrantyExpireDate = warrantyExpireDate;
         this.purchaseDate = purchaseDate;
         this.invoiceNumber = invoiceNumber;

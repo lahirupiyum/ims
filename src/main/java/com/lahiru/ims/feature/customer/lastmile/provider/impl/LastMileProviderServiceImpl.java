@@ -35,4 +35,12 @@ public class LastMileProviderServiceImpl implements LastMileProviderService {
     public LastMileProvider findOne(Integer id) throws Exception {
         return lastMileProviderRepo.findById(id).orElseThrow(() -> new NotFoundException("Last Mile Provider"));
     }
+
+    @Override
+    public List<LastMileProviderDto> searchItem(String searchKey) throws Exception {
+        List<LastMileProvider> lastMileProviderList = lastMileProviderRepo.searchByName(searchKey);
+        return lastMileProviderList.stream()
+                .map(provider -> modelMapper.map(provider, LastMileProviderDto.class))
+                .toList();
+    }
 }

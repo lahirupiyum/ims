@@ -1,4 +1,4 @@
-package com.lahiru.ims.feature.customer.router.provideredge.dto;
+package com.lahiru.ims.feature.customer.router.peconnection.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class PERouterDto {
-    private String name;
+class PERouterConnectionDto {
     private String port;
     private String ip;
     private String wanIpPool;

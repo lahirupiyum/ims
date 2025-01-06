@@ -17,9 +17,19 @@ public class ResponseEntityManager {
 
     public static <T> ResponseEntity<StandardReponse<T>> created(T data, String resourceName) {
         return ResponseEntity.status(CREATED_RESPONSE_VALUE)
-                .body(new StandardReponse<>(CREATED_RESPONSE_VALUE,
-                        String.format("%s has been created successfully!", resourceName),
-                        data));
+                .body(new StandardReponse<>(CREATED_RESPONSE_VALUE, String.format("%s has been created successfully!", resourceName), data));
+    }
+
+    public static <T> ResponseEntity<StandardReponse<T>> updated(T data, String resourceName) {
+        return ResponseEntity.ok().body(new StandardReponse<>(String.format("%s has been updated successfully!", resourceName), data));
+    }
+
+    public static <T> ResponseEntity<StandardReponse<T>> deleted(T data, String resourceName) {
+        return ResponseEntity.ok().body(new StandardReponse<>(String.format("%s has been deleted successfully!", resourceName), data));
+    }
+
+    public static <T> ResponseEntity<StandardReponse<T>> ok(T data, String message) {
+        return ResponseEntity.ok().body(new StandardReponse<>(message, data));
     }
 
     public static <T> ResponseEntity<StandardReponse<T>> ok(T data) {
@@ -40,6 +50,10 @@ public class ResponseEntityManager {
 
     public static ResponseEntity<StandardReponse<Object>> badRequest(String message) {
         return error(HttpStatus.BAD_REQUEST.value(), message);
+    }
+
+    public static ResponseEntity<StandardReponse<Object>> unprocessableEntity(String message) {
+        return error(HttpStatus.UNPROCESSABLE_ENTITY.value(), message);
     }
 
     public static ResponseEntity<StandardReponse<Object>> internalServerError(String message) {

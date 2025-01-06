@@ -1,4 +1,4 @@
-package com.lahiru.ims.feature.customer.router.provideredge.dto;
+package com.lahiru.ims.feature.customer.router.peconnection.dto;
 
 import com.lahiru.ims.feature.inventory.asset.network.dto.NetworkAssetResponseDto;
 import lombok.Data;
@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class PERouterResponseDto extends PERouterDto {
+public class PERouterConnectionResponseDto extends PERouterConnectionDto {
     private Integer id;
-    private NetworkAssetResponseDto asset;
+    private NetworkAssetResponseDto peRouter;
     private NetworkAssetResponseDto networkSwitch;
 }

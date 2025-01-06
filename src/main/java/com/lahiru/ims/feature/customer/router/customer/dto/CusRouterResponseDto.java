@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class CusRouterResponseDto extends CusRouterDto {
+    private Integer id;
     private NetworkAssetResponseDto asset;
 }

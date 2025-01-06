@@ -31,7 +31,6 @@ public class VendorServiceImpl implements VendorService {
     public static final String VENDOR_EMAIL = "Vendor email";
     private static final Logger log = LoggerFactory.getLogger(VendorServiceImpl.class);
     private final VendorRepo vendorRepo;
-    //    private  final VendorMappers vendorMappers;
     private final boolean activeStatus = true;
     private final ModelMapper modelMapper;
     @Override
@@ -103,5 +102,11 @@ public class VendorServiceImpl implements VendorService {
     @Override
     public Vendor findOne(Integer id) throws Exception {
         return vendorRepo.findById(id).orElseThrow(()->new NotFoundException(VENDOR));
+    }
+
+    @Override
+    public List<VendorResponseDto> searchItem(String searchKey) throws Exception {
+        List<Vendor> allByNameContaining = vendorRepo.findAllByNameContaining(searchKey);
+        return allByNameContaining.stream().map(vendor -> modelMapper.map(vendor, VendorResponseDto.class)).toList();
     }
 }

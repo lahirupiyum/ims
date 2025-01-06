@@ -10,12 +10,11 @@ import com.lahiru.ims.feature.inventory.asset.fixed.FixedRepo;
 import com.lahiru.ims.feature.inventory.asset.fixed.FixedService;
 import com.lahiru.ims.feature.inventory.asset.fixed.dto.FixedAssetRequestDto;
 import com.lahiru.ims.feature.inventory.asset.fixed.dto.FixedAssetResponseDto;
-import com.lahiru.ims.feature.inventory.asset.network.Network;
-import com.lahiru.ims.feature.inventory.asset.network.dto.NetworkAssetRequestDto;
 import com.lahiru.ims.feature.inventory.location.Location;
 import com.lahiru.ims.feature.inventory.location.LocationService;
 import com.lahiru.ims.feature.inventory.manufacturer.Manufacturer;
 import com.lahiru.ims.feature.inventory.manufacturer.ManufacturerService;
+import com.lahiru.ims.feature.inventory.manufacturer.dto.ManufacturerDto;
 import com.lahiru.ims.feature.inventory.model.Model;
 import com.lahiru.ims.feature.inventory.model.ModelService;
 import com.lahiru.ims.feature.inventory.model.dto.ModelDto;
@@ -31,7 +30,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,7 +129,6 @@ public class FixedServiceImpl implements FixedService {
         fixed.setPurchaseDate(dto.getPurchaseDate());
         fixed.setAssetNumber(dto.getAssetNumber());
         fixed.setSerialNumber(dto.getSerialNumber());
-        fixed.setQuantity(dto.getQuantity());
         return fixed;
     }
     @Override
@@ -146,7 +143,7 @@ public class FixedServiceImpl implements FixedService {
 
     // Get Model , Type ,Status
     @Override
-    public List<ModelDto> getAllModel() throws Exception {
+    public List<ModelDto> getAllModels() throws Exception {
 
             List<Model> modelList = modelService.getAll(AssetType.FIXED);
             List<ModelDto> modelDtoList = modelMapper.map(modelList, new TypeToken<List<ModelDto>>() {
@@ -155,12 +152,13 @@ public class FixedServiceImpl implements FixedService {
     }
 
     @Override
-    public List<TypeDto> getAllType() throws Exception {
+    public List<TypeDto> getAllTypes() throws Exception {
             List<Type> typeList = typeService.getAll(AssetType.FIXED);
             List<TypeDto> typeDtoList = modelMapper.map(typeList, new TypeToken<List<TypeDto>>() {
             }.getType());
             return (!typeDtoList.isEmpty()) ? typeDtoList : Collections.emptyList();
     }
+
 
     @Override
     public List<StatusDto> getAllStatus() throws Exception {
@@ -168,6 +166,16 @@ public class FixedServiceImpl implements FixedService {
             List<StatusDto> statusDtoList = modelMapper.map(statusList, new TypeToken<List<StatusDto>>() {
             }.getType());
             return (!statusDtoList.isEmpty()) ? statusDtoList : Collections.emptyList();
+    }
+
+    @Override
+    public List<ManufacturerDto> getAllManufacturers() throws Exception {
+        return List.of();
+    }
+
+    @Override
+    public List<FixedAssetResponseDto> search(String serialNumber) throws Exception {
+        return List.of();
     }
 
 }

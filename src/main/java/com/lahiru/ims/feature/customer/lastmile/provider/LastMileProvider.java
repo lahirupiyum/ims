@@ -1,6 +1,6 @@
 package com.lahiru.ims.feature.customer.lastmile.provider;
 
-import com.lahiru.ims.common.model.BasicCustomerAudit;
+import com.lahiru.ims.common.model.IDNameAudit;
 import jakarta.persistence.Entity;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class LastMileProvider extends BasicCustomerAudit {
+public class LastMileProvider extends IDNameAudit {
     public LastMileProvider(String name) {
         super(name);
     }

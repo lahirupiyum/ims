@@ -23,4 +23,10 @@ public class EmployeeController implements GenericBasicInfoController<EmployeeDt
         List<EmployeeDto> all = employeeService.getAll();
         return ResponseEntityManager.ok(all);
     }
+
+    @Override
+    public ResponseEntity<StandardReponse<List<EmployeeDto>>> searchByName(String key) throws Exception {
+        List<EmployeeDto> employeeDtoList = employeeService.searchItem(key);
+        return ResponseEntityManager.ok(employeeDtoList);
+    }
 }

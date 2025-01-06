@@ -110,4 +110,10 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer findOne(Integer id) throws Exception {
         return customerRepo.findActiveOne(id).orElseThrow(() -> new NotFoundException(CUSTOMER));
     }
+
+    @Override
+    public List<CustomerResponseDto> searchItem(String searchKey) throws Exception {
+        List<Customer> allCustomers = customerRepo.findAllByNameContaining(searchKey);
+        return allCustomers.stream().map(this::convertToDto).toList();
+    }
 }

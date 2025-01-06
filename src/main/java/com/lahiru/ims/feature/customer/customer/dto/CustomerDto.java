@@ -16,6 +16,6 @@ class CustomerDto {
     private String contactNo;
     private String email;
     private EmployeeDto accountManager;
-    private String vsnl;
+    private String vsnlId;
     private String asNumber;
 }

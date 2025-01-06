@@ -3,6 +3,7 @@ package com.lahiru.ims.advice;
 import com.lahiru.ims.common.dto.StandardReponse;
 import com.lahiru.ims.exception.DataConflictException;
 import com.lahiru.ims.exception.NotFoundException;
+import com.lahiru.ims.exception.ValidationException;
 import com.lahiru.ims.utils.ResponseEntityManager;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+
+import java.util.Arrays;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -37,9 +40,16 @@ public class ControllerAdvice {
         return ResponseEntityManager.conflict(dataConflictException.getMessage());
     }
 
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<StandardReponse<Object>> handleValidationError(ValidationException validationException, WebRequest webRequest) {
+        logError(validationException, webRequest);
+        return ResponseEntityManager.unprocessableEntity(validationException.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StandardReponse<Object>> handleInternalServerError(Exception exception, WebRequest webRequest) {
         logError(exception, webRequest);
+        exception.printStackTrace();
         return ResponseEntityManager.internalServerError("Sorry! There must be an error in the server");
     }
 
