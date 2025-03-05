@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("${endpoints.service-connection}")
 @RequiredArgsConstructor
 public class ConnectionController implements GenericController<ConnectionRequestDto, ConnectionResponseDto> {
-    public static final String SERVICE_CONNECTION = "Service Connection";
+    public static final String SERVICE_CONNECTION = "Connection";
     private final ConnectionService connectionService;
 
     @Override

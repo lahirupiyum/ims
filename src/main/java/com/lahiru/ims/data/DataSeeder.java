@@ -42,7 +42,7 @@ public class DataSeeder implements CommandLineRunner {
 
     private void seedLocations () {
         if (locationRepo.count() == 0) {
-            List<Location> locations = new ArrayList<>(List.of(new Location("Taj-POP", "colombo-02"), new Location("Orin-POP", "colombo-07")));
+            List<Location> locations = new ArrayList<>(List.of(new Location("Taj Samudra", "colombo-02"), new Location("Orion City", "colombo-07")));
             locationRepo.saveAll(locations);
         }
     }
