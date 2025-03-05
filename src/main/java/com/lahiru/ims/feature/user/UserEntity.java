@@ -1,4 +1,4 @@
-package com.lahiru.ims.features.user;
+package com.lahiru.ims.feature.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,9 +1,8 @@
-package com.lahiru.ims.features.user.impl;
+package com.lahiru.ims.feature.user.impl;
 
-import com.lahiru.ims.exception.DataConflictException;
-import com.lahiru.ims.features.user.UserEntity;
-import com.lahiru.ims.features.user.UserRepo;
-import com.lahiru.ims.features.user.UserService;
+import com.lahiru.ims.feature.user.UserEntity;
+import com.lahiru.ims.feature.user.UserRepo;
+import com.lahiru.ims.feature.user.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

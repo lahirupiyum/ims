@@ -1,4 +1,4 @@
-package com.lahiru.ims.features.auth.dto;
+package com.lahiru.ims.feature.auth.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package com.lahiru.ims.security;
 
-import com.lahiru.ims.features.user.UserEntity;
-import com.lahiru.ims.features.user.UserRepo;
+import com.lahiru.ims.feature.user.UserEntity;
+import com.lahiru.ims.feature.user.UserRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;

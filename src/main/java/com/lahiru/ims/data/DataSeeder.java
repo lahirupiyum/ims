@@ -14,6 +14,7 @@ import com.lahiru.ims.feature.inventory.status.enums.NetworkAssetStatus;
 import com.lahiru.ims.feature.inventory.type.Type;
 import com.lahiru.ims.feature.inventory.type.TypeRepo;
 import com.lahiru.ims.feature.inventory.type.enums.NetworkAsset;
+import com.lahiru.ims.feature.user.UserService;
 import com.lahiru.ims.utils.EnumUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -29,9 +30,11 @@ public class DataSeeder implements CommandLineRunner {
     private final TypeRepo typeRepo;
     private final StatusRepo statusRepo;
     private final LocationRepo locationRepo;
+    private final UserService userService;
 
     @Override
     public void run(String... args) throws Exception {
+        userService.saveUser("admin", "1234");
         seedBasicStatus();
         seedBasicTypes();
         seedLocations();

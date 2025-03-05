@@ -1,8 +1,8 @@
-package com.lahiru.ims.features.auth.impl;
+package com.lahiru.ims.feature.auth.impl;
 
-import com.lahiru.ims.features.auth.AuthService;
-import com.lahiru.ims.features.auth.dto.AuthRequestDto;
-import com.lahiru.ims.features.auth.dto.AuthResponseDto;
+import com.lahiru.ims.feature.auth.AuthService;
+import com.lahiru.ims.feature.auth.dto.AuthRequestDto;
+import com.lahiru.ims.feature.auth.dto.AuthResponseDto;
 import com.lahiru.ims.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

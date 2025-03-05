@@ -1,7 +1,7 @@
-package com.lahiru.ims.features.auth;
+package com.lahiru.ims.feature.auth;
 
-import com.lahiru.ims.features.auth.dto.AuthRequestDto;
-import com.lahiru.ims.features.auth.dto.AuthResponseDto;
+import com.lahiru.ims.feature.auth.dto.AuthRequestDto;
+import com.lahiru.ims.feature.auth.dto.AuthResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

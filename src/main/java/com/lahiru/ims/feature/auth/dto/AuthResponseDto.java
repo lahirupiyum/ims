@@ -1,4 +1,4 @@
-package com.lahiru.ims.features.auth.dto;
+package com.lahiru.ims.feature.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
