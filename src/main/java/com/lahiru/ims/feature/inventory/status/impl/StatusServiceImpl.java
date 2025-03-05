@@ -29,7 +29,7 @@ public class StatusServiceImpl implements StatusService {
 
     @Override
     public List<Status> getAll(AssetType assetType) throws Exception {
-        List<Status> statusList = repository.findAll();
+        List<Status> statusList = repository.findAllByAssetType(assetType);
         return (!statusList.isEmpty()) ? statusList : Collections.emptyList();
     }
 }

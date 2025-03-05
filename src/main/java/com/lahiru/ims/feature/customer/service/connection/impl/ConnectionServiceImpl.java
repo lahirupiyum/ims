@@ -6,17 +6,14 @@ import com.lahiru.ims.common.service.EntityFinderService;
 import com.lahiru.ims.common.service.ModelMapperService;
 import com.lahiru.ims.exception.MapperException;
 import com.lahiru.ims.exception.NotFoundException;
-import com.lahiru.ims.feature.customer.customer.Customer;
 import com.lahiru.ims.feature.customer.customer.CustomerService;
 import com.lahiru.ims.feature.customer.lastmile.connection.LastMileConnection;
 import com.lahiru.ims.feature.customer.lastmile.connection.LastMileConnectionService;
 import com.lahiru.ims.feature.customer.lastmile.connection.dto.LastMileConnectionRequestDto;
-import com.lahiru.ims.feature.customer.router.customer.CusRouter;
 import com.lahiru.ims.feature.customer.router.customer.CusRouterService;
 import com.lahiru.ims.feature.customer.router.firewallcredentials.RouterFirewallCredentials;
 import com.lahiru.ims.feature.customer.router.firewallcredentials.RouterFirewallCredentialsService;
-import com.lahiru.ims.feature.customer.router.firewallcredentials.dto.RouterFirewallCredentialsDto;
-import com.lahiru.ims.feature.customer.router.peconnection.PERouterConnection;
+import com.lahiru.ims.feature.customer.router.firewallcredentials.dto.RouterFirewallCredentialsRequestDto;
 import com.lahiru.ims.feature.customer.router.peconnection.PERouterConnectionService;
 import com.lahiru.ims.feature.customer.service.connection.Connection;
 import com.lahiru.ims.feature.customer.service.connection.ConnectionRepo;
@@ -82,7 +79,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public ConnectionResponseDto createOne(ConnectionRequestDto connectionRequestDto) throws Exception {
         LastMileConnectionRequestDto lastMileConnectionDto = connectionRequestDto.getLastMileConnection();
-        RouterFirewallCredentialsDto firewallCredentials = connectionRequestDto.getFirewallCredentials();
+        RouterFirewallCredentialsRequestDto firewallCredentials = connectionRequestDto.getFirewallCredentials();
 
         LastMileConnection createdLastMileConnection = lastMileConnectionService.createOne(lastMileConnectionDto);
         RouterFirewallCredentials routerFirewallCredentials = (firewallCredentials == null) ? null : firewallCredentialsService.createOne(firewallCredentials);
@@ -98,17 +95,11 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public ConnectionResponseDto updateOne(int id, ConnectionRequestDto connectionRequestDto) throws Exception {
         Connection fetchedConnection = connectionRepo.findById(id).orElseThrow(() -> new NotFoundException("Service Connection"));
-        Integer lastMileConnectionId = fetchedConnection.getLastMileConnection().getId();
-        Integer firewallCredentialsID = fetchedConnection.getRouterFirewallCredentials().getId();
-
-        LastMileConnection lastMileConnection = lastMileConnectionService.updateOne(lastMileConnectionId, connectionRequestDto.getLastMileConnection());
-
-        RouterFirewallCredentialsDto firewallCredentials = connectionRequestDto.getFirewallCredentials();
-        RouterFirewallCredentials routerFirewallCredentials = (firewallCredentials == null) ? null : firewallCredentialsService.updateOne(firewallCredentialsID, firewallCredentials);
 
         Connection connection = convertToModel(connectionRequestDto);
-        connection.setLastMileConnection(lastMileConnection);
-        connection.setRouterFirewallCredentials(routerFirewallCredentials);
+        connection.setId(id);
+        connection.setLastMileConnection(fetchedConnection.getLastMileConnection());
+        connection.setRouterFirewallCredentials(fetchedConnection.getRouterFirewallCredentials());
 
         connectionRepo.save(connection);
         return convertToDto(connection);

@@ -1,6 +1,6 @@
 package com.lahiru.ims.feature.customer.service.connection.dto;
 
-import com.lahiru.ims.feature.customer.router.firewallcredentials.dto.RouterFirewallCredentialsDto;
+import com.lahiru.ims.feature.customer.router.firewallcredentials.dto.RouterFirewallCredentialsRequestDto;
 import com.lahiru.ims.feature.customer.service.enums.ManageStatus;
 import com.lahiru.ims.feature.customer.service.enums.NetworkServiceType;
 import lombok.Data;
@@ -17,5 +17,4 @@ public class ConnectionDto {
     private String remarks;
     private NetworkServiceType networkServiceType;
     private ManageStatus manageStatus;
-    private RouterFirewallCredentialsDto firewallCredentials;
 }

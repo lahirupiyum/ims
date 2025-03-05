@@ -45,7 +45,8 @@ public class FixedController implements GenericAssetController<FixedAssetRequest
 
     @Override
     public ResponseEntity<StandardReponse<List<ManufacturerDto>>> getAllManufacturer() throws Exception {
-        return null;
+        List<ManufacturerDto> manufacturerDtoList = service.getAllManufacturers();
+        return ResponseEntityManager.ok(manufacturerDtoList);
     }
 
     @Override

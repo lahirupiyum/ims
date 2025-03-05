@@ -77,7 +77,7 @@ public class MobileServiceImpl implements MobileService {
 
     @Override
     public List<StatusDto> getAllStatus() throws Exception {
-        List<Type> statusList = typeService.getAll(AssetType.MOBILE);
+        List<Status> statusList = statusService.getAll(AssetType.MOBILE);
         List<StatusDto> statusDtoList = modelMapper.map(statusList, new TypeToken<List<StatusDto>>() {
         }.getType());
         return (!statusDtoList.isEmpty()) ? statusDtoList : Collections.emptyList();
@@ -85,7 +85,10 @@ public class MobileServiceImpl implements MobileService {
 
     @Override
     public List<ManufacturerDto> getAllManufacturers() throws Exception {
-        return List.of();
+        List<Manufacturer> manufacturerList = manufacturerService.getAll(AssetType.MOBILE);
+        List<ManufacturerDto> manufacturerDtoList = modelMapper.map(manufacturerList, new TypeToken<List<StatusDto>>() {
+        }.getType());
+        return (!manufacturerDtoList.isEmpty()) ? manufacturerDtoList : Collections.emptyList();
     }
 
     @Override
@@ -143,21 +146,14 @@ public class MobileServiceImpl implements MobileService {
     }
     @Override
     public Mobile convertToModel(MobileAssetRequestDto mobileAssetRequestDto) throws Exception {
-        ModelMapper modelMapper1 = new ModelMapper();
-        modelMapper1.addMappings(new PropertyMap<MobileAssetRequestDto, Mobile>() {
-            @Override
-            protected void configure() {
-                skip(destination.getId());
-                skip(destination.getEmployee());
-                skip(destination.getStatus());
-                skip(destination.getModel());
-                skip(destination.getType());
-                skip(destination.getLocation());
-                skip(destination.getManufacturer());
-                skip(destination.getVendor());
-            }
-        });
-        Mobile mobile = modelMapper1.map(mobileAssetRequestDto, Mobile.class);
+        Mobile mobile = new Mobile();
+
+        mobile.setInvoiceNumber(mobileAssetRequestDto.getInvoiceNumber());
+        mobile.setPurchaseDate(mobileAssetRequestDto.getPurchaseDate());
+        mobile.setWarrantyExpireDate(mobileAssetRequestDto.getWarrantyExpireDate());
+        mobile.setAssetNumber(mobileAssetRequestDto.getAssetNumber());
+        mobile.setSerialNumber(mobileAssetRequestDto.getSerialNumber());
+
         Manufacturer manufacturer = genericDao.checkAndCreate(AssetType.MOBILE, mobileAssetRequestDto.getManufacturer(), manufacturerService);
         Type type = genericDao.checkAndCreate(AssetType.MOBILE, mobileAssetRequestDto.getType(), typeService);
         Model model = genericDao.checkAndCreate(AssetType.MOBILE, mobileAssetRequestDto.getModel(), modelService);
@@ -179,11 +175,6 @@ public class MobileServiceImpl implements MobileService {
     @Override
     public MobileAssetResponseDto convertToDto(Mobile mobile) throws Exception {
         try {
-            modelMapper.typeMap(Mobile.class, MobileAssetResponseDto.class).addMappings(mapper -> {
-                mapper.map(src ->
-                        src.getEmployee().getId(), MobileAssetResponseDto::setEmployee
-                );
-            });
             return modelMapper.map(mobile, MobileAssetResponseDto.class);
         } catch (Exception e) {
             throw new Exception(e);

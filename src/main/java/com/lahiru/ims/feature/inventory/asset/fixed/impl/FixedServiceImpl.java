@@ -121,6 +121,7 @@ public class FixedServiceImpl implements FixedService {
             fixed.setStatus(status);
             fixed.setLocation(location);
             fixed.setVendor(vendor);
+            fixed.setIsActive(true);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -144,7 +145,6 @@ public class FixedServiceImpl implements FixedService {
     // Get Model , Type ,Status
     @Override
     public List<ModelDto> getAllModels() throws Exception {
-
             List<Model> modelList = modelService.getAll(AssetType.FIXED);
             List<ModelDto> modelDtoList = modelMapper.map(modelList, new TypeToken<List<ModelDto>>() {
             }.getType());
@@ -162,7 +162,7 @@ public class FixedServiceImpl implements FixedService {
 
     @Override
     public List<StatusDto> getAllStatus() throws Exception {
-            List<Type> statusList = typeService.getAll(AssetType.FIXED);
+            List<Status> statusList = statusService.getAll(AssetType.FIXED);
             List<StatusDto> statusDtoList = modelMapper.map(statusList, new TypeToken<List<StatusDto>>() {
             }.getType());
             return (!statusDtoList.isEmpty()) ? statusDtoList : Collections.emptyList();
@@ -170,7 +170,8 @@ public class FixedServiceImpl implements FixedService {
 
     @Override
     public List<ManufacturerDto> getAllManufacturers() throws Exception {
-        return List.of();
+        List<Manufacturer> manufacturerList = manufacturerService.getAll(AssetType.FIXED);
+        return modelMapper.map(manufacturerList, new TypeToken<List<ManufacturerDto>>(){}.getType());
     }
 
     @Override

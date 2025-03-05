@@ -219,6 +219,20 @@ public class NetworkServiceImpl implements NetworkService {
     }
 
     @Override
+    public List<NetworkAssetResponseDto> findAllSwitches() throws Exception {
+        Type swtichType = getRequiredType(NetworkAsset.SWITCH);
+        List<Network> allByType = networkRepo.findAllByType(swtichType);
+        return allByType.stream().map(this::convertToDto).toList();
+    }
+
+    @Override
+    public List<NetworkAssetResponseDto> findAllRouters() throws Exception {
+        Type swtichType = getRequiredType(NetworkAsset.ROUTER);
+        List<Network> allByType = networkRepo.findAllByType(swtichType);
+        return allByType.stream().map(this::convertToDto).toList();
+    }
+
+    @Override
     public List<NetworkAssetResponseDto> searchSwitches(String serialNumber) throws Exception {
         return searchNetworkAssets(NetworkAsset.SWITCH, serialNumber);
     }
@@ -242,8 +256,11 @@ public class NetworkServiceImpl implements NetworkService {
                 // if unable to find required type, there might be issue with the data seeder
                 .orElseThrow(() -> new NotFoundException("Unable to find required status due to Server Error", true));
 
+        boolean isPeRouterOrSwitchInUseAndTryToUseAgain = (networkAsset.getType().getName().equals(NetworkAsset.PROVIDER_EDGE_ROUTER.getDisplayName()) || networkAsset.getType().getName().equals(NetworkAsset.SWITCH.getDisplayName()))
+                && status.equals(NetworkAssetStatus.IN_USE)
+                && networkAsset.getStatus().getName().equals(NetworkAssetStatus.IN_USE.getDisplayName());
 
-        if (!status.equals(NetworkAssetStatus.AVAILABLE) && !networkAsset.getStatus().getName().equals(NetworkAssetStatus.AVAILABLE.getDisplayName())) {
+        if (!isPeRouterOrSwitchInUseAndTryToUseAgain && !status.equals(NetworkAssetStatus.AVAILABLE) && !networkAsset.getStatus().getName().equals(NetworkAssetStatus.AVAILABLE.getDisplayName())) {
             throw new DataConflictException(String.format("%s with serial no: %s is already %s",
                     networkAsset.getType().getName(),
                     networkAsset.getSerialNumber(),

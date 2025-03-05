@@ -19,7 +19,6 @@ public class RouterFirewallCredentials extends StatusAwareAudit {
     public RouterFirewallCredentials(String username, String password) {
         this.username = username;
         this.password = password;
-        super.setIsActive(true);
     }
 
     public RouterFirewallCredentials(Integer id, String username, String password) {

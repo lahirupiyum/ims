@@ -34,7 +34,7 @@ public class TypeServiceImpl implements TypeService {
 
     @Override
     public List<Type> getAll(AssetType assetType) throws Exception {
-        List<Type> typeList = repository.findAll();
+        List<Type> typeList = repository.findAllByAssetType(assetType);
         return (!typeList.isEmpty()) ? typeList : Collections.emptyList();
     }
 }

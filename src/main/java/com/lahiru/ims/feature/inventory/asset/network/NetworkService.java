@@ -15,6 +15,8 @@ public interface NetworkService extends
         EntityFinderService<Network> {
 
         List<NetworkAssetResponseDto> findAllPERouters() throws Exception;
+        List<NetworkAssetResponseDto> findAllSwitches() throws Exception;
+        List<NetworkAssetResponseDto> findAllRouters() throws Exception;
         List<NetworkAssetResponseDto> searchSwitches(String serialNumber) throws Exception;
         List<NetworkAssetResponseDto> searchRouters(String serialNumber) throws  Exception;
 

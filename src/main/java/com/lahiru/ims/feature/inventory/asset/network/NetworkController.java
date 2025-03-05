@@ -88,6 +88,18 @@ public class NetworkController implements GenericAssetController<NetworkAssetReq
         return ResponseEntityManager.ok(allPERouters);
     }
 
+    @GetMapping("/switch/all")
+    public ResponseEntity<StandardReponse<List<NetworkAssetResponseDto>>> getAllSwitches() throws Exception {
+        List<NetworkAssetResponseDto> switchList = service.findAllSwitches();
+        return ResponseEntityManager.ok(switchList);
+    }
+
+    @GetMapping("/router/all")
+    public ResponseEntity<StandardReponse<List<NetworkAssetResponseDto>>> getAllRouters() throws Exception {
+        List<NetworkAssetResponseDto> routersList = service.findAllRouters();
+        return ResponseEntityManager.ok(routersList);
+    }
+
     @GetMapping("/switch/search")
     public ResponseEntity<StandardReponse<List<NetworkAssetResponseDto>>> searchSwitches(@RequestParam("key") String key) throws Exception {
         List<NetworkAssetResponseDto> switchList = service.searchSwitches(key);

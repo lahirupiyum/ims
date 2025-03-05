@@ -14,4 +14,7 @@ public interface BasicInfoRepo <Model extends BasicInfoAudit> extends IDNameRepo
 
     @Query("SELECT COUNT(e) > 0 FROM #{#entityName} e WHERE e.name = :name")
     Boolean isExistsByName(String name);
+
+    @Query("SELECT COUNT(e) > 0 FROM #{#entityName} e WHERE e.name = :name AND e.assetType = :assetType")
+    Boolean isExistsByNameAndAssetType(String name, AssetType assetType);
 }

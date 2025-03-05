@@ -21,31 +21,4 @@ public class ImsApplication {
         SpringApplication.run(ImsApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner loadData(LocationRepo locationRepo, StatusRepo statusRepo) {
-        return args -> {
-            List<Location> locations = new ArrayList<>(List.of(new Location("Taj-Hotel", "colombo-02"), new Location("Orin-Hotel", "colombo-07")));
-            List<Status>status =new ArrayList<>(List
-                    .of(
-                            new Status("USE", AssetType.FIXED),
-                            new Status("REMOVE", AssetType.FIXED),
-                            new Status("SOLD", AssetType.FIXED),
-                            new Status("USE", AssetType.NETWORK),
-                            new Status("SOLD", AssetType.NETWORK),
-                            new Status("REMOVE", AssetType.NETWORK),
-                            new Status("USE", AssetType.MOBILE),
-                            new Status("SOLD", AssetType.MOBILE),
-                            new Status("REMOVE", AssetType.MOBILE)
-                    ));
-            // Add roles
-            if (locationRepo.count() == 0) {
-                locationRepo.saveAll(locations);
-            }
-            if(statusRepo.count()==0){
-                statusRepo.saveAll(status);
-            }
-
-        };
-    }
-
 }

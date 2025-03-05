@@ -76,7 +76,8 @@ public class MobileController implements GenericAssetController<MobileAssetReque
 
     @Override
     public ResponseEntity<StandardReponse<List<ManufacturerDto>>> getAllManufacturer() throws Exception {
-        return null;
+        List<ManufacturerDto> allManufacturers = service.getAllManufacturers();
+        return ResponseEntityManager.ok(allManufacturers);
     }
 
     @Override
