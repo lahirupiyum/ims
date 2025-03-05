@@ -4,7 +4,6 @@ package com.lahiru.ims.feature.inventory.asset.network.impl;
 import com.lahiru.ims.common.GenericDao;
 import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.enums.AssetType;
-import com.lahiru.ims.common.model.BasicInfoAudit;
 import com.lahiru.ims.exception.DataConflictException;
 import com.lahiru.ims.exception.NotFoundException;
 import com.lahiru.ims.exception.ValidationException;
@@ -201,8 +200,8 @@ public class NetworkServiceImpl implements NetworkService {
     }
 
     @Override
-    public List<NetworkAssetResponseDto> search(String serialNumber) throws Exception {
-        List<Network> networkList = networkRepo.findBySerialNumber(serialNumber);
+    public List<NetworkAssetResponseDto> search(String key) throws Exception {
+        List<Network> networkList = networkRepo.search(key);
         return networkList.stream().map(this::convertToDto).toList();
     }
 

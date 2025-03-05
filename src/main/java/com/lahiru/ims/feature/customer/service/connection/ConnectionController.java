@@ -68,4 +68,16 @@ public class ConnectionController implements GenericController<ConnectionRequest
         ConnectionResponseDto connectionResponseDto = connectionService.activateConnection(id);
         return ResponseEntityManager.ok(connectionResponseDto, SERVICE_CONNECTION + " has been activated!");
     }
+
+    @GetMapping("/ill/search")
+    public ResponseEntity<StandardReponse<List<ConnectionResponseDto>>> searchIllConnections(@RequestParam("key") String key) throws Exception {
+        List<ConnectionResponseDto> responseDtoList = connectionService.searchIll(key);
+        return ResponseEntityManager.ok(responseDtoList);
+    }
+
+    @GetMapping("/mpls/search")
+    public ResponseEntity<StandardReponse<List<ConnectionResponseDto>>> searchMplsConnections(@RequestParam("key") String key) throws Exception {
+        List<ConnectionResponseDto> responseDtos = connectionService.searchMpls(key);
+        return ResponseEntityManager.ok(responseDtos);
+    }
 }

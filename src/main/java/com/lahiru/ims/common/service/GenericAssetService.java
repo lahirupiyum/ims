@@ -18,5 +18,5 @@ public interface GenericAssetService<RequestDto extends AssetRequestDto, Respons
 
     List<ManufacturerDto> getAllManufacturers() throws Exception;
 
-    List<ResponseDto> search(String serialNumber) throws Exception;
+    List<ResponseDto> search(String key) throws Exception;
 }

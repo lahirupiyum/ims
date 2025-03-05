@@ -40,6 +40,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class MobileServiceImpl implements MobileService {
@@ -92,8 +94,17 @@ public class MobileServiceImpl implements MobileService {
     }
 
     @Override
-    public List<MobileAssetResponseDto> search(String serialNumber) throws Exception {
-        return List.of();
+    public List<MobileAssetResponseDto> search(String key) throws Exception {
+        if (key.isEmpty()) return List.of();
+        List<Mobile> mobileList = mobileRepo.search(key);
+        return mobileList.stream().map(mobile -> {
+            try {
+                return convertToDto(mobile);
+            }
+            catch (Exception ignored){
+                return null;
+            }
+        }).filter(Objects::nonNull).toList();
     }
 
     @Override

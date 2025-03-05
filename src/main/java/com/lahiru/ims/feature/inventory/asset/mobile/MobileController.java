@@ -82,6 +82,7 @@ public class MobileController implements GenericAssetController<MobileAssetReque
 
     @Override
     public ResponseEntity<StandardReponse<List<MobileAssetResponseDto>>> search(String key) throws Exception {
-        return null;
+        List<MobileAssetResponseDto> responseDtoList = service.search(key);
+        return ResponseEntityManager.ok(responseDtoList);
     }
 }

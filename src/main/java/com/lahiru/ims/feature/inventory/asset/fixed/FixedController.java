@@ -51,7 +51,8 @@ public class FixedController implements GenericAssetController<FixedAssetRequest
 
     @Override
     public ResponseEntity<StandardReponse<List<FixedAssetResponseDto>>> search(String key) throws Exception {
-        return null;
+        List<FixedAssetResponseDto> fixedAssetResponseDtoList = service.search(key);
+        return ResponseEntityManager.ok(fixedAssetResponseDtoList);
     }
 
     @Override

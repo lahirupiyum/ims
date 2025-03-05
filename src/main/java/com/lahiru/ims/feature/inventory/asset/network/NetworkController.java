@@ -79,7 +79,8 @@ public class NetworkController implements GenericAssetController<NetworkAssetReq
 
     @Override
     public ResponseEntity<StandardReponse<List<NetworkAssetResponseDto>>> search(String key) throws Exception {
-        return null;
+        List<NetworkAssetResponseDto> responseDtoList = service.search(key);
+        return ResponseEntityManager.ok(responseDtoList);
     }
 
     @GetMapping("/pe-router/all")

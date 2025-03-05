@@ -12,4 +12,14 @@ public interface CustomerRepo extends StatusAwareRepo<Customer> {
     Boolean isActiveByEmail(String email);
 
     List<Customer> findAllByNameContaining(String name);
+
+    @Query("SELECT c FROM Customer c WHERE c.isActive = true AND (" +
+            "c.name LIKE %:key% OR " +
+            "c.accountManager.name LIKE %:key% OR " +
+            "c.address LIKE %:key% OR " +
+            "c.asNumber LIKE %:key% OR " +
+            "c.email LIKE %:key% OR " +
+            "c.vsnlId LIKE %:key% OR " +
+            "c.contactNo LIKE %:key% )")
+    List<Customer> search(String key);
 }

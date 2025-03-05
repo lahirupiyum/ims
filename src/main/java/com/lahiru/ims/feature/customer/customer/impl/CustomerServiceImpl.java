@@ -113,7 +113,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerResponseDto> searchItem(String searchKey) throws Exception {
-        List<Customer> allCustomers = customerRepo.findAllByNameContaining(searchKey);
+        List<Customer> allCustomers = customerRepo.search(searchKey);
         return allCustomers.stream().map(this::convertToDto).toList();
     }
 }

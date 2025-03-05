@@ -65,6 +65,20 @@ public class ConnectionServiceImpl implements ConnectionService {
         return convertToDto(savedConnection);
     }
 
+    @Override
+    public List<ConnectionResponseDto> searchIll(String key) throws Exception {
+        if (key.isEmpty()) return List.of();
+        List<Connection> searchList = connectionRepo.search(key, NetworkServiceType.ILL);
+        return searchList.stream().map(this::convertToDto).toList();
+    }
+
+    @Override
+    public List<ConnectionResponseDto> searchMpls(String key) throws Exception {
+        if (key.isEmpty()) return List.of();
+        List<Connection> searchList = connectionRepo.search(key, NetworkServiceType.MPLS);
+        return searchList.stream().map(this::convertToDto).toList();
+    }
+
     private PaginationResponse<ConnectionResponseDto> getPageWiseByNetworkServiceType(int page, int pageSize, NetworkServiceType serviceType) throws Exception {
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<Connection> byServiceType = connectionRepo.findByServiceType(serviceType, pageable);

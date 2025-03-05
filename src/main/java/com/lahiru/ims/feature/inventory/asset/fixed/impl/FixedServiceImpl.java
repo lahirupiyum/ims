@@ -175,8 +175,10 @@ public class FixedServiceImpl implements FixedService {
     }
 
     @Override
-    public List<FixedAssetResponseDto> search(String serialNumber) throws Exception {
-        return List.of();
+    public List<FixedAssetResponseDto> search(String key) throws Exception {
+        if (key.isEmpty()) return List.of();
+        List<Fixed> fixedList = fixedRepo.search(key);
+        return fixedList.stream().map(fixed -> modelMapper.map(fixed, FixedAssetResponseDto.class)).toList();
     }
 
 }
