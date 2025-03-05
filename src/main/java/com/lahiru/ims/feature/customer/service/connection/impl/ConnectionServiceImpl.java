@@ -30,6 +30,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -52,6 +53,16 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public PaginationResponse<ConnectionResponseDto> findMplsByPageWise(int page, int pageSize) throws Exception {
         return getPageWiseByNetworkServiceType(page, pageSize, NetworkServiceType.MPLS);
+    }
+
+    @Override
+    public ConnectionResponseDto activateConnection(Integer id) throws Exception {
+        Connection connection = connectionRepo.findById(id).orElseThrow(() -> new NotFoundException("Connection"));
+        connection.setTerminationDate(null);
+        connection.setActiveStatus(true);
+        Connection savedConnection = connectionRepo.save(connection);
+
+        return convertToDto(savedConnection);
     }
 
     private PaginationResponse<ConnectionResponseDto> getPageWiseByNetworkServiceType(int page, int pageSize, NetworkServiceType serviceType) throws Exception {
@@ -87,7 +98,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         Connection connection = convertToModel(connectionRequestDto);
         connection.setLastMileConnection(createdLastMileConnection);
         connection.setRouterFirewallCredentials(routerFirewallCredentials);
-
+        connection.setActiveStatus(true);
         connectionRepo.save(connection);
         return convertToDto(connection);
     }
@@ -100,7 +111,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         connection.setId(id);
         connection.setLastMileConnection(fetchedConnection.getLastMileConnection());
         connection.setRouterFirewallCredentials(fetchedConnection.getRouterFirewallCredentials());
-
+        connection.setActiveStatus(fetchedConnection.getActiveStatus());
         connectionRepo.save(connection);
         return convertToDto(connection);
     }
@@ -108,6 +119,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public ConnectionResponseDto deleteOne(int id) throws Exception {
         Connection connection = connectionRepo.findById(id).orElseThrow(() -> new NotFoundException("Service Connection"));
+        connection.setTerminationDate(new Date());
         connection.setActiveStatus(false);
         connectionRepo.save(connection);
         return convertToDto(connection);
@@ -121,7 +133,6 @@ public class ConnectionServiceImpl implements ConnectionService {
         connection.setCustomer(customerService.findOne(connectionRequestDto.getCustomerId()));
         connection.setPeRouterConnection(peRouterConnectionService.findOne(connectionRequestDto.getPeRouterId()));
         connection.setCusRouter(cusRouterService.findOne(connectionRequestDto.getCusRouterId()));
-        connection.setActiveStatus(true);
         connection.setManageStatus(connectionRequestDto.getManageStatus());
         connection.setDsp(connectionRequestDto.getDsp());
         connection.setServiceChange(connectionRequestDto.getServiceChange());

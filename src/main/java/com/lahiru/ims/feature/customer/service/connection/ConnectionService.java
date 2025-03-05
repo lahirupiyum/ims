@@ -13,4 +13,6 @@ public interface ConnectionService extends
 
     PaginationResponse<ConnectionResponseDto> findIllByPageWise(int page, int pageSize) throws Exception;
     PaginationResponse<ConnectionResponseDto> findMplsByPageWise(int page, int pageSize) throws Exception;
+
+    ConnectionResponseDto activateConnection(Integer id) throws Exception;
 }
