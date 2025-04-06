@@ -6,11 +6,7 @@ import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.enums.AssetType;
 import com.lahiru.ims.exception.NotFoundException;
 import com.lahiru.ims.exception.ValidationException;
-import com.lahiru.ims.feature.customer.router.customer.CusRouterRepo;
-import com.lahiru.ims.feature.customer.router.peconnection.PERouterConnectionRepo;
 import com.lahiru.ims.feature.customer.service.connection.ConnectionRepo;
-import com.lahiru.ims.feature.inventory.manufacturer.dto.ManufacturerDto;
-import com.lahiru.ims.feature.inventory.status.enums.NetworkAssetStatus;
 import com.lahiru.ims.feature.inventory.asset.network.NetworkAsset;
 import com.lahiru.ims.feature.inventory.asset.network.NetworkAssetRepo;
 import com.lahiru.ims.feature.inventory.asset.network.NetworkAssetService;
@@ -20,12 +16,14 @@ import com.lahiru.ims.feature.inventory.location.Location;
 import com.lahiru.ims.feature.inventory.location.LocationService;
 import com.lahiru.ims.feature.inventory.manufacturer.Manufacturer;
 import com.lahiru.ims.feature.inventory.manufacturer.ManufacturerService;
+import com.lahiru.ims.feature.inventory.manufacturer.dto.ManufacturerDto;
 import com.lahiru.ims.feature.inventory.model.Model;
 import com.lahiru.ims.feature.inventory.model.ModelService;
 import com.lahiru.ims.feature.inventory.model.dto.ModelDto;
 import com.lahiru.ims.feature.inventory.status.Status;
 import com.lahiru.ims.feature.inventory.status.StatusService;
 import com.lahiru.ims.feature.inventory.status.dto.StatusDto;
+import com.lahiru.ims.feature.inventory.status.enums.NetworkAssetStatus;
 import com.lahiru.ims.feature.inventory.type.Type;
 import com.lahiru.ims.feature.inventory.type.TypeService;
 import com.lahiru.ims.feature.inventory.type.dto.TypeDto;
@@ -60,8 +58,6 @@ public class NetworkAssetServiceImpl implements NetworkAssetService {
     private final GenericDao genericDao;
     private final NetworkAssetRepo networkAssetRepo;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private final CusRouterRepo cusRouterRepo;
-    private final PERouterConnectionRepo peRouterConnectionRepo;
     private final ConnectionRepo connectionRepo;
 
     @Override
@@ -117,6 +113,8 @@ public class NetworkAssetServiceImpl implements NetworkAssetService {
     @Override
     public NetworkAssetResponseDto deleteOne(int id) throws Exception {
         NetworkAsset networkAsset = networkAssetRepo.findActiveOne(id).orElseThrow(() -> new NotFoundException(NETWORK));
+        Boolean activeConnectionExistsByNetworkAsset = connectionRepo.isActiveConnectionExistsByNetworkAsset(networkAsset);
+        if (activeConnectionExistsByNetworkAsset) throw new ValidationException("This asset has been linked to active connection");
         networkAsset.setIsActive(false);
         networkAssetRepo.save(networkAsset);
         log.info("Deleted Successful id:{}", networkAsset.getId());
