@@ -19,9 +19,9 @@ import java.util.List;
 @RequestMapping("${endpoints.asset-network}")
 @RestController
 @RequiredArgsConstructor
-public class NetworkController implements GenericAssetController<NetworkAssetRequestDto, NetworkAssetResponseDto> {
+public class NetworkAssetController implements GenericAssetController<NetworkAssetRequestDto, NetworkAssetResponseDto> {
     public static final String NETWORK_ASSET = "Network Asset";
-    private final NetworkService service;
+    private final NetworkAssetService service;
 
     @Override
     public ResponseEntity<PaginationResponse<NetworkAssetResponseDto>> getAllByPageWise(int page, int pageSize) throws Exception {
@@ -98,6 +98,12 @@ public class NetworkController implements GenericAssetController<NetworkAssetReq
     @GetMapping("/router/all")
     public ResponseEntity<StandardReponse<List<NetworkAssetResponseDto>>> getAllRouters() throws Exception {
         List<NetworkAssetResponseDto> routersList = service.findAllRouters();
+        return ResponseEntityManager.ok(routersList);
+    }
+
+    @GetMapping("/router/available")
+    public ResponseEntity<StandardReponse<List<NetworkAssetResponseDto>>> getAvailableRouters() throws Exception {
+        List<NetworkAssetResponseDto> routersList = service.findAvailableRouters();
         return ResponseEntityManager.ok(routersList);
     }
 

@@ -2,6 +2,7 @@ package com.lahiru.ims.feature.customer.service.connection;
 
 import com.lahiru.ims.feature.customer.router.firewallcredentials.RouterFirewallCredentials;
 import com.lahiru.ims.feature.customer.service.enums.NetworkServiceType;
+import com.lahiru.ims.feature.inventory.asset.network.NetworkAsset;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,4 +25,14 @@ public interface ConnectionRepo extends JpaRepository<Connection, Integer> {
             "c.peRouterConnection.peRouter.serialNumber LIKE %:key% OR " +
             "c.peRouterConnection.peRouter.location.name  LIKE %:key% )")
     List<Connection> search(String key, NetworkServiceType networkServiceType);
+
+    @Query("SELECT COUNT(c) > 0 FROM Connection c WHERE " +
+            "(c.cusRouter.networkAsset = :asset " +
+            "OR c.peRouterConnection.peRouter = :asset " +
+            "OR c.peRouterConnection.networkAssetSwitch = :asset) " +
+            "AND c.activeStatus = true")
+    Boolean isActiveConnectionExistsByNetworkAsset(NetworkAsset asset);
+
+    @Query("SELECT COUNT(c) > 0 FROM Connection c  WHERE c.cusRouter.networkAsset.id = :id AND c.activeStatus = true")
+    Boolean isActiveConnectionExistsByCusRouterNetworkAsset(Integer id);
 }

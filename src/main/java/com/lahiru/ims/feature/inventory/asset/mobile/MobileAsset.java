@@ -20,7 +20,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Mobile extends AssetAudit {
+public class MobileAsset extends AssetAudit {
     private Date warrantyExpireDate;
     private Date purchaseDate;
     private String invoiceNumber;
@@ -28,7 +28,7 @@ public class Mobile extends AssetAudit {
     @JoinColumn(name = "employee")
     private Employee employee;
 
-    public Mobile(String assetNumber, String serialNumber, int quantity, Vendor vendor, Location location, Model model, Type type, Status status, Manufacturer manufacturer, Date warrantyExpireDate, Date purchaseDate, String invoiceNumber, Employee employee) {
+    public MobileAsset(String assetNumber, String serialNumber, int quantity, Vendor vendor, Location location, Model model, Type type, Status status, Manufacturer manufacturer, Date warrantyExpireDate, Date purchaseDate, String invoiceNumber, Employee employee) {
         super(assetNumber, serialNumber, vendor, location, model, type, status, manufacturer);
         this.warrantyExpireDate = warrantyExpireDate;
         this.purchaseDate = purchaseDate;

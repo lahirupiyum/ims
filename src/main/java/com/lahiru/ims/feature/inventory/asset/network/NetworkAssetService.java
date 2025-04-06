@@ -9,17 +9,18 @@ import com.lahiru.ims.feature.inventory.status.enums.NetworkAssetStatus;
 
 import java.util.List;
 
-public interface NetworkService extends
+public interface NetworkAssetService extends
         GenericAssetService<NetworkAssetRequestDto, NetworkAssetResponseDto>,
-        ModelMapperService<Network, NetworkAssetRequestDto, NetworkAssetResponseDto>,
-        EntityFinderService<Network> {
+        ModelMapperService<NetworkAsset, NetworkAssetRequestDto, NetworkAssetResponseDto>,
+        EntityFinderService<NetworkAsset> {
 
         List<NetworkAssetResponseDto> findAllPERouters() throws Exception;
         List<NetworkAssetResponseDto> findAllSwitches() throws Exception;
         List<NetworkAssetResponseDto> findAllRouters() throws Exception;
         List<NetworkAssetResponseDto> searchSwitches(String serialNumber) throws Exception;
         List<NetworkAssetResponseDto> searchRouters(String serialNumber) throws  Exception;
+        List<NetworkAssetResponseDto> findAvailableRouters() throws Exception;
 
-        Network updateAssetStatus(Integer id, NetworkAssetStatus status) throws Exception;
-        Network updateAssetStatus(Network networkAsset, NetworkAssetStatus status) throws Exception;
+        NetworkAsset updateAssetStatus(Integer id, NetworkAssetStatus status) throws Exception;
+        NetworkAsset updateAssetStatus(NetworkAsset networkAsset, NetworkAssetStatus status) throws Exception;
 }

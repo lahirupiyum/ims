@@ -15,7 +15,6 @@ public class Customer extends StatusAwareAudit {
     private String contactNo;
     private String email;
     private String vsnlId;
-    private String asNumber;
     @Enumerated(EnumType.STRING)
     private CustomerPriority priority;
 

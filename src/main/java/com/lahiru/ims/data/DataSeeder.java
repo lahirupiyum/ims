@@ -13,7 +13,7 @@ import com.lahiru.ims.feature.inventory.status.enums.MobileAssetStatus;
 import com.lahiru.ims.feature.inventory.status.enums.NetworkAssetStatus;
 import com.lahiru.ims.feature.inventory.type.Type;
 import com.lahiru.ims.feature.inventory.type.TypeRepo;
-import com.lahiru.ims.feature.inventory.type.enums.NetworkAsset;
+import com.lahiru.ims.feature.inventory.type.enums.NetworkAssetType;
 import com.lahiru.ims.feature.user.UserService;
 import com.lahiru.ims.utils.EnumUtils;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +54,7 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     private void seedBasicTypes() {
-        seedBasicInfo(typeRepo, AssetType.NETWORK, NetworkAsset.class, Type.class);
+        seedBasicInfo(typeRepo, AssetType.NETWORK, NetworkAssetType.class, Type.class);
     }
 
     private <E extends Enum<E> & DataSeederEnum, Model extends BasicInfoAudit, Repo extends BasicInfoRepo<Model>> void seedBasicInfo(Repo repo, AssetType assetType, Class<E> enumClass, Class<Model> modelClass) {

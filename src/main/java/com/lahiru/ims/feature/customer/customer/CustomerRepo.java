@@ -17,7 +17,6 @@ public interface CustomerRepo extends StatusAwareRepo<Customer> {
             "c.name LIKE %:key% OR " +
             "c.accountManager.name LIKE %:key% OR " +
             "c.address LIKE %:key% OR " +
-            "c.asNumber LIKE %:key% OR " +
             "c.email LIKE %:key% OR " +
             "c.vsnlId LIKE %:key% OR " +
             "c.contactNo LIKE %:key% )")

@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class RouterFirewallCredentialsRequestDto {
-    private String username;
-    private String password;
+    private String ip;
+    private String port;
 }

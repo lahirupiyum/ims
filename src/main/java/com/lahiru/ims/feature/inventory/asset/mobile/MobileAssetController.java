@@ -21,9 +21,9 @@ import java.util.List;
 @RequestMapping("${endpoints.asset-mobile}")
 @RequiredArgsConstructor
 @RestController
-public class MobileController implements GenericAssetController<MobileAssetRequestDto, MobileAssetResponseDto> {
+public class MobileAssetController implements GenericAssetController<MobileAssetRequestDto, MobileAssetResponseDto> {
     public static final String MOBILE_ASSET = "Mobile Asset";
-    private final MobileService service;
+    private final MobileAssetService service;
 
     @Override
     public ResponseEntity<PaginationResponse<MobileAssetResponseDto>> getAllByPageWise(int page, int pageSize) throws Exception {
