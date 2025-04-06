@@ -114,7 +114,7 @@ public class NetworkAssetServiceImpl implements NetworkAssetService {
     public NetworkAssetResponseDto deleteOne(int id) throws Exception {
         NetworkAsset networkAsset = networkAssetRepo.findActiveOne(id).orElseThrow(() -> new NotFoundException(NETWORK));
         Boolean activeConnectionExistsByNetworkAsset = connectionRepo.isActiveConnectionExistsByNetworkAsset(networkAsset);
-        if (activeConnectionExistsByNetworkAsset) throw new ValidationException("This asset has been linked to active connection");
+        if (activeConnectionExistsByNetworkAsset) throw new ValidationException("Your can't perform delete for this asset");
         networkAsset.setIsActive(false);
         networkAssetRepo.save(networkAsset);
         log.info("Deleted Successful id:{}", networkAsset.getId());
