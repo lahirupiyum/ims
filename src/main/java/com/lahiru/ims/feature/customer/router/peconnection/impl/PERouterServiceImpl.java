@@ -1,22 +1,17 @@
 package com.lahiru.ims.feature.customer.router.peconnection.impl;
 
 import com.lahiru.ims.common.dto.PaginationResponse;
-import com.lahiru.ims.exception.MapperException;
 import com.lahiru.ims.exception.NotFoundException;
 import com.lahiru.ims.feature.customer.router.peconnection.PERouterConnection;
 import com.lahiru.ims.feature.customer.router.peconnection.PERouterConnectionRepo;
 import com.lahiru.ims.feature.customer.router.peconnection.PERouterConnectionService;
 import com.lahiru.ims.feature.customer.router.peconnection.dto.PERouterConnectionRequestDto;
 import com.lahiru.ims.feature.customer.router.peconnection.dto.PERouterConnectionResponseDto;
-import com.lahiru.ims.feature.inventory.asset.network.Network;
-import com.lahiru.ims.feature.inventory.asset.network.NetworkService;
+import com.lahiru.ims.feature.inventory.asset.network.NetworkAssetService;
 import com.lahiru.ims.feature.inventory.status.enums.NetworkAssetStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,10 +24,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PERouterServiceImpl implements PERouterConnectionService {
     public static final String PE_ROUTER_CONNECTION = "PE Router Connection";
-    private static final Logger log = LoggerFactory.getLogger(PERouterServiceImpl.class);
-    private final ModelMapper modelMapper;
     private final PERouterConnectionRepo peRouterConnectionRepo;
-    private final NetworkService networkService;
+    private final NetworkAssetService networkAssetService;
 
     @Override
     public PaginationResponse<PERouterConnectionResponseDto> findByPageWise(int page, int pageSize) throws Exception {
@@ -77,11 +70,11 @@ public class PERouterServiceImpl implements PERouterConnectionService {
     public PERouterConnection convertToModel(PERouterConnectionRequestDto peRouterRequestDto) {
         PERouterConnection connection = new PERouterConnection();
         connection.setIp(peRouterRequestDto.getIp());
-        connection.setPort(peRouterRequestDto.getPort());
+        connection.setPeInterface(peRouterRequestDto.getPeInterface());
         connection.setSwitchPort(peRouterRequestDto.getSwitchPort());
         connection.setWanIpPool(peRouterRequestDto.getWanIpPool());
-        connection.setPeRouter(networkService.updateAssetStatus(peRouterRequestDto.getPeRouterId(), NetworkAssetStatus.IN_USE));
-        connection.setNetworkSwitch(networkService.updateAssetStatus(peRouterRequestDto.getNetworkSwitchId(), NetworkAssetStatus.IN_USE));
+        connection.setPeRouter(networkAssetService.updateAssetStatus(peRouterRequestDto.getPeRouterId(), NetworkAssetStatus.IN_USE));
+        connection.setNetworkAssetSwitch(networkAssetService.updateAssetStatus(peRouterRequestDto.getNetworkSwitchId(), NetworkAssetStatus.IN_USE));
         connection.setIsActive(true);
         return connection;
     }
@@ -92,12 +85,12 @@ public class PERouterServiceImpl implements PERouterConnectionService {
         PERouterConnectionResponseDto responseDto = new PERouterConnectionResponseDto();
 
         responseDto.setId(peRouterConnection.getId());
-        responseDto.setPort(peRouterConnection.getPort());
+        responseDto.setPeInterface(peRouterConnection.getPeInterface());
         responseDto.setIp(peRouterConnection.getIp());
         responseDto.setSwitchPort(peRouterConnection.getSwitchPort());
         responseDto.setWanIpPool(peRouterConnection.getWanIpPool());
-        responseDto.setPeRouter(networkService.convertToDto(peRouterConnection.getPeRouter()));
-        responseDto.setNetworkSwitch(networkService.convertToDto(peRouterConnection.getNetworkSwitch()));
+        responseDto.setPeRouter(networkAssetService.convertToDto(peRouterConnection.getPeRouter()));
+        responseDto.setNetworkSwitch(networkAssetService.convertToDto(peRouterConnection.getNetworkAssetSwitch()));
 
         return responseDto;
     }

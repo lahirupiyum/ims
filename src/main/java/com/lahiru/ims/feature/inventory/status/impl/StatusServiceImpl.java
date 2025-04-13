@@ -5,6 +5,7 @@ import com.lahiru.ims.exception.NotFoundException;
 import com.lahiru.ims.feature.inventory.status.Status;
 import com.lahiru.ims.feature.inventory.status.StatusRepo;
 import com.lahiru.ims.feature.inventory.status.StatusService;
+import com.lahiru.ims.feature.inventory.status.enums.NetworkAssetStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,13 @@ public class StatusServiceImpl implements StatusService {
 
     @Override
     public List<Status> getAll(AssetType assetType) throws Exception {
-        List<Status> statusList = repository.findAll();
+        List<Status> statusList = repository.findAllByAssetType(assetType);
         return (!statusList.isEmpty()) ? statusList : Collections.emptyList();
+    }
+
+    @Override
+    public Status getByStatus(AssetType assetType, NetworkAssetStatus networkAssetStatus) {
+        return repository.findAllByAssetTypeAndStatus(assetType, networkAssetStatus.getDisplayName())
+                .orElseThrow(() -> new NotFoundException(STATUS));
     }
 }

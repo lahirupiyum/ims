@@ -17,5 +17,4 @@ class CustomerDto {
     private String email;
     private EmployeeDto accountManager;
     private String vsnlId;
-    private String asNumber;
 }

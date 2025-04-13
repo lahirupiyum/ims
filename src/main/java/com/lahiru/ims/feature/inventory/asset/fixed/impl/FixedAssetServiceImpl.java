@@ -5,9 +5,9 @@ import com.lahiru.ims.common.GenericDao;
 import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.enums.AssetType;
 import com.lahiru.ims.exception.NotFoundException;
-import com.lahiru.ims.feature.inventory.asset.fixed.Fixed;
-import com.lahiru.ims.feature.inventory.asset.fixed.FixedRepo;
-import com.lahiru.ims.feature.inventory.asset.fixed.FixedService;
+import com.lahiru.ims.feature.inventory.asset.fixed.FixedAsset;
+import com.lahiru.ims.feature.inventory.asset.fixed.FixedAssetRepo;
+import com.lahiru.ims.feature.inventory.asset.fixed.FixedAssetService;
 import com.lahiru.ims.feature.inventory.asset.fixed.dto.FixedAssetRequestDto;
 import com.lahiru.ims.feature.inventory.asset.fixed.dto.FixedAssetResponseDto;
 import com.lahiru.ims.feature.inventory.location.Location;
@@ -43,7 +43,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class FixedServiceImpl implements FixedService {
+public class FixedAssetServiceImpl implements FixedAssetService {
 
     private final String FIXED = "Fixed";
     private final ManufacturerService manufacturerService;
@@ -53,26 +53,26 @@ public class FixedServiceImpl implements FixedService {
     private final VendorService vendorService;
     private final LocationService locationService;
     private final GenericDao genericDao;
-    private final FixedRepo repository;
+    private final FixedAssetRepo repository;
     private final ModelMapper modelMapper;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private final FixedRepo fixedRepo;
+    private final FixedAssetRepo fixedRepo;
 
     @Override
     public PaginationResponse<FixedAssetResponseDto> findByPageWise(int page, int pageSize) throws Exception {
         Pageable pageable = PageRequest.of(page, pageSize);
-        Page<Fixed> fixedPage = repository.findAllByPageWise(pageable);
+        Page<FixedAsset> fixedPage = repository.findAllByPageWise(pageable);
         log.info("Fixed : {}", fixedPage);
-        fixedPage.forEach(fixed -> {
-            Hibernate.initialize(fixed.getVendor());
-            Hibernate.initialize(fixed.getLocation());
-            Hibernate.initialize(fixed.getManufacturer());
-            Hibernate.initialize(fixed.getModel());
-            Hibernate.initialize(fixed.getType());
-            Hibernate.initialize(fixed.getStatus());
+        fixedPage.forEach(fixedAsset -> {
+            Hibernate.initialize(fixedAsset.getVendor());
+            Hibernate.initialize(fixedAsset.getLocation());
+            Hibernate.initialize(fixedAsset.getManufacturer());
+            Hibernate.initialize(fixedAsset.getModel());
+            Hibernate.initialize(fixedAsset.getType());
+            Hibernate.initialize(fixedAsset.getStatus());
         });
         List<FixedAssetResponseDto> fixedResponses = fixedPage.getContent().stream()
-                .map(fixed -> modelMapper.map(fixed, FixedAssetResponseDto.class))
+                .map(fixedAsset -> modelMapper.map(fixedAsset, FixedAssetResponseDto.class))
                 .toList();
         return new PaginationResponse<>(
                 fixedResponses,
@@ -82,8 +82,8 @@ public class FixedServiceImpl implements FixedService {
 
     @Override
     public List<FixedAssetResponseDto> findAll() throws Exception {
-        List<Fixed> fixedList = repository.findAllActive();
-        List<FixedAssetResponseDto> fixedResponse = modelMapper.map(fixedList, new TypeToken<List<FixedAssetResponseDto>>() {
+        List<FixedAsset> fixedAssetList = repository.findAllActive();
+        List<FixedAssetResponseDto> fixedResponse = modelMapper.map(fixedAssetList, new TypeToken<List<FixedAssetResponseDto>>() {
         }.getType());
         return (!fixedResponse.isEmpty()) ? fixedResponse : Collections.emptyList();
     }
@@ -91,23 +91,23 @@ public class FixedServiceImpl implements FixedService {
     @Transactional
     @Override
     public FixedAssetResponseDto createOne(FixedAssetRequestDto fixedAssetRequestDto) throws Exception {
-        Fixed savedFixed = repository.save(convertDtoToEntity(fixedAssetRequestDto));
+        FixedAsset savedFixedAsset = repository.save(convertDtoToEntity(fixedAssetRequestDto));
         log.info("Fixed Asset Saved Successful! ");
         // Step 4: Convert saved entity back to DTO and return
-        return modelMapper.map(savedFixed, FixedAssetResponseDto.class);
+        return modelMapper.map(savedFixedAsset, FixedAssetResponseDto.class);
     }
 
 
     @Override
     public FixedAssetResponseDto updateOne(int id, FixedAssetRequestDto fixedAssetRequestDto) throws Exception {
-        Fixed fixedUpdate = repository.findActiveOne(id).orElseThrow(() -> new NotFoundException(FIXED));
-        Fixed fixedUpdated = convertDtoToEntity(fixedAssetRequestDto);
-        fixedUpdated.setId(fixedUpdate.getId());
-        Fixed fixed = repository.saveAndFlush(fixedUpdated);
-        return modelMapper.map(fixed, FixedAssetResponseDto.class);
+        FixedAsset fixedAssetUpdate = repository.findActiveOne(id).orElseThrow(() -> new NotFoundException(FIXED));
+        FixedAsset fixedAssetUpdated = convertDtoToEntity(fixedAssetRequestDto);
+        fixedAssetUpdated.setId(fixedAssetUpdate.getId());
+        FixedAsset fixedAsset = repository.saveAndFlush(fixedAssetUpdated);
+        return modelMapper.map(fixedAsset, FixedAssetResponseDto.class);
     }
-    public Fixed convertDtoToEntity(FixedAssetRequestDto dto) {
-        Fixed fixed = new Fixed();
+    public FixedAsset convertDtoToEntity(FixedAssetRequestDto dto) {
+        FixedAsset fixedAsset = new FixedAsset();
         try {
             Manufacturer manufacturer = genericDao.checkAndCreate(AssetType.FIXED, dto.getManufacturer(), manufacturerService);
             Type type = genericDao.checkAndCreate(AssetType.FIXED, dto.getType(), typeService);
@@ -115,28 +115,29 @@ public class FixedServiceImpl implements FixedService {
             Status status = statusService.findOne(dto.getStatusId());
             Location location = locationService.findOne(dto.getLocationId());
             Vendor vendor = vendorService.findOne(dto.getVendorId());
-            fixed.setManufacturer(manufacturer);
-            fixed.setType(type);
-            fixed.setModel(model);
-            fixed.setStatus(status);
-            fixed.setLocation(location);
-            fixed.setVendor(vendor);
+            fixedAsset.setManufacturer(manufacturer);
+            fixedAsset.setType(type);
+            fixedAsset.setModel(model);
+            fixedAsset.setStatus(status);
+            fixedAsset.setLocation(location);
+            fixedAsset.setVendor(vendor);
+            fixedAsset.setIsActive(true);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        fixed.setDeprecationInfo(dto.getDeprecationInfo());
-        fixed.setInvoiceNumber(dto.getInvoiceNumber());
-        fixed.setPurchaseDate(dto.getPurchaseDate());
-        fixed.setAssetNumber(dto.getAssetNumber());
-        fixed.setSerialNumber(dto.getSerialNumber());
-        return fixed;
+        fixedAsset.setDeprecationInfo(dto.getDeprecationInfo());
+        fixedAsset.setInvoiceNumber(dto.getInvoiceNumber());
+        fixedAsset.setPurchaseDate(dto.getPurchaseDate());
+        fixedAsset.setAssetNumber(dto.getAssetNumber());
+        fixedAsset.setSerialNumber(dto.getSerialNumber());
+        return fixedAsset;
     }
     @Override
     public FixedAssetResponseDto deleteOne(int id) throws Exception {
-        Fixed foundDeleteFixed = repository.findActiveOne(id).orElseThrow(() -> new NotFoundException(FIXED));
-        repository.deleteById(foundDeleteFixed.getId());
+        FixedAsset foundDeleteFixedAsset = repository.findActiveOne(id).orElseThrow(() -> new NotFoundException(FIXED));
+        repository.deleteById(foundDeleteFixedAsset.getId());
         log.info("Delete Fixed Asset ID: {}", id);
-        return modelMapper.map(foundDeleteFixed, FixedAssetResponseDto.class);
+        return modelMapper.map(foundDeleteFixedAsset, FixedAssetResponseDto.class);
     }
 
 
@@ -144,7 +145,6 @@ public class FixedServiceImpl implements FixedService {
     // Get Model , Type ,Status
     @Override
     public List<ModelDto> getAllModels() throws Exception {
-
             List<Model> modelList = modelService.getAll(AssetType.FIXED);
             List<ModelDto> modelDtoList = modelMapper.map(modelList, new TypeToken<List<ModelDto>>() {
             }.getType());
@@ -162,7 +162,7 @@ public class FixedServiceImpl implements FixedService {
 
     @Override
     public List<StatusDto> getAllStatus() throws Exception {
-            List<Type> statusList = typeService.getAll(AssetType.FIXED);
+            List<Status> statusList = statusService.getAll(AssetType.FIXED);
             List<StatusDto> statusDtoList = modelMapper.map(statusList, new TypeToken<List<StatusDto>>() {
             }.getType());
             return (!statusDtoList.isEmpty()) ? statusDtoList : Collections.emptyList();
@@ -170,12 +170,15 @@ public class FixedServiceImpl implements FixedService {
 
     @Override
     public List<ManufacturerDto> getAllManufacturers() throws Exception {
-        return List.of();
+        List<Manufacturer> manufacturerList = manufacturerService.getAll(AssetType.FIXED);
+        return modelMapper.map(manufacturerList, new TypeToken<List<ManufacturerDto>>(){}.getType());
     }
 
     @Override
-    public List<FixedAssetResponseDto> search(String serialNumber) throws Exception {
-        return List.of();
+    public List<FixedAssetResponseDto> search(String key) throws Exception {
+        if (key.isEmpty()) return List.of();
+        List<FixedAsset> fixedAssetList = fixedRepo.search(key);
+        return fixedAssetList.stream().map(fixedAsset -> modelMapper.map(fixedAsset, FixedAssetResponseDto.class)).toList();
     }
 
 }

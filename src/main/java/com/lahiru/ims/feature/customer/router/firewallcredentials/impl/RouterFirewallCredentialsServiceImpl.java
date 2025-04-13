@@ -4,7 +4,10 @@ import com.lahiru.ims.exception.NotFoundException;
 import com.lahiru.ims.feature.customer.router.firewallcredentials.RouterFirewallCredentials;
 import com.lahiru.ims.feature.customer.router.firewallcredentials.RouterFirewallCredentialsRepo;
 import com.lahiru.ims.feature.customer.router.firewallcredentials.RouterFirewallCredentialsService;
-import com.lahiru.ims.feature.customer.router.firewallcredentials.dto.RouterFirewallCredentialsDto;
+import com.lahiru.ims.feature.customer.router.firewallcredentials.dto.RouterFirewallCredentialsRequestDto;
+import com.lahiru.ims.feature.customer.router.firewallcredentials.dto.RouterFirewallCredentialsResponseDto;
+import com.lahiru.ims.feature.customer.service.connection.Connection;
+import com.lahiru.ims.feature.customer.service.connection.ConnectionRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -20,35 +23,46 @@ public class RouterFirewallCredentialsServiceImpl implements RouterFirewallCrede
     public static final String FIREWALL_CREDENTIALS = "Firewall Credentials";
     private final RouterFirewallCredentialsRepo firewallCredentialsRepo;
     private final ModelMapper modelMapper;
+   private final ConnectionRepo connectionRepo;
 
     @Override
-    public RouterFirewallCredentials createOne(RouterFirewallCredentialsDto firewallCredentialsDto) throws Exception {
+    public RouterFirewallCredentials createOne(RouterFirewallCredentialsRequestDto firewallCredentialsDto) throws Exception {
         RouterFirewallCredentials routerFirewallCredentials =
-                new RouterFirewallCredentials(firewallCredentialsDto.getUsername(), firewallCredentialsDto.getPassword());
+                new RouterFirewallCredentials(firewallCredentialsDto.getIp(), firewallCredentialsDto.getPort());
         return firewallCredentialsRepo.save(routerFirewallCredentials);
     }
 
     @Override
-    public RouterFirewallCredentials updateOne(Integer id, RouterFirewallCredentialsDto firewallCredentialsDto) throws Exception {
-        try {
-            RouterFirewallCredentials credentials = firewallCredentialsRepo.findActiveOne(id)
-                    .orElseThrow(() -> new NotFoundException(FIREWALL_CREDENTIALS));
-            credentials.setIsActive(false);
-        } catch (NotFoundException e) {
-            LOGGER.warn(e.getMessage());
-        }
+    public RouterFirewallCredentials updateOne(Integer id, RouterFirewallCredentialsRequestDto firewallCredentialsDto) throws Exception {
 
-        RouterFirewallCredentials routerFirewallCredentials = new RouterFirewallCredentials(firewallCredentialsDto.getUsername(), firewallCredentialsDto.getPassword());
-        return firewallCredentialsRepo.save(routerFirewallCredentials);
+        RouterFirewallCredentials existing = firewallCredentialsRepo.findActiveOne(id)
+                .orElseThrow(() -> new NotFoundException(FIREWALL_CREDENTIALS));
+        existing.setIsActive(false);
+       firewallCredentialsRepo.save(existing);
+
+       LOGGER.info("Firewall credentials {}", firewallCredentialsDto);
+
+        RouterFirewallCredentials newCredentials = new RouterFirewallCredentials();
+        newCredentials.setIp(firewallCredentialsDto.getIp());
+        newCredentials.setPort(firewallCredentialsDto.getPort());
+        newCredentials.setIsActive(true);
+
+        RouterFirewallCredentials saved = firewallCredentialsRepo.save(newCredentials);
+
+        Connection connection = connectionRepo.findByRouterFirewallCredentials(existing).orElseThrow(() -> new NotFoundException("Connection Not Found for Firewall Credentials", true));
+        connection.setRouterFirewallCredentials(saved);
+        connectionRepo.save(connection);
+
+        return saved;
     }
 
     @Override
-    public RouterFirewallCredentials convertToModel(RouterFirewallCredentialsDto firewallCredentialsDto) throws Exception {
+    public RouterFirewallCredentials convertToModel(RouterFirewallCredentialsRequestDto firewallCredentialsDto) throws Exception {
         return modelMapper.map(firewallCredentialsDto, RouterFirewallCredentials.class);
     }
 
     @Override
-    public RouterFirewallCredentialsDto convertToDto(RouterFirewallCredentials routerFirewallCredentials) throws Exception {
-        return modelMapper.map(routerFirewallCredentials, RouterFirewallCredentialsDto.class);
+    public RouterFirewallCredentialsResponseDto convertToDto(RouterFirewallCredentials routerFirewallCredentials) throws Exception {
+        return modelMapper.map(routerFirewallCredentials, RouterFirewallCredentialsResponseDto.class);
     }
 }

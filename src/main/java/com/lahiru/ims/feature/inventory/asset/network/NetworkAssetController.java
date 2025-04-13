@@ -19,9 +19,9 @@ import java.util.List;
 @RequestMapping("${endpoints.asset-network}")
 @RestController
 @RequiredArgsConstructor
-public class NetworkController implements GenericAssetController<NetworkAssetRequestDto, NetworkAssetResponseDto> {
+public class NetworkAssetController implements GenericAssetController<NetworkAssetRequestDto, NetworkAssetResponseDto> {
     public static final String NETWORK_ASSET = "Network Asset";
-    private final NetworkService service;
+    private final NetworkAssetService service;
 
     @Override
     public ResponseEntity<PaginationResponse<NetworkAssetResponseDto>> getAllByPageWise(int page, int pageSize) throws Exception {
@@ -79,13 +79,32 @@ public class NetworkController implements GenericAssetController<NetworkAssetReq
 
     @Override
     public ResponseEntity<StandardReponse<List<NetworkAssetResponseDto>>> search(String key) throws Exception {
-        return null;
+        List<NetworkAssetResponseDto> responseDtoList = service.search(key);
+        return ResponseEntityManager.ok(responseDtoList);
     }
 
     @GetMapping("/pe-router/all")
     public ResponseEntity<StandardReponse<List<NetworkAssetResponseDto>>> getAllPERouters() throws Exception {
         List<NetworkAssetResponseDto> allPERouters = service.findAllPERouters();
         return ResponseEntityManager.ok(allPERouters);
+    }
+
+    @GetMapping("/switch/all")
+    public ResponseEntity<StandardReponse<List<NetworkAssetResponseDto>>> getAllSwitches() throws Exception {
+        List<NetworkAssetResponseDto> switchList = service.findAllSwitches();
+        return ResponseEntityManager.ok(switchList);
+    }
+
+    @GetMapping("/router/all")
+    public ResponseEntity<StandardReponse<List<NetworkAssetResponseDto>>> getAllRouters() throws Exception {
+        List<NetworkAssetResponseDto> routersList = service.findAllRouters();
+        return ResponseEntityManager.ok(routersList);
+    }
+
+    @GetMapping("/router/available")
+    public ResponseEntity<StandardReponse<List<NetworkAssetResponseDto>>> getAvailableRouters() throws Exception {
+        List<NetworkAssetResponseDto> routersList = service.findAvailableRouters();
+        return ResponseEntityManager.ok(routersList);
     }
 
     @GetMapping("/switch/search")

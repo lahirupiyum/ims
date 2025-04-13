@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/ims.jar app.jar
 
 # Expose the port the application runs on
-EXPOSE 8080
+EXPOSE 8081:8081
 
 # Command to run the jar file
 ENTRYPOINT ["java", "-jar", "app.jar"]

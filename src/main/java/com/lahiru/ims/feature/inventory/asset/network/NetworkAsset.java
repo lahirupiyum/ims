@@ -12,5 +12,5 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Network extends AssetAudit {
+public class NetworkAsset extends AssetAudit {
 }

@@ -34,7 +34,7 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public List<Model> getAll(AssetType assetType) throws Exception {
-        List<Model> modelList = repository.findAll();
+        List<Model> modelList = repository.findAllByAssetType(assetType);
         return (!modelList.isEmpty()) ? modelList : Collections.emptyList();
     }
 

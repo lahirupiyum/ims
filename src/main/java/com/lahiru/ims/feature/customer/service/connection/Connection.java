@@ -7,6 +7,7 @@ import com.lahiru.ims.feature.customer.router.firewallcredentials.RouterFirewall
 import com.lahiru.ims.feature.customer.router.peconnection.PERouterConnection;
 import com.lahiru.ims.feature.customer.service.enums.ManageStatus;
 import com.lahiru.ims.feature.customer.service.enums.NetworkServiceType;
+import com.lahiru.ims.feature.customer.service.enums.ProvisioningStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ public class Connection {
 
     private NetworkServiceType serviceType;
     private ManageStatus manageStatus;
+    private ProvisioningStatus provisioningStatus;
 
     @OneToOne(fetch = FetchType.LAZY)
     private LastMileConnection lastMileConnection;

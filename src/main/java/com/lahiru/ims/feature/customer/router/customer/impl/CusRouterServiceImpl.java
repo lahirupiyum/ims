@@ -1,18 +1,14 @@
 package com.lahiru.ims.feature.customer.router.customer.impl;
 
 import com.lahiru.ims.common.dto.PaginationResponse;
-import com.lahiru.ims.exception.DataConflictException;
-import com.lahiru.ims.exception.MapperException;
 import com.lahiru.ims.exception.NotFoundException;
 import com.lahiru.ims.feature.customer.router.customer.CusRouter;
-import com.lahiru.ims.feature.customer.router.customer.CusRouterController;
 import com.lahiru.ims.feature.customer.router.customer.CusRouterRepo;
 import com.lahiru.ims.feature.customer.router.customer.CusRouterService;
 import com.lahiru.ims.feature.customer.router.customer.dto.CusRouterRequestDto;
 import com.lahiru.ims.feature.customer.router.customer.dto.CusRouterResponseDto;
-import com.lahiru.ims.feature.inventory.asset.network.Network;
-import com.lahiru.ims.feature.inventory.asset.network.NetworkService;
-import com.lahiru.ims.feature.inventory.asset.network.dto.NetworkAssetRequestDto;
+import com.lahiru.ims.feature.inventory.asset.network.NetworkAsset;
+import com.lahiru.ims.feature.inventory.asset.network.NetworkAssetService;
 import com.lahiru.ims.feature.inventory.status.enums.NetworkAssetStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +29,7 @@ public class CusRouterServiceImpl implements CusRouterService {
     public static final String CUSTOMER_ROUTER = "Customer Router";
     private final CusRouterRepo cusRouterRepo;
     private final ModelMapper modelMapper;
-    private final NetworkService networkService;
+    private final NetworkAssetService networkAssetService;
 
     @Override
     public PaginationResponse<CusRouterResponseDto> findByPageWise(int page, int pageSize) throws Exception {
@@ -53,8 +49,8 @@ public class CusRouterServiceImpl implements CusRouterService {
     public CusRouterResponseDto createOne(CusRouterRequestDto cusRouterRequestDto) throws Exception {
         CusRouter cusRouter = convertToModel(cusRouterRequestDto);
 
-        Network updatedNetworkAsset = networkService.updateAssetStatus(cusRouterRequestDto.getAssetId(), NetworkAssetStatus.RENTED);
-        cusRouter.setNetworkAsset(updatedNetworkAsset);
+        NetworkAsset updatedNetworkAssetAsset = networkAssetService.updateAssetStatus(cusRouterRequestDto.getAssetId(), NetworkAssetStatus.RENTED);
+        cusRouter.setNetworkAsset(updatedNetworkAssetAsset);
         CusRouter savedRouter = cusRouterRepo.save(cusRouter);
         return convertToDto(savedRouter);
     }
@@ -64,11 +60,14 @@ public class CusRouterServiceImpl implements CusRouterService {
         CusRouter cusRouter = cusRouterRepo.findActiveOne(id).orElseThrow(() -> new NotFoundException(CUSTOMER_ROUTER));
         CusRouter toUpdate = convertToModel(cusRouterRequestDto);
 
-        Network networkAsset;
+        if (!Objects.equals(toUpdate.getNetworkAsset().getId(), cusRouter.getNetworkAsset().getId()))
+            networkAssetService.updateAssetStatus(cusRouter.getNetworkAsset().getId(), NetworkAssetStatus.AVAILABLE);
+
+        NetworkAsset networkAsset;
         if (Objects.equals(cusRouter.getNetworkAsset().getId(), cusRouterRequestDto.getAssetId()))
-            networkAsset = networkService.findOne(cusRouterRequestDto.getAssetId());
+            networkAsset = networkAssetService.findOne(cusRouterRequestDto.getAssetId());
         else
-            networkAsset = networkService.updateAssetStatus(cusRouterRequestDto.getAssetId(), NetworkAssetStatus.RENTED);
+            networkAsset = networkAssetService.updateAssetStatus(cusRouterRequestDto.getAssetId(), NetworkAssetStatus.RENTED);
 
         toUpdate.setNetworkAsset(networkAsset);
 
@@ -81,8 +80,8 @@ public class CusRouterServiceImpl implements CusRouterService {
     public CusRouterResponseDto deleteOne(int id) throws Exception {
         CusRouter cusRouter = cusRouterRepo.findActiveOne(id).orElseThrow(() -> new NotFoundException(CUSTOMER_ROUTER));
         cusRouter.setIsActive(false);
-        Network networkAsset = cusRouter.getNetworkAsset();
-        Network updatedAsset = networkService.updateAssetStatus(networkAsset, NetworkAssetStatus.AVAILABLE);
+        NetworkAsset networkAsset = cusRouter.getNetworkAsset();
+        NetworkAsset updatedAsset = networkAssetService.updateAssetStatus(networkAsset, NetworkAssetStatus.AVAILABLE);
         cusRouter.setNetworkAsset(updatedAsset);
 
         CusRouter deletedRouter = cusRouterRepo.save(cusRouter);
@@ -95,11 +94,13 @@ public class CusRouterServiceImpl implements CusRouterService {
         CusRouter cusRouter = new CusRouter();
         cusRouter.setIsActive(true);
 
-        cusRouter.setLanPort(cusRouterRequestDto.getLanPort());
-        cusRouter.setWanPort(cusRouterRequestDto.getWanPort());
-        cusRouter.setWanIpPool(cusRouterRequestDto.getWanIpPool());
+        cusRouter.setWanIpAddress(cusRouterRequestDto.getWanIpAddress());
         cusRouter.setLanIpPool(cusRouterRequestDto.getLanIpPool());
         cusRouter.setBandwidthMbps(cusRouterRequestDto.getBandwidth());
+        cusRouter.setOwnership(cusRouterRequestDto.getOwnership());
+        cusRouter.setAsNumber(cusRouterRequestDto.getAsNumber());
+        NetworkAsset networkAsset = networkAssetService.findOne(cusRouterRequestDto.getAssetId());
+        cusRouter.setNetworkAsset(networkAsset);
         return cusRouter;
     }
 
@@ -108,12 +109,12 @@ public class CusRouterServiceImpl implements CusRouterService {
     public CusRouterResponseDto convertToDto(CusRouter cusRouter) {
         CusRouterResponseDto responseDto = new CusRouterResponseDto();
         responseDto.setId(cusRouter.getId());
-        responseDto.setWanIpPool(cusRouter.getWanIpPool());
+        responseDto.setWanIpAddress(cusRouter.getWanIpAddress());
         responseDto.setLanIpPool(cusRouter.getLanIpPool());
-        responseDto.setWanPort(cusRouter.getWanPort());
-        responseDto.setLanPort(cusRouter.getLanPort());
-        responseDto.setAsset(networkService.convertToDto(cusRouter.getNetworkAsset()));
+        responseDto.setAsset(networkAssetService.convertToDto(cusRouter.getNetworkAsset()));
         responseDto.setBandwidth(cusRouter.getBandwidthMbps());
+        responseDto.setOwnership(cusRouter.getOwnership());
+        responseDto.setAsNumber(cusRouter.getAsNumber());
 
         return responseDto;
     }

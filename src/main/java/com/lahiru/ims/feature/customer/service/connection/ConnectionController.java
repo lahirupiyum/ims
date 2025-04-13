@@ -8,10 +8,7 @@ import com.lahiru.ims.feature.customer.service.connection.dto.ConnectionResponse
 import com.lahiru.ims.utils.ResponseEntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,7 +16,7 @@ import java.util.List;
 @RequestMapping("${endpoints.service-connection}")
 @RequiredArgsConstructor
 public class ConnectionController implements GenericController<ConnectionRequestDto, ConnectionResponseDto> {
-    public static final String SERVICE_CONNECTION = "Service Connection";
+    public static final String SERVICE_CONNECTION = "Connection";
     private final ConnectionService connectionService;
 
     @Override
@@ -64,5 +61,23 @@ public class ConnectionController implements GenericController<ConnectionRequest
     public ResponseEntity<StandardReponse<ConnectionResponseDto>> deleteOne(int id) throws Exception {
         ConnectionResponseDto connectionResponseDto = connectionService.deleteOne(id);
         return ResponseEntityManager.ok(connectionResponseDto, SERVICE_CONNECTION + " has been terminated!");
+    }
+
+    @PutMapping("/activate/{id}")
+    public ResponseEntity<StandardReponse<ConnectionResponseDto>> activate(@PathVariable("id") Integer id) throws Exception {
+        ConnectionResponseDto connectionResponseDto = connectionService.activateConnection(id);
+        return ResponseEntityManager.ok(connectionResponseDto, SERVICE_CONNECTION + " has been activated!");
+    }
+
+    @GetMapping("/ill/search")
+    public ResponseEntity<StandardReponse<List<ConnectionResponseDto>>> searchIllConnections(@RequestParam("key") String key) throws Exception {
+        List<ConnectionResponseDto> responseDtoList = connectionService.searchIll(key);
+        return ResponseEntityManager.ok(responseDtoList);
+    }
+
+    @GetMapping("/mpls/search")
+    public ResponseEntity<StandardReponse<List<ConnectionResponseDto>>> searchMplsConnections(@RequestParam("key") String key) throws Exception {
+        List<ConnectionResponseDto> responseDtos = connectionService.searchMpls(key);
+        return ResponseEntityManager.ok(responseDtos);
     }
 }

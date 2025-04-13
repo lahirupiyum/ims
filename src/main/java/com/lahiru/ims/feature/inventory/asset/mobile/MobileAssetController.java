@@ -21,9 +21,9 @@ import java.util.List;
 @RequestMapping("${endpoints.asset-mobile}")
 @RequiredArgsConstructor
 @RestController
-public class MobileController implements GenericAssetController<MobileAssetRequestDto, MobileAssetResponseDto> {
+public class MobileAssetController implements GenericAssetController<MobileAssetRequestDto, MobileAssetResponseDto> {
     public static final String MOBILE_ASSET = "Mobile Asset";
-    private final MobileService service;
+    private final MobileAssetService service;
 
     @Override
     public ResponseEntity<PaginationResponse<MobileAssetResponseDto>> getAllByPageWise(int page, int pageSize) throws Exception {
@@ -76,11 +76,13 @@ public class MobileController implements GenericAssetController<MobileAssetReque
 
     @Override
     public ResponseEntity<StandardReponse<List<ManufacturerDto>>> getAllManufacturer() throws Exception {
-        return null;
+        List<ManufacturerDto> allManufacturers = service.getAllManufacturers();
+        return ResponseEntityManager.ok(allManufacturers);
     }
 
     @Override
     public ResponseEntity<StandardReponse<List<MobileAssetResponseDto>>> search(String key) throws Exception {
-        return null;
+        List<MobileAssetResponseDto> responseDtoList = service.search(key);
+        return ResponseEntityManager.ok(responseDtoList);
     }
 }

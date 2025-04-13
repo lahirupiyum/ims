@@ -5,8 +5,6 @@ import com.lahiru.ims.common.dto.PaginationResponse;
 import com.lahiru.ims.common.dto.StandardReponse;
 import com.lahiru.ims.feature.inventory.asset.fixed.dto.FixedAssetRequestDto;
 import com.lahiru.ims.feature.inventory.asset.fixed.dto.FixedAssetResponseDto;
-import com.lahiru.ims.feature.inventory.location.Location;
-import com.lahiru.ims.feature.inventory.location.dto.LocationResponseDto;
 import com.lahiru.ims.feature.inventory.manufacturer.dto.ManufacturerDto;
 import com.lahiru.ims.feature.inventory.model.dto.ModelDto;
 import com.lahiru.ims.feature.inventory.status.dto.StatusDto;
@@ -21,9 +19,9 @@ import java.util.List;
 @RestController
 @RequestMapping("${endpoints.asset-fixed}")
 @RequiredArgsConstructor
-public class FixedController implements GenericAssetController<FixedAssetRequestDto, FixedAssetResponseDto> {
+public class FixedAssetController implements GenericAssetController<FixedAssetRequestDto, FixedAssetResponseDto> {
     public static final String FIXED_ASSET = "Fixed Asset";
-    private final FixedService service;
+    private final FixedAssetService service;
 
     @Override
     public ResponseEntity<StandardReponse<List<ModelDto>>> getAllModels() throws Exception {
@@ -45,12 +43,14 @@ public class FixedController implements GenericAssetController<FixedAssetRequest
 
     @Override
     public ResponseEntity<StandardReponse<List<ManufacturerDto>>> getAllManufacturer() throws Exception {
-        return null;
+        List<ManufacturerDto> manufacturerDtoList = service.getAllManufacturers();
+        return ResponseEntityManager.ok(manufacturerDtoList);
     }
 
     @Override
     public ResponseEntity<StandardReponse<List<FixedAssetResponseDto>>> search(String key) throws Exception {
-        return null;
+        List<FixedAssetResponseDto> fixedAssetResponseDtoList = service.search(key);
+        return ResponseEntityManager.ok(fixedAssetResponseDtoList);
     }
 
     @Override
